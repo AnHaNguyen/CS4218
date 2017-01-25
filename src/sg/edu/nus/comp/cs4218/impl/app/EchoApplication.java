@@ -33,6 +33,7 @@ public class EchoApplication implements Application {
 	 */
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
 			throws EchoException {
+		
 		if (args == null) {
 			throw new EchoException("Null arguments");
 		}
@@ -46,7 +47,7 @@ public class EchoApplication implements Application {
 				for (int i = 0; i < args.length - 1; i++) {
 					stdout.write(args[i].getBytes());
 				}
-				stdout.write(args[args.length].getBytes());
+				stdout.write(args[args.length-1].getBytes());
 				stdout.write("\n".getBytes());
 			}
 		} catch (IOException e) {

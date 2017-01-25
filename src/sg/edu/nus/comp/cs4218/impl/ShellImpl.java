@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,8 +11,10 @@ import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
+import sg.edu.nus.comp.cs4218.impl.app.CdApplication;
 import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
 import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
+import sg.edu.nus.comp.cs4218.impl.app.PwdApplication;
 import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
 
 /**
@@ -116,9 +119,13 @@ public class ShellImpl implements Shell {
 			InputStream inputStream, OutputStream outputStream)
 			throws AbstractApplicationException, ShellException {
 		Application absApp = null;
-		if (("cat").equals(app)) {// cat [FILE]...
+		if (("cat").equals(app)) {// cat [FILE]...	(done?)
 			absApp = new CatApplication();
-		} else if (("echo").equals(app)) {// echo [args]...
+		} else if (("cd").equals(app)) {	//done simple case
+			absApp = new CdApplication();
+		} else if (("pwd").equals(app)){	//done?
+			absApp = new PwdApplication();
+		} else if (("echo").equals(app)) {// echo [args]... (done?)
 			absApp = new EchoApplication();
 		} else if (("head").equals(app)) {// head [OPTIONS] [FILE]
 			absApp = new HeadApplication();
@@ -290,6 +297,111 @@ public class ShellImpl implements Shell {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			
+			//handle simple case of 1 command
+			String[] cmd = readLine.split(" ");
+			try {
+				ShellImpl.runApp(cmd[0], Arrays.copyOfRange(cmd, 1, cmd.length), System.in, System.out);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	@Override
+	public void parseAndEvaluate(String cmdline, OutputStream stdout)
+			throws AbstractApplicationException, ShellException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String pipeTwoCommands(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String pipeMultipleCommands(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String pipeWithException(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globNoPaths(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globOneFile(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globFilesDirectories(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String globWithException(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String redirectInput(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String redirectOutput(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String redirectInputWithNoFile(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String redirectOutputWithNoFile(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String redirectInputWithException(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String redirectOutputWithException(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String performCommandSubstitution(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String performCommandSubstitutionWithException(String args) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
