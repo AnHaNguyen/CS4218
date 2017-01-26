@@ -10,11 +10,14 @@ import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
+import sg.edu.nus.comp.cs4218.impl.app.CalApplication;
 import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
 import sg.edu.nus.comp.cs4218.impl.app.CdApplication;
 import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
+import sg.edu.nus.comp.cs4218.impl.app.GrepApplication;
 import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
 import sg.edu.nus.comp.cs4218.impl.app.PwdApplication;
+import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
 import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
 
 /**
@@ -127,11 +130,17 @@ public class ShellImpl implements Shell {
 			absApp = new PwdApplication();
 		} else if (("echo").equals(app)) {// echo [args]... (done?)
 			absApp = new EchoApplication();
-		} else if (("head").equals(app)) {// head [OPTIONS] [FILE]
+		} else if (("head").equals(app)) {// head [OPTIONS] [FILE] (done?)
 			absApp = new HeadApplication();
-		} else if (("tail").equals(app)) {// tail [OPTIONS] [FILE]
+		} else if (("tail").equals(app)) {// tail [OPTIONS] [FILE] (done?)
 			absApp = new TailApplication();
-		} else { // invalid command
+		} else if (("grep").equals(app)){
+			absApp = new GrepApplication();
+		} else if (("cal").equals(app)){
+			absApp = new CalApplication();
+		} else if (("sort").equals(app)) {
+			absApp = new SortApplication();
+		} else{ // invalid command
 			throw new ShellException(app + ": " + EXP_INVALID_APP);
 		}
 		absApp.run(argsArray, inputStream, outputStream);
