@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.ShellImpl;
+import sg.edu.nus.comp.cs4218.impl.ShellImplemtation;
 
 /**
  * A Call Command is a sub-command consisting of at least one non-keyword and
@@ -73,21 +73,21 @@ public class CallCommand implements Command {
 		InputStream inputStream;
 		OutputStream outputStream;
 
-		argsArray = ShellImpl.processBQ(argsArray);
+		argsArray = ShellImplemtation.processBQ(argsArray);
 
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
 		} else { // not empty
-			inputStream = ShellImpl.openInputRedir(inputStreamS);
+			inputStream = ShellImplemtation.openInputRedir(inputStreamS);
 		}
 		if (("").equals(outputStreamS)) { // empty
 			outputStream = stdout;
 		} else {
-			outputStream = ShellImpl.openOutputRedir(outputStreamS);
+			outputStream = ShellImplemtation.openOutputRedir(outputStreamS);
 		}
-		ShellImpl.runApp(app, argsArray, inputStream, outputStream);
-		ShellImpl.closeInputStream(inputStream);
-		ShellImpl.closeOutputStream(outputStream);
+		ShellImplemtation.runApp(app, argsArray, inputStream, outputStream);
+		ShellImplemtation.closeInputStream(inputStream);
+		ShellImplemtation.closeOutputStream(outputStream);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class CallCommand implements Command {
 			this.app = cmdVector.get(0);
 			error = true;
 			if (("").equals(errorMsg)) {
-				errorMsg = ShellImpl.EXP_SYNTAX;
+				errorMsg = ShellImplemtation.EXP_SYNTAX;
 			}
 			throw new ShellException(errorMsg);
 		}
@@ -142,7 +142,7 @@ public class CallCommand implements Command {
 			if (!("").equals(inputStreamS)
 					&& inputStreamS.equals(outputStreamS)) {
 				error = true;
-				errorMsg = ShellImpl.EXP_SAME_REDIR;
+				errorMsg = ShellImplemtation.EXP_SAME_REDIR;
 				throw new ShellException(errorMsg);
 			}
 			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1,
@@ -156,7 +156,7 @@ public class CallCommand implements Command {
 	 * Parses the sub-command's arguments to the call command and splits it into
 	 * its different components, namely the application name and the arguments
 	 * (if any), based on rules: Unquoted: any char except for whitespace
-	 * characters, quotes, newlines, semicolons “;”, “|”, “<” and “>”. Double
+	 * characters, quotes, newlines, semicolons ï¿½;ï¿½, ï¿½|ï¿½, ï¿½<ï¿½ and ï¿½>ï¿½. Double
 	 * quoted: any char except \n, ", ` Single quoted: any char except \n, '
 	 * Back quotes in Double Quote for command substitution: DQ rules for
 	 * outside BQ + `anything but \n` in BQ.
@@ -209,7 +209,7 @@ public class CallCommand implements Command {
 					newStartIdx = newEndIdx + matcher.start();
 					if (newStartIdx != newEndIdx) {
 						error = true;
-						errorMsg = ShellImpl.EXP_SYNTAX;
+						errorMsg = ShellImplemtation.EXP_SYNTAX;
 						throw new ShellException(errorMsg);
 					} // check if there's any invalid token not detected
 					cmdVector.add(matchedStr);

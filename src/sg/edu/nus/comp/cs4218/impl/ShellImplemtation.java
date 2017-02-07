@@ -31,7 +31,7 @@ import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
  * </p>
  */
 
-public class ShellImpl implements Shell {
+public class ShellImplemtation implements Shell {
 
 	public static final String EXP_INVALID_APP = "Invalid app.";
 	public static final String EXP_SYNTAX = "Invalid syntax encountered.";
@@ -79,7 +79,7 @@ public class ShellImpl implements Shell {
 				// process back quote
 				// System.out.println("backquote" + bqStr);
 				OutputStream bqOutputStream = new ByteArrayOutputStream();
-				ShellImpl shell = new ShellImpl();
+				ShellImplemtation shell = new ShellImplemtation();
 				//shell.parseAndEvaluate(bqStr, bqOutputStream);
 
 				ByteArrayOutputStream outByte = (ByteArrayOutputStream) bqOutputStream;
@@ -284,7 +284,7 @@ public class ShellImpl implements Shell {
 	 */
 
 	public static void main(String... args) {
-		ShellImpl shell = new ShellImpl();
+		ShellImplemtation shell = new ShellImplemtation();
 
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(
 				System.in));
@@ -310,7 +310,7 @@ public class ShellImpl implements Shell {
 			//handle simple case of 1 command
 			String[] cmd = readLine.split(" ");
 			try {
-				ShellImpl.runApp(cmd[0], Arrays.copyOfRange(cmd, 1, cmd.length), System.in, System.out);
+				ShellImplemtation.runApp(cmd[0], Arrays.copyOfRange(cmd, 1, cmd.length), System.in, System.out);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
