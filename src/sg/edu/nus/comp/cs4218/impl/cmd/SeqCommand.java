@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.comp.cs4218.Command;
-<<<<<<< HEAD
 import sg.edu.nus.comp.cs4218.Utility;
-=======
->>>>>>> 009c5e2654f10f7e50aa15c369a87afe8e47df23
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 
