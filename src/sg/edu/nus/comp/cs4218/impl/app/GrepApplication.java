@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import sg.edu.nus.comp.cs4218.app.Grep;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
+import sg.edu.nus.comp.cs4218.exception.GrepException;
 
 public class GrepApplication implements Grep{
 	private final String NEW_LINE = System.getProperty("line.separator");
@@ -19,13 +20,14 @@ public class GrepApplication implements Grep{
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		switch (args.length){
 		case 0:
-			throw new IllegalArgumentException("Invalid arguments");
+			throw new GrepException("Invalid arguments");
 		case 1:
 			is = stdin;
 			try {
 				stdout.write(grepFromStdin(args[0]).getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
+				throw new GrepException("Cannot write to stdout");
 			}
 			break;
 		case 2:
@@ -34,6 +36,7 @@ public class GrepApplication implements Grep{
 				stdout.write(grepFromOneFile(args[0]).getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
+				throw new GrepException("Cannot write to stdout");
 			}
 			break;
 		default:
@@ -43,6 +46,7 @@ public class GrepApplication implements Grep{
 				stdout.write(grepFromMultipleFiles(args[0]).getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
+				throw new GrepException("Cannot write to stdout");
 			}
 			break;
 		}

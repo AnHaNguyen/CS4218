@@ -36,7 +36,7 @@ public class CallCommand implements Command {
 	String[] argsArray;
 	Boolean error;
 	String errorMsg;
-
+	
 	public CallCommand(String cmdline) {
 		this.cmdline = cmdline.trim();
 		app = inputStreamS = outputStreamS = "";
