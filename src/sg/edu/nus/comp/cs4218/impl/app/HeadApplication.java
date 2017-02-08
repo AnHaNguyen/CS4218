@@ -9,7 +9,7 @@ import java.io.OutputStream;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
-import sg.edu.nus.comp.cs4218.exception.CatException;
+import sg.edu.nus.comp.cs4218.exception.HeadException;
 
 public class HeadApplication implements Application{
 
@@ -24,13 +24,13 @@ public class HeadApplication implements Application{
 			break;
 		case 1:
 			if (args[0].equals("-n")){
-				throw new IllegalArgumentException("Missing argument");
+				throw new HeadException("Missing argument");
 			}
 			totalReadLine = 10;
 			try{
 				is = new BufferedInputStream(new FileInputStream(args[0]));
 			} catch (FileNotFoundException e) {
-				throw new CatException("File Not Found");
+				throw new HeadException("File Not Found");
 			}
 			break;
 		case 2:
@@ -39,10 +39,10 @@ public class HeadApplication implements Application{
 				try {
 					totalReadLine = Integer.parseInt(args[1]);	
 				} catch (NumberFormatException nfe) {
-					throw new IllegalArgumentException("An integer must follow -n");
+					throw new HeadException("An integer must follow -n");
 				}
 			} else {
-				throw new IllegalArgumentException("Invalid arguments");
+				throw new HeadException("Invalid arguments");
 			}
 			break;
 		case 3:
@@ -50,26 +50,26 @@ public class HeadApplication implements Application{
 				try {
 					totalReadLine = Integer.parseInt(args[1]);	
 				} catch (NumberFormatException nfe) {
-					throw new IllegalArgumentException("An integer must follow -n");
+					throw new HeadException("An integer must follow -n");
 				}
 			} else {
-				throw new IllegalArgumentException("Invalid arguments");
+				throw new HeadException("Invalid arguments");
 			}
 	
 			try{
 				is = new BufferedInputStream(new FileInputStream(args[2]));
 			} catch (FileNotFoundException e) {
-				throw new CatException("File Not Found");
+				throw new HeadException("File Not Found");
 			}
 			break;
 		default:
-			throw new IllegalArgumentException("Invalid number of arguments");
+			throw new HeadException("Invalid number of arguments");
 		}
 		try {
 			printHeadToStdout(is, totalReadLine, stdout);
 			is.close();
 		} catch (IOException e) {
-			throw new CatException("Error reading input stream");
+			throw new HeadException("Error reading input stream");
 		}
 	}
 	
