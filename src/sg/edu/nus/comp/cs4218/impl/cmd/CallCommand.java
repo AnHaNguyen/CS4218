@@ -3,6 +3,7 @@ package sg.edu.nus.comp.cs4218.impl.cmd;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +38,16 @@ public class CallCommand implements Command {
 	Boolean error;
 	String errorMsg;
 	
+	public static void main(String[] args) throws AbstractApplicationException, ShellException {
+		Scanner sc = new Scanner(System.in);
+		while (true) {
+			String cmd = sc.nextLine();
+			CallCommand cc = new CallCommand(cmd);
+			cc.evaluate(System.in, System.out);
+			System.out.println(cc.toString());
+		}
+	}
+	
 	public CallCommand(String cmdline) {
 		this.cmdline = cmdline.trim();
 		app = inputStreamS = outputStreamS = "";
@@ -66,6 +77,7 @@ public class CallCommand implements Command {
 	@Override
 	public void evaluate(InputStream stdin, OutputStream stdout)
 			throws AbstractApplicationException, ShellException {
+		this.parse();
 		if (error) {
 			throw new ShellException(errorMsg);
 		}
@@ -74,7 +86,6 @@ public class CallCommand implements Command {
 		OutputStream outputStream;
 
 		argsArray = ShellImplemtation.processBQ(argsArray);
-
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
 		} else { // not empty
@@ -85,6 +96,7 @@ public class CallCommand implements Command {
 		} else {
 			outputStream = ShellImplemtation.openOutputRedir(outputStreamS);
 		}
+
 		ShellImplemtation.runApp(app, argsArray, inputStream, outputStream);
 		ShellImplemtation.closeInputStream(inputStream);
 		ShellImplemtation.closeOutputStream(outputStream);
@@ -339,6 +351,21 @@ public class CallCommand implements Command {
 	public void terminate() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public String toString() {
+		String s = "";
+		s += "App: " + app + System.lineSeparator();
+		s += "CmdLine: " + cmdline + System.lineSeparator();
+		s += "Input: " + inputStreamS+ System.lineSeparator();
+		s += "Output: " + outputStreamS + System.lineSeparator();
+		s += "Args: ";
+		for (int i = 0; i < argsArray.length; i++) {
+			s+= argsArray[i] + " ";
+		}
+		s += System.lineSeparator();
+		return s;
 	}
 
 }
