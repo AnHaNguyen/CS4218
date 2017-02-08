@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.comp.cs4218.Command;
+import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 
@@ -29,7 +30,7 @@ public class SeqCommand implements Command {
 	@Override
 	public void evaluate(InputStream stdin, OutputStream stdout) throws AbstractApplicationException, ShellException {
 		for (int i = 0; i < commandList.size(); i++) {
-			//Command command = ConvertcommandList.get(i)
+			Command command = Utility.getCommandFromString(commandList.get(i));
 			command.evaluate(stdin ,stdout);
 		}
 	}
