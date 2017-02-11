@@ -48,7 +48,7 @@ public class EchoApplication implements Application {
 					stdout.write(args[i].getBytes());
 				}
 				stdout.write(args[args.length-1].getBytes());
-				stdout.write("\n".getBytes());
+				stdout.write(System.lineSeparator().getBytes());
 			}
 		} catch (IOException e) {
 			throw new EchoException("IOException");

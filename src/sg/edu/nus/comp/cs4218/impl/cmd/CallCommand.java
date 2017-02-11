@@ -400,13 +400,13 @@ public class CallCommand implements Command {
 		String glob = "";
 		if (lastFileSepIndex == -1) {
 			glob = curPath;
-			directory = Environment.currentDirectory;
+			directory = Environment.getCurrentDirectory();
 		} else {
 			directory = curPath.substring(0, lastFileSepIndex);
 
 			File f = new File(directory);
 			if (!f.isAbsolute()) {
-				directory = Environment.currentDirectory + File.separator +  directory;
+				directory = Environment.getCurrentDirectory() + File.separator +  directory;
 			//	System.out.println(directory);
 				File newPath = new File(directory);
 				if (newPath.exists()) {

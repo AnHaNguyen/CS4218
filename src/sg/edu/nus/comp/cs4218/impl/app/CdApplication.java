@@ -12,16 +12,20 @@ import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.CdException;
+import sg.edu.nus.comp.cs4218.exception.ShellException;
 
 public class CdApplication implements Application{
 
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		// TODO Auto-generated method stub
+		if (args == null) {
+			throw new CdException("Null Pointer Exception");
+		}
 		if (args.length != 1) {
 			throw new CdException("Application requires 1 argument");
 		}
-		String curDir = Environment.currentDirectory;
+		String curDir = Environment.getCurrentDirectory();
 		String newDir = curDir + File.separator + args[0];
 
 		File pathToDir = new File(newDir);
@@ -30,10 +34,12 @@ public class CdApplication implements Application{
 			try {
 				String finalPath = pathToDir.getCanonicalPath();
 				System.setProperty("user.dir", finalPath);
-				Environment.currentDirectory = finalPath;	
+				Environment.setCurrentDirectory(finalPath);	
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new CdException("Cannot get canonical Path");
+			} catch (ShellException e) {
+				throw new CdException(e.toString());
 			}
 		} else {
 			throw new CdException("This is not a directory");

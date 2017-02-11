@@ -17,6 +17,14 @@ public class HeadApplication implements Application{
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		int totalReadLine;
 		InputStream is;
+		if (args == null || stdout == null) {
+			throw new HeadException("Null Pointer Exception");
+		}
+		for (int i = 0; i < args.length; i++) {
+			if (args[i] == null) {
+				throw new HeadException("Null Pointer Exception");
+			}
+		}
 		switch (args.length) {
 		case 0: 
 			totalReadLine = 10;
@@ -40,6 +48,9 @@ public class HeadApplication implements Application{
 					totalReadLine = Integer.parseInt(args[1]);	
 				} catch (NumberFormatException nfe) {
 					throw new HeadException("An integer must follow -n");
+				}
+				if (totalReadLine < 0) {
+					throw new HeadException("Invalid number of lines to be read");		
 				}
 			} else {
 				throw new HeadException("Invalid arguments");

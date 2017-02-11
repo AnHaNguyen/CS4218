@@ -18,8 +18,8 @@ public class PwdApplication implements Application{
 			throw new PwdException("OutputStream not provided");
 		}
 		try {
-			stdout.write(Environment.currentDirectory.getBytes());
-			stdout.write("\n".getBytes());
+			stdout.write(Environment.getCurrentDirectory().getBytes());
+			stdout.write(System.lineSeparator().getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new PwdException("Cannot write to stdout");

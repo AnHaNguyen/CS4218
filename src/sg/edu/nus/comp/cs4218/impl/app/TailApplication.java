@@ -19,6 +19,14 @@ public class TailApplication implements Application {
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		// TODO Auto-generated method stub
+		if (args == null || stdout == null) {
+			throw new TailException("Null Pointer Exception");
+		}
+		for (int i = 0; i < args.length; i++) {
+			if (args[i] == null) {
+				throw new TailException("Null Pointer Exception");
+			}
+		}
 		int totalReadLine;
 		InputStream is;
 		switch (args.length) {
@@ -56,6 +64,9 @@ public class TailApplication implements Application {
 				} catch (NumberFormatException nfe) {
 					throw new TailException("An integer must follow -n");
 				}
+				if (totalReadLine < 0) {
+					throw new TailException("Invalid number of lines to be read");		
+				}
 			} else {
 				throw new TailException("Invalid arguments");
 			}
@@ -87,11 +98,11 @@ public class TailApplication implements Application {
             }                
         }
 		int startLine = totalLine >= lineList.size() ? 0 : lineList.size() - totalLine;
-		for (int i = startLine; i < lineList.size() -1 ; i++) {
+		for (int i = startLine; i < lineList.size() ; i++) {
 			os.write(lineList.get(i).getBytes());
-			os.write('\n');
+			os.write(System.lineSeparator().getBytes());
 		}
-		os.write(lineList.get(lineList.size()-1).getBytes());
+	//	os.write(lineList.get(lineList.size()-1).getBytes());
 	}
 
 }

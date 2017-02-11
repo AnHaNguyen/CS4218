@@ -297,7 +297,7 @@ public class ShellImplemtation implements Shell {
 
 		while (true) {
 			try {
-				currentDir = Environment.currentDirectory;
+				currentDir = Environment.getCurrentDirectory();
 				System.out.print(currentDir + ">");
 				readLine = bReader.readLine();
 				if (readLine == null) {
@@ -313,6 +313,7 @@ public class ShellImplemtation implements Shell {
 			
 			//handle simple case of 1 command
 			Command cmd = Utility.getCommandFromString(readLine);
+			
 			cmd.evaluate(System.in, System.out);
 		}
 	}
