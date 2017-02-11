@@ -6,8 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sg.edu.nus.comp.cs4218.Application;
+import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
+import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.app.CalApplication;
@@ -281,9 +283,11 @@ public class ShellImplemtation implements Shell {
 	 * 
 	 * @param args
 	 *            List of strings arguments, unused.
+	 * @throws ShellException 
+	 * @throws AbstractApplicationException 
 	 */
 
-	public static void main(String... args) {
+	public static void main(String... args) throws AbstractApplicationException, ShellException {
 		ShellImplemtation shell = new ShellImplemtation();
 
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(
@@ -293,7 +297,7 @@ public class ShellImplemtation implements Shell {
 
 		while (true) {
 			try {
-				currentDir = Environment.currentDirectory;
+				currentDir = Environment.getCurrentDirectory();
 				System.out.print(currentDir + ">");
 				readLine = bReader.readLine();
 				if (readLine == null) {
@@ -308,12 +312,9 @@ public class ShellImplemtation implements Shell {
 			}
 			
 			//handle simple case of 1 command
-			String[] cmd = readLine.split(" ");
-			try {
-				ShellImplemtation.runApp(cmd[0], Arrays.copyOfRange(cmd, 1, cmd.length), System.in, System.out);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Command cmd = Utility.getCommandFromString(readLine);
+			
+			cmd.evaluate(System.in, System.out);
 		}
 	}
 

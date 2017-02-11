@@ -44,7 +44,9 @@ public class CatApplication implements Application {
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
 			throws CatException {
-
+		if (stdout == null) {
+			throw new CatException("stdout is null");
+		}
 		if (args == null || args.length == 0) {
 			if (stdin == null || stdout == null) {
 				throw new CatException("Null Pointer Exception");
@@ -55,7 +57,7 @@ public class CatApplication implements Application {
 					stdout.write(intCount);
 				}
 			} catch (Exception exIO) {
-				throw new CatException("Exception Caught");
+				throw new CatException("Error reading from stdin");
 			}
 		} else {
 
@@ -64,7 +66,7 @@ public class CatApplication implements Application {
 			if (numOfFiles > 0) {
 				Path filePath;
 				Path[] filePathArray = new Path[numOfFiles];
-				Path currentDir = Paths.get(Environment.currentDirectory);
+				Path currentDir = Paths.get(Environment.getCurrentDirectory());
 				boolean isFileReadable = false;
 
 				for (int i = 0; i < numOfFiles; i++) {
@@ -82,6 +84,7 @@ public class CatApplication implements Application {
 							byte[] byteFileArray = Files
 									.readAllBytes(filePathArray[j]);
 							stdout.write(byteFileArray);
+							stdout.write(System.lineSeparator().getBytes());
 						} catch (IOException e) {
 							throw new CatException(
 									"Could not write to output stream");

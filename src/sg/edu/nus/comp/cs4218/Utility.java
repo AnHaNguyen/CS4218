@@ -1,7 +1,13 @@
 package sg.edu.nus.comp.cs4218;
 
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Calendar;
 
+import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
+import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
 import sg.edu.nus.comp.cs4218.Constants;
 
 /**
@@ -9,6 +15,7 @@ import sg.edu.nus.comp.cs4218.Constants;
  */
 public class Utility {
 	
+<<<<<<< HEAD
 	public static int[][] initArray(int rowSize, int colSize, int defaultValue) {
 		int[][] result = new int[rowSize][colSize];
 		for (int i = 0; i < rowSize; i++) {
@@ -72,4 +79,19 @@ public class Utility {
 		System.out.print(Constants.Common.SPACE_BETWEEN_MONTH);
 	}
 
+=======
+	/**
+	 * function to create Command from the respective String
+	 * @param command
+	 * @return command as type Command
+	 */
+	public static Command getCommandFromString(String command) {
+		command = command.trim();
+		if (command.indexOf(";") != -1) {
+			return new SeqCommand(command);
+		}
+		
+		return new CallCommand(command);
+	}
+>>>>>>> 4d28f0dac7a80979df9b7798d263ad7b4c543e44
 }

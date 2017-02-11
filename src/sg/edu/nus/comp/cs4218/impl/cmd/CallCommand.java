@@ -1,13 +1,21 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sg.edu.nus.comp.cs4218.Command;
+import sg.edu.nus.comp.cs4218.Environment;
+import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImplemtation;
@@ -36,7 +44,17 @@ public class CallCommand implements Command {
 	String[] argsArray;
 	Boolean error;
 	String errorMsg;
-
+	
+	public static void main(String[] args) throws AbstractApplicationException, ShellException {
+		Scanner sc = new Scanner(System.in);
+		while (true) {
+			String cmd = sc.nextLine();
+			CallCommand cc = new CallCommand(cmd);
+			cc.evaluate(System.in, System.out);
+		//	System.out.println(cc.toString());
+		}
+	}
+	
 	public CallCommand(String cmdline) {
 		this.cmdline = cmdline.trim();
 		app = inputStreamS = outputStreamS = "";
@@ -66,6 +84,9 @@ public class CallCommand implements Command {
 	@Override
 	public void evaluate(InputStream stdin, OutputStream stdout)
 			throws AbstractApplicationException, ShellException {
+		this.parse();
+		//process parse (argument split) before glob
+		
 		if (error) {
 			throw new ShellException(errorMsg);
 		}
@@ -74,7 +95,8 @@ public class CallCommand implements Command {
 		OutputStream outputStream;
 
 		argsArray = ShellImplemtation.processBQ(argsArray);
-
+		argsArray = expandGlob();		//handle globbing
+		
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
 		} else { // not empty
@@ -85,6 +107,7 @@ public class CallCommand implements Command {
 		} else {
 			outputStream = ShellImplemtation.openOutputRedir(outputStreamS);
 		}
+
 		ShellImplemtation.runApp(app, argsArray, inputStream, outputStream);
 		ShellImplemtation.closeInputStream(inputStream);
 		ShellImplemtation.closeOutputStream(outputStream);
@@ -331,7 +354,84 @@ public class CallCommand implements Command {
 		}
 		return newEndIdx;
 	}
+	
+	private String[] expandGlob() {		//assume * is not in any quotation
+		List<String> expandedArgs = new ArrayList<String>();
+		for (int i = 0; i < argsArray.length; i++) {
+			String arg = argsArray[i].trim();
+			if (arg.indexOf("*") != -1) {
+				try {
+					expandedArgs.addAll(expandPath(arg));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				expandedArgs.add(arg);
+			}
+		}
+		return expandedArgs.toArray(new String[expandedArgs.size()]);
+	}
+	
+	/**
+	 * function to expand a path to all of its existed files and directories
+	 * @param curPath
+	 * @return
+	 * @throws IOException 
+	 */
+	//rule: Collect all the paths to existing files and directories such that these paths can be
+	// obtained by replacing all the unquoted asterisk symbols in ARG by some (possibly
+	//	empty) sequences of non-slash characters
+	//If no such path -> return List with only curPath
+	//else replace curPath with new list of expanded paths
+	
+	//we can assume first asterisk is after last slash (ie only expand current directory)
+	private List<String> expandPath(String curPath) throws IOException {
+		List<String> expanded = new ArrayList<String>();
+		expanded.add(curPath);
+		//TODO : check whether / or File.separator
+		int lastFileSepIndex = curPath.lastIndexOf("/");
+//		System.out.println(lastFileSepIndex);
+		int firstAsteriskIndex = curPath.indexOf("*");
+		
+		if (firstAsteriskIndex < lastFileSepIndex && lastFileSepIndex != -1) {
+			return expanded;		//non applicable to glob
+		}
+		String directory = "";
+		String glob = "";
+		if (lastFileSepIndex == -1) {
+			glob = curPath;
+			directory = Environment.getCurrentDirectory();
+		} else {
+			directory = curPath.substring(0, lastFileSepIndex);
 
+			File f = new File(directory);
+			if (!f.isAbsolute()) {
+				directory = Environment.getCurrentDirectory() + File.separator +  directory;
+			//	System.out.println(directory);
+				File newPath = new File(directory);
+				if (newPath.exists()) {
+					directory = newPath.getCanonicalPath();
+				} else {
+					return expanded; //directory does not exist
+				}
+			}
+			glob = curPath.substring(lastFileSepIndex+1);
+		}
+		File dir = new File(directory);
+		String [] files = dir.list();
+		String regex = ("\\Q" + glob + "\\E").replace("*", "\\E.*\\Q");
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].matches(regex)) {
+				expanded.add(directory + File.separator + files[i]);
+			}
+		}
+		if (expanded.size() > 1) {
+			expanded.remove(0);	//remove original curPath
+		}
+
+		return expanded;
+	}
+	
 	/**
 	 * Terminates current execution of the command (unused for now)
 	 */
@@ -339,6 +439,21 @@ public class CallCommand implements Command {
 	public void terminate() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public String toString() {
+		String s = "";
+		s += "App: " + app + System.lineSeparator();
+		s += "CmdLine: " + cmdline + System.lineSeparator();
+		s += "Input: " + inputStreamS+ System.lineSeparator();
+		s += "Output: " + outputStreamS + System.lineSeparator();
+		s += "Args: ";
+		for (int i = 0; i < argsArray.length; i++) {
+			s+= argsArray[i] + " ";
+		}
+		s += System.lineSeparator();
+		return s;
 	}
 
 }

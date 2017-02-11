@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
-import sg.edu.nus.comp.cs4218.exception.EchoException;
+import sg.edu.nus.comp.cs4218.exception.PwdException;
 
 public class PwdApplication implements Application{
 
@@ -15,13 +15,14 @@ public class PwdApplication implements Application{
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		// TODO Auto-generated method stub
 		if (stdout == null) {
-			throw new EchoException("OutputStream not provided");
+			throw new PwdException("OutputStream not provided");
 		}
 		try {
-			stdout.write(Environment.currentDirectory.getBytes());
-			stdout.write("\n".getBytes());
+			stdout.write(Environment.getCurrentDirectory().getBytes());
+			stdout.write(System.lineSeparator().getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new PwdException("Cannot write to stdout");
 		}
 	}
 
