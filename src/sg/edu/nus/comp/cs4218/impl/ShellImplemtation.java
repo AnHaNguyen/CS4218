@@ -289,7 +289,6 @@ public class ShellImplemtation implements Shell {
 
 	public static void main(String... args) throws AbstractApplicationException, ShellException {
 		ShellImplemtation shell = new ShellImplemtation();
-
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(
 				System.in));
 		String readLine = null;
