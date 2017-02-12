@@ -313,7 +313,6 @@ public class ShellImplemtation implements Shell {
 			
 			//handle simple case of 1 command
 			Command cmd = Utility.getCommandFromString(readLine);
-			
 			cmd.evaluate(System.in, System.out);
 		}
 	}

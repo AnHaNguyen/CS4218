@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import sg.edu.nus.comp.cs4218.app.Cal;
@@ -38,41 +38,30 @@ public class CalApplication implements Cal {
 		}
 		
 		if (paramsList.size() == 0) {
-			// print current month and year
-			Calendar calendar = Calendar.getInstance();
-			int month = calendar.get(Calendar.MONTH);
-			int year = calendar.get(Calendar.YEAR);
+			Date current = new Date();
+			int month = Utility.getMonth(current);
+			int year = Utility.getYear(current);
 			printCalendarForMonthYear(month, year, isMondayFirst);
 		} else if (paramsList.size() == 1) {
-			// print all month of year
-			try {
-				int year = Integer.parseInt(paramsList.get(0));
-				if (year < 0) {
-					throw new CalException(Constants.CalMessage.INVALID_YEAR);
-				}
-				
-				printCalendarForYear(year, isMondayFirst);
-			} catch(Exception e) {
-				throw new CalException(e.getMessage());
+			int year = Integer.parseInt(paramsList.get(0));
+			if (year < 0) {
+				throw new CalException(Constants.CalMessage.INVALID_YEAR);
 			}
+				
+			printCalendarForYear(year, isMondayFirst);
 		} else if (paramsList.size() == 2) {
-			// print month and year from user
-			try {
-				int month = Integer.parseInt(paramsList.get(0));
-				int year = Integer.parseInt(paramsList.get(1));
+			int month = Integer.parseInt(paramsList.get(0));
+			int year = Integer.parseInt(paramsList.get(1));
 				
-				if (year < 0) {
-					throw new CalException(Constants.CalMessage.INVALID_YEAR);
-				}
-				
-				if (month <= 0 || month > 12) {
-					throw new CalException(Constants.CalMessage.INVALID_MONTH);
-				}
-				
-				printCalendarForMonthYear(month - 1, year, isMondayFirst); // month is from 0 to 11
-			} catch(Exception e) {
-				throw new CalException(e.getMessage());
+			if (year < 0) {
+				throw new CalException(Constants.CalMessage.INVALID_YEAR);
 			}
+				
+			if (month <= 0 || month > 12) {
+				throw new CalException(Constants.CalMessage.INVALID_MONTH);
+			}
+				
+			printCalendarForMonthYear(month, year, isMondayFirst); // month is from 0 to 11
 		}
 	}
 
@@ -100,12 +89,12 @@ public class CalApplication implements Cal {
 	
 	public void printCalendarForYear(int year, boolean isMondayFirst) {
 		List<int[][]> yearArray = new ArrayList<int[][]>();
-		for (int month = 0; month < MONTHS_PER_YEAR; month++) {
+		for (int month = 1; month <= MONTHS_PER_YEAR; month++) {
 			int[][] monthArr = Utility.getCalendarArrayForMonth(month, year, isMondayFirst);
 			yearArray.add(monthArr);
 		}
 
-		for (int month = 0; month < MONTHS_PER_YEAR; month += Constants.Common.YEAR_COL_SIZE) {
+		for (int month = 1; month <= MONTHS_PER_YEAR; month += Constants.Common.YEAR_COL_SIZE) {
 			printMonthCalendarInRow(year, isMondayFirst, month, month + Constants.Common.YEAR_COL_SIZE - 1, yearArray);
 			System.out.println();
 		}
@@ -116,20 +105,20 @@ public class CalApplication implements Cal {
 		for (int month = startMonth; month <= endMonth; month++) {
 			Utility.printCalTitle(month, year);
 			Utility.printMonthSpace();
-			System.out.print("  ");
+			System.out.print(TWO_SPACE);
 		}
 		System.out.println();
 		
 		for (int month = startMonth; month <= endMonth; month++) {
 			Utility.printCalHeaders(mondayFirst);
 			Utility.printMonthSpace();
-			System.out.print(" ");
+			System.out.print(ONE_SPACE);
 		}
 		System.out.println();
 		
 		for (int i = 0; i < Constants.Common.CALENDAR_ROW_SIZE; i++) {
 			for (int month = startMonth; month <= endMonth; month++) {
-				int[][] monthArr = yearArray.get(month);
+				int[][] monthArr = yearArray.get(month - 1);
 				for (int j = 0; j < Constants.Common.CALENDAR_COL_SIZE; j++) {
 					if (monthArr[i][j] == -1) {
 						System.out.print(THREE_SPACE);
