@@ -42,12 +42,11 @@ public class EchoApplication implements Application {
 		}
 		try {
 			if (args.length == 0) {
-				stdout.write("\n\n".getBytes());
+				stdout.write(System.lineSeparator().getBytes());
 			} else {
-				for (int i = 0; i < args.length - 1; i++) {
+				for (int i = 0; i < args.length; i++) {
 					stdout.write(args[i].getBytes());
 				}
-				stdout.write(args[args.length-1].getBytes());
 				stdout.write(System.lineSeparator().getBytes());
 			}
 		} catch (IOException e) {
