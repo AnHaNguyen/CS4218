@@ -63,6 +63,9 @@ public class HeadApplication implements Application{
 				} catch (NumberFormatException nfe) {
 					throw new HeadException("An integer must follow -n");
 				}
+				if (totalReadLine < 0) {
+					throw new HeadException("Invalid number of lines to be read");		
+				}
 			} else {
 				throw new HeadException("Invalid arguments");
 			}

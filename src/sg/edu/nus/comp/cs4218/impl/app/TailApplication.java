@@ -53,6 +53,9 @@ public class TailApplication implements Application {
 				} catch (NumberFormatException nfe) {
 					throw new TailException("An integer must follow -n");
 				}
+				if (totalReadLine < 0) {
+					throw new TailException("Invalid number of lines to be read");		
+				}
 			} else {
 				throw new TailException("Invalid arguments");
 			}
