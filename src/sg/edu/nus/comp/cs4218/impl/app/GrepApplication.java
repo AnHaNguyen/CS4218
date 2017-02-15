@@ -6,25 +6,46 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import sg.edu.nus.comp.cs4218.app.Grep;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.GrepException;
 
 public class GrepApplication implements Grep{
-	private final String NEW_LINE = System.getProperty("line.separator");
+	private final String NEW_LINE = System.lineSeparator();
 	private InputStream is;
 	private String file;
 	private String[] files;
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
+		if (args == null || stdout == null) {
+			throw new GrepException("Null Pointer Exception");
+		}
+		for (int i = 0; i < args.length; i++) {
+			if (args[i] == null) {
+				throw new GrepException("Null Pointer Exception");
+			}
+			if (args[i] == "") {
+				throw new GrepException("Empty argument");
+			}
+		}
+		
 		switch (args.length){
 		case 0:
 			throw new GrepException("Invalid arguments");
 		case 1:
+			if (stdin == null) {
+				throw new GrepException("Null Pointer Exception");
+			}
 			is = stdin;
 			try {
-				stdout.write(grepFromStdin(args[0]).getBytes());
+				if (isValidRegex(args[0])) {
+					stdout.write(grepFromStdin(args[0]).getBytes());
+				} else {
+					grepInvalidPatternInStdin(args[0]);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new GrepException("Cannot write to stdout");
@@ -33,7 +54,11 @@ public class GrepApplication implements Grep{
 		case 2:
 			file = args[1];
 			try {
-				stdout.write(grepFromOneFile(args[0]).getBytes());
+				if (isValidRegex(args[0])) {
+					stdout.write(grepFromOneFile(args[0]).getBytes());
+				} else {
+					grepInvalidPatternInFile(args[0]);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new GrepException("Cannot write to stdout");
@@ -43,7 +68,11 @@ public class GrepApplication implements Grep{
 			files = new String[args.length -1];
 			files = Arrays.copyOfRange(args, 1, args.length);
 			try {
-				stdout.write(grepFromMultipleFiles(args[0]).getBytes());
+				if (isValidRegex(args[0])) {
+					stdout.write(grepFromMultipleFiles(args[0]).getBytes());
+				} else {
+					grepInvalidPatternInFile(args[0]);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new GrepException("Cannot write to stdout");
@@ -51,7 +80,16 @@ public class GrepApplication implements Grep{
 			break;
 		}
 	}
-
+	
+	private boolean isValidRegex(String pattern) {
+		try {
+			Pattern.compile(pattern);
+		} catch (PatternSyntaxException e) {
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public String grepFromStdin(String args) {
 		int lineNo = 1;
@@ -81,7 +119,7 @@ public class GrepApplication implements Grep{
 	}
 
 	@Override
-	public String grepFromOneFile(String args) {
+	public String grepFromOneFile(String args) throws GrepException {
 		int lineNo = 1;
 		String outString = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -94,12 +132,13 @@ public class GrepApplication implements Grep{
 		    }
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new GrepException("Unable to read file");
 		}
 		return outString;
 	}
 
 	@Override
-	public String grepFromMultipleFiles(String args) {
+	public String grepFromMultipleFiles(String args) throws GrepException {
 		String outString = "";
 		for (int i = 0; i < files.length; i++) {
 			outString += files[i] + NEW_LINE;
@@ -114,6 +153,7 @@ public class GrepApplication implements Grep{
 			    }
 			} catch (IOException e) {
 				e.printStackTrace();
+				throw new GrepException("Unable to read file");
 			}
 		}
 		return outString;
