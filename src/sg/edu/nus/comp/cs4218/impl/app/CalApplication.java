@@ -2,28 +2,19 @@ package sg.edu.nus.comp.cs4218.impl.app;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import sg.edu.nus.comp.cs4218.app.Cal;
 import sg.edu.nus.comp.cs4218.exception.CalException;
+import sg.edu.nus.comp.cs4218.helper.CalendarHelper;
 import sg.edu.nus.comp.cs4218.Constants;
 import sg.edu.nus.comp.cs4218.Utility;
 
 public class CalApplication implements Cal {
 	static final String MONDAY_FIRST_FLAG = "-m";
-	static final String ONE_SPACE = " ";
-	static final String TWO_SPACE = "  ";
-	static final String THREE_SPACE = "   ";
-	static final int MONTHS_PER_YEAR = 12;
 	
 	@Override
-	public void run(String[] args, InputStream stdin, OutputStream stdout) throws CalException {		
-		boolean isMondayFirst = false;
-		List<String> paramsList = new ArrayList<String>(Arrays.asList(args));
-		
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws CalException {				
 		if (args == null) {
 			throw new CalException(Constants.CalMessage.INVALID_ARGS);
 		}
@@ -32,142 +23,134 @@ public class CalApplication implements Cal {
 			throw new CalException(Constants.CalMessage.INVALID_NUMBER_ARGUMENTS);
 		}
 		
-		if (args.length > 0 && args[0].equals(MONDAY_FIRST_FLAG)) {
-			isMondayFirst = true;
-			paramsList.remove(0);
+		String inputArgs = Utility.arrayToString(args);
+		String output = null;
+		
+		if (args.length == 0) {
+			output = printCal(inputArgs);
+		} else if (args.length == 1 && args[0].equals(MONDAY_FIRST_FLAG)) {
+			output = printCalWithMondayFirst(inputArgs);
+		} else if (args.length == 1 && !args[0].equals(MONDAY_FIRST_FLAG)) {
+			output = printCalForYear(inputArgs);
+		} else if (args.length == 2 && args[0].equals(MONDAY_FIRST_FLAG)) {
+			output = printCalForYearMondayFirst(inputArgs);
+		} else if (args.length == 2 && !args[0].equals(MONDAY_FIRST_FLAG)) {
+			output = printCalForMonthYear(inputArgs);
+		} else if (args.length == 3 && args[0].equals(MONDAY_FIRST_FLAG)) {
+			output = printCalForMonthYearMondayFirst(inputArgs);
 		}
 		
-		if (paramsList.size() == 0) {
-			Date current = new Date();
-			int month = Utility.getMonth(current);
-			int year = Utility.getYear(current);
-			printCalendarForMonthYear(month, year, isMondayFirst);
-		} else if (paramsList.size() == 1) {
-			int year = Integer.parseInt(paramsList.get(0));
-			if (year < 0) {
-				throw new CalException(Constants.CalMessage.INVALID_YEAR);
-			}
-				
-			printCalendarForYear(year, isMondayFirst);
-		} else if (paramsList.size() == 2) {
-			int month = Integer.parseInt(paramsList.get(0));
-			int year = Integer.parseInt(paramsList.get(1));
-				
-			if (year < 0) {
-				throw new CalException(Constants.CalMessage.INVALID_YEAR);
-			}
-				
-			if (month <= 0 || month > 12) {
-				throw new CalException(Constants.CalMessage.INVALID_MONTH);
-			}
-				
-			printCalendarForMonthYear(month, year, isMondayFirst); // month is from 0 to 11
-		}
-	}
-
-	public void printCalendarForMonthYear(int month, int year, boolean mondayFirst) {
-		int[][] monthArr = Utility.getCalendarArrayForMonth(month, year, mondayFirst);
-		Utility.printCalTitle(month, year);
-		System.out.println();
-		
-		Utility.printCalHeaders(mondayFirst);
-		System.out.println();
-		
-		for (int i = 0; i < Constants.Common.CALENDAR_ROW_SIZE; i++) {
-			for (int j = 0; j < Constants.Common.CALENDAR_COL_SIZE; j++) {
-				if (monthArr[i][j] == -1) {
-					System.out.print(THREE_SPACE);
-				} else if (monthArr[i][j] < 10) {
-					System.out.print(monthArr[i][j] + TWO_SPACE);
-				} else {
-					System.out.print(monthArr[i][j] + ONE_SPACE);
-				}
-			}
-			System.out.println();
+		if (output == null) {
+			throw new CalException(Constants.CalMessage.INVALID_INPUT);
+		} else {
+			System.out.print(output);
 		}
 	}
 	
-	public void printCalendarForYear(int year, boolean isMondayFirst) {
-		List<int[][]> yearArray = new ArrayList<int[][]>();
-		for (int month = 1; month <= MONTHS_PER_YEAR; month++) {
-			int[][] monthArr = Utility.getCalendarArrayForMonth(month, year, isMondayFirst);
-			yearArray.add(monthArr);
-		}
-
-		for (int month = 1; month <= MONTHS_PER_YEAR; month += Constants.Common.YEAR_COL_SIZE) {
-			printMonthCalendarInRow(year, isMondayFirst, month, month + Constants.Common.YEAR_COL_SIZE - 1, yearArray);
-			System.out.println();
-		}
-		
-	}
-	
-	private void printMonthCalendarInRow(int year, boolean mondayFirst, int startMonth, int endMonth, List<int[][]> yearArray) {
-		for (int month = startMonth; month <= endMonth; month++) {
-			Utility.printCalTitle(month, year);
-			Utility.printMonthSpace();
-			System.out.print(TWO_SPACE);
-		}
-		System.out.println();
-		
-		for (int month = startMonth; month <= endMonth; month++) {
-			Utility.printCalHeaders(mondayFirst);
-			Utility.printMonthSpace();
-			System.out.print(ONE_SPACE);
-		}
-		System.out.println();
-		
-		for (int i = 0; i < Constants.Common.CALENDAR_ROW_SIZE; i++) {
-			for (int month = startMonth; month <= endMonth; month++) {
-				int[][] monthArr = yearArray.get(month - 1);
-				for (int j = 0; j < Constants.Common.CALENDAR_COL_SIZE; j++) {
-					if (monthArr[i][j] == -1) {
-						System.out.print(THREE_SPACE);
-					} else if (monthArr[i][j] < 10) {
-						System.out.print(monthArr[i][j] + TWO_SPACE);
-					} else {
-						System.out.print(monthArr[i][j] + ONE_SPACE);
-					}
-				}
-				Utility.printMonthSpace();
-			}
-			System.out.println();
-		}		
-	}
-	
+	/**
+	 * Print the calendar of the current month
+	 * @param args String containing command and arguments to print the calendar of the current month
+	 */
 	@Override
 	public String printCal(String args) {
-		// TODO Auto-generated method stub
-		return null;
+		Date current = new Date();
+		int month = Utility.getMonth(current);
+		int year = Utility.getYear(current);
+		return CalendarHelper.generateCalendarForMonthYear(month, year, false);
 	}
 
+	
+	/**
+	 * Returns the string to print the calendar of the current month with Monday
+	 * as the first day of the week
+	 * @param args String containing command and arguments
+	 */
 	@Override
 	public String printCalWithMondayFirst(String args) {
-		// TODO Auto-generated method stub
-		return null;
+		Date current = new Date();
+		int month = Utility.getMonth(current);
+		int year = Utility.getYear(current);
+		return CalendarHelper.generateCalendarForMonthYear(month, year, true);
 	}
 
+	/**
+	 * Returns the string to print the calendar for specified month and year
+	 * @param args String containing command and arguments
+	 */
 	@Override
 	public String printCalForMonthYear(String args) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String printCalForYear(String args) {
-		// TODO Auto-generated method stub
-		return null;
+		String[] params = Utility.stringToArray(args);
+		try {
+			int month = Integer.parseInt(params[0]);
+			int year = Integer.parseInt(params[1]);
+			if (!Utility.isValidMonth(month) || !Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForMonthYear(month, year, false);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
+	/**
+	 * Returns the string to print the calendar for specified month and year
+	 * @param args String containing command and arguments
+	 */
 	@Override
 	public String printCalForMonthYearMondayFirst(String args) {
-		// TODO Auto-generated method stub
-		return null;
+		String[] params = Utility.stringToArray(args);
+		try {
+			int month = Integer.parseInt(params[1]);
+			int year = Integer.parseInt(params[2]);
+
+			if (!Utility.isValidMonth(month) || !Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForMonthYear(month, year, true);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
+	/**
+	 * Returns the string to print the calendar for specified year
+	 * @param args String containing command and arguments
+	 */
+	@Override
+	public String printCalForYear(String args) {
+		String[] params = Utility.stringToArray(args);
+		try {
+			int year = Integer.parseInt(params[0]);
+			if (!Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForYear(year, false);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the string to print the calendar for specified year with Monday
+	 * as the first day of the week
+	 * @param args String containing command and arguments
+	 */
 	@Override
 	public String printCalForYearMondayFirst(String args) {
-		// TODO Auto-generated method stub
-		return null;
+		String[] params = Utility.stringToArray(args);
+		try {
+			int year = Integer.parseInt(params[1]);
+			if (!Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForYear(year, true);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

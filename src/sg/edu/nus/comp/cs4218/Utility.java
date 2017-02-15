@@ -7,12 +7,15 @@ import java.util.Collections;
 
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
-import sg.edu.nus.comp.cs4218.Constants;
 
 /**
  * Created by thientran on 2/7/17.
  */
-public class Utility {
+public class Utility {	
+    public static final String SPACE_SEPARATOR = "\\s+";
+	//public static final String WHITE_SPACE = " ";
+	public static final String ONE_SPACE = " ";
+	
 	/**
 	 * Return 2D array of default value
 	 * @param rowSize
@@ -58,6 +61,14 @@ public class Utility {
 	 */
 	public static boolean isLeapYear(int year) {
 		return (year % 4 == 0 && year % 100 !=0) || (year % 400 == 0);
+	}
+	
+	public static boolean isValidMonth(int month) {
+		return month >= 0 && month <= 12;
+	}
+	
+	public static boolean isValidYear(int year) {
+		return year >= 0;
 	}
 	
 	/**
@@ -131,68 +142,20 @@ public class Utility {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param month
-	 * @param year
-	 * @param mondayFirst
-	 * @return 2D calendar array
-	 */
-	public static int[][] getCalendarArrayForMonth(int month, int year, boolean mondayFirst) {
-		int[][] calendarArr = initArray(Constants.Common.CALENDAR_ROW_SIZE, Constants.Common.CALENDAR_COL_SIZE, -1);
-		int maxDay = getNumberOfDayForMonth(month, year);
-		int dayIndex = getDayOfWeek(1, month, year);
-		if (mondayFirst) {
-			dayIndex = (dayIndex + 7 - 1) % 7;
+	public static String arrayToString(String[] array) {
+		StringBuilder output = new StringBuilder();
+		for (int i = 0; i < array.length; i++) {
+			output.append(array[i]);
+			if (i != array.length - 1) {
+				output.append(ONE_SPACE);
+			}
 		}
 		
-		for (int i = 1; i <= maxDay; i++) {
-			int rowIndex = dayIndex / Constants.Common.CALENDAR_COL_SIZE;
-			int colIndex = dayIndex % Constants.Common.CALENDAR_COL_SIZE;
-			calendarArr[rowIndex][colIndex] = i;
-			dayIndex++;
-		}
-		
-		return calendarArr;
+		return output.toString();
 	}
 	
-	/**
-	 * Print calendar title
-	 * @param month
-	 * @param year
-	 */
-	public static void printCalTitle(int month, int year) {
-		int calendarWidth = 20;
-		String calendarTitle = Constants.Common.MONTH_TO_TEXT[month - 1] + ", " + year;
-		int space = (calendarWidth - calendarTitle.length()) / 2;
-		for (int i = 0; i < space; i++) {
-			System.out.print(" ");
-		}
-		
-		System.out.print(calendarTitle);
-		for (int i = 0; i < space; i++) {
-			System.out.print(" ");
-		}		
-	}
-	
-	/**
-	 * Print calendar headers
-	 * @param mondayFirst
-	 */
-	public static void printCalHeaders(boolean mondayFirst) {
-		// print headers
-		if (mondayFirst) {
-			System.out.print("Mo Tu We Th Fr Sa Su");
-		} else {
-			System.out.print("Su Mo Tu We Th Fr Sa");
-		}		
-	}
-	
-	/**
-	 * Print space between calendar 2D array
-	 */
-	public static void printMonthSpace() {
-		System.out.print(Constants.Common.SPACE_BETWEEN_MONTH);
+	public static String[] stringToArray(String string) {
+		return string.split(SPACE_SEPARATOR);
 	}
 
 	/**
