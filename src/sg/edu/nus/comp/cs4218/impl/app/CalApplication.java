@@ -2,13 +2,11 @@ package sg.edu.nus.comp.cs4218.impl.app;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import sg.edu.nus.comp.cs4218.app.Cal;
 import sg.edu.nus.comp.cs4218.exception.CalException;
+import sg.edu.nus.comp.cs4218.helper.CalendarHelper;
 import sg.edu.nus.comp.cs4218.Constants;
 import sg.edu.nus.comp.cs4218.Utility;
 
@@ -43,7 +41,7 @@ public class CalApplication implements Cal {
 		}
 		
 		if (output == null) {
-			throw new CalException(Constants.CalMessage.INVALID_ARGS);
+			throw new CalException(Constants.CalMessage.INVALID_INPUT);
 		} else {
 			System.out.print(output);
 		}
@@ -58,7 +56,7 @@ public class CalApplication implements Cal {
 		Date current = new Date();
 		int month = Utility.getMonth(current);
 		int year = Utility.getYear(current);
-		return Utility.generateCalendarForMonthYear(month, year, false);
+		return CalendarHelper.generateCalendarForMonthYear(month, year, false);
 	}
 
 	
@@ -72,7 +70,7 @@ public class CalApplication implements Cal {
 		Date current = new Date();
 		int month = Utility.getMonth(current);
 		int year = Utility.getYear(current);
-		return Utility.generateCalendarForMonthYear(month, year, true);
+		return CalendarHelper.generateCalendarForMonthYear(month, year, true);
 	}
 
 	/**
@@ -85,7 +83,11 @@ public class CalApplication implements Cal {
 		try {
 			int month = Integer.parseInt(params[0]);
 			int year = Integer.parseInt(params[1]);
-			return Utility.generateCalendarForMonthYear(month, year, false);
+			if (!Utility.isValidMonth(month) || !Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForMonthYear(month, year, false);
 		} catch (Exception e) {
 			return null;
 		}
@@ -101,7 +103,12 @@ public class CalApplication implements Cal {
 		try {
 			int month = Integer.parseInt(params[1]);
 			int year = Integer.parseInt(params[2]);
-			return Utility.generateCalendarForMonthYear(month, year, true);
+
+			if (!Utility.isValidMonth(month) || !Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForMonthYear(month, year, true);
 		} catch (Exception e) {
 			return null;
 		}
@@ -116,7 +123,11 @@ public class CalApplication implements Cal {
 		String[] params = Utility.stringToArray(args);
 		try {
 			int year = Integer.parseInt(params[0]);
-			return Utility.generateCalendarForYear(year, false);
+			if (!Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForYear(year, false);
 		} catch (Exception e) {
 			return null;
 		}
@@ -132,7 +143,11 @@ public class CalApplication implements Cal {
 		String[] params = Utility.stringToArray(args);
 		try {
 			int year = Integer.parseInt(params[1]);
-			return Utility.generateCalendarForYear(year, true);
+			if (!Utility.isValidYear(year)) {
+				return null;
+			}
+			
+			return CalendarHelper.generateCalendarForYear(year, true);
 		} catch (Exception e) {
 			return null;
 		}

@@ -11,7 +11,6 @@ public class Constants {
     public class CalMessage {
     	public static final String INVALID_ARGS = "Agrs is null";
     	public static final String INVALID_NUMBER_ARGUMENTS = "Invalid number of arguments";
-    	public static final String INVALID_YEAR = "Invalid year";
-    	public static final String INVALID_MONTH = "Invalid month";
+    	public static final String INVALID_INPUT = "Invalid input";
     }
 }
