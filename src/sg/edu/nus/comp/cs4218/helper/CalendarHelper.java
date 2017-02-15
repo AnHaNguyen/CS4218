@@ -130,15 +130,18 @@ public class CalendarHelper {
 		
 		for (int month = startMonth; month <= endMonth; month++) {
 			output.append(generateCalTitle(month, year));
-			output.append(SPACE_BETWEEN_MONTH);
-			output.append(TWO_SPACE);
+			if (month != endMonth) {
+				output.append(SPACE_BETWEEN_MONTH);
+				output.append(TWO_SPACE);
+			}
 		}
 		output.append(NEW_LINE);
 		
 		for (int month = startMonth; month <= endMonth; month++) {
 			output.append(generateCalHeaders(mondayFirst));
-			output.append(SPACE_BETWEEN_MONTH);
-			output.append(ONE_SPACE);
+			if (month != endMonth) {
+				output.append(SPACE_BETWEEN_MONTH);
+			}
 		}
 		output.append(NEW_LINE);
 		
@@ -154,7 +157,10 @@ public class CalendarHelper {
 						output.append(monthArr[i][j] + ONE_SPACE);
 					}
 				}
-				output.append(SPACE_BETWEEN_MONTH);
+				
+				if (month != endMonth) {
+					output.append(SPACE_BETWEEN_MONTH);
+				}
 			}
 			output.append(NEW_LINE);
 		}
