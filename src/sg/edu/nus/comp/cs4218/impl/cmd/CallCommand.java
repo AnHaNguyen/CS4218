@@ -96,6 +96,7 @@ public class CallCommand implements Command {
 
 		argsArray = ShellImplementation.processBQ(argsArray);
 		argsArray = expandGlob();		//handle globbing
+		System.out.println(this);
 		
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
@@ -160,8 +161,8 @@ public class CallCommand implements Command {
 
 		// process inputRedir and/or outputRedir
 		if (nTokens >= 3) { // last 2 for inputRedir & >outputRedir
-			this.inputStreamS = cmdTokensArray[nTokens - 2].trim();
-			this.outputStreamS = cmdTokensArray[nTokens - 1].trim();
+			this.inputStreamS = parseStream(cmdTokensArray[nTokens - 2].trim());
+			this.outputStreamS = parseStream(cmdTokensArray[nTokens - 1].trim());
 			if (!("").equals(inputStreamS)
 					&& inputStreamS.equals(outputStreamS)) {
 				error = true;
@@ -174,7 +175,18 @@ public class CallCommand implements Command {
 			this.argsArray = new String[0];
 		}
 	}
-
+	
+	private String parseStream(String stream) throws ShellException {
+		if (stream == "") {
+			return null;
+		}
+		String[] tokens = stream.split("");
+		if (tokens.length > 1) {
+			throw new ShellException("Specify only 1 file for redirection");
+		}
+		return stream;
+	}
+	
 	/**
 	 * Parses the sub-command's arguments to the call command and splits it into
 	 * its different components, namely the application name and the arguments
