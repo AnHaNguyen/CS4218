@@ -24,12 +24,14 @@ public class Parser {
 		return null;
 	}
 	
-	public static Boolean isInStream(String input) {
-		return input.length() == 1 && input.charAt(0) == IN_STREAM;
+	
+	
+	public static Boolean isInStream(Character character) {
+		return character == IN_STREAM;
 	}
 	
-	public static Boolean isOutStream(String input) {
-		return input.length() == 1 && input.charAt(0) == OUT_STREAM;
+	public static Boolean isOutStream(Character character) {
+		return character == OUT_STREAM;
 	}
 	
 	public static Boolean isQuote(Character character) {
