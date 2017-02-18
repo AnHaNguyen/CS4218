@@ -8,9 +8,6 @@ import java.util.Collections;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
 
-/**
- * Created by thientran on 2/7/17.
- */
 public class Utility {	
     public static final String SPACE_SEPARATOR = "\\s+";
 	//public static final String WHITE_SPACE = " ";

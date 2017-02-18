@@ -14,7 +14,10 @@ public class CalApplication implements Cal {
 	static final String MONDAY_FIRST_FLAG = "-m";
 	
 	@Override
-	public void run(String[] args, InputStream stdin, OutputStream stdout) throws CalException {				
+	public void run(String[] args, InputStream stdin, OutputStream stdout) throws CalException {
+		if (stdout == null) {
+			throw new CalException(Constants.CalMessage.STDOUT_IS_NULL);
+		}
 		if (args == null) {
 			throw new CalException(Constants.CalMessage.INVALID_ARGS);
 		}
@@ -42,8 +45,12 @@ public class CalApplication implements Cal {
 		
 		if (output == null) {
 			throw new CalException(Constants.CalMessage.INVALID_INPUT);
-		} else {
-			System.out.print(output);
+		}
+		
+		try {
+			stdout.write(output.getBytes());
+		} catch (Exception e) {
+			throw new CalException(e.getMessage());
 		}
 	}
 	
