@@ -31,13 +31,15 @@ public interface Grep extends Application {
 	/**
 	 * Returns string when invalid pattern is specified in grep from Stdin
 	 * @param args String containing command and arguments
+	 * @throws GrepException 
 	 */
-	public String grepInvalidPatternInStdin(String args);
+	public String grepInvalidPatternInStdin(String args) throws GrepException;
 
 	
 	/**
 	 * Returns string when invalid pattern is specified in grep from file
 	 * @param args String containing command and arguments
+	 * @throws GrepException 
 	 */
-	public String grepInvalidPatternInFile(String args);
+	public String grepInvalidPatternInFile(String args) throws GrepException;
 }

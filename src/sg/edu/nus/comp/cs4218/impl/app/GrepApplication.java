@@ -131,7 +131,7 @@ public class GrepApplication implements Grep{
 		    	lineNo++;
 		    }
 		} catch (IOException e) {
-			e.printStackTrace();
+		//	e.printStackTrace();
 			throw new GrepException("Unable to read file");
 		}
 		return outString;
@@ -152,7 +152,7 @@ public class GrepApplication implements Grep{
 			    	lineNo++;
 			    }
 			} catch (IOException e) {
-				e.printStackTrace();
+			//	e.printStackTrace();
 				throw new GrepException("Unable to read file");
 			}
 		}
@@ -160,15 +160,13 @@ public class GrepApplication implements Grep{
 	}
 
 	@Override
-	public String grepInvalidPatternInStdin(String args) {
-		// TODO Auto-generated method stub
-		return null;
+	public String grepInvalidPatternInStdin(String args) throws GrepException {
+		throw new GrepException("Invalid Pattern in stdin");
 	}
 
 	@Override
-	public String grepInvalidPatternInFile(String args) {
-		// TODO Auto-generated method stub
-		return null;
+	public String grepInvalidPatternInFile(String args) throws GrepException {
+		throw new GrepException("Invalid Pattern in file");
 	}
 
 }
