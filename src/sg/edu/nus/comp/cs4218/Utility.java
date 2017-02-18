@@ -9,10 +9,10 @@ import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
 
 public class Utility {	
-    public static final String SPACE_SEPARATOR = "\\s+";
+	public static final String SPACE_SEPARATOR = "\\s+";
 	//public static final String WHITE_SPACE = " ";
 	public static final String ONE_SPACE = " ";
-	
+
 	/**
 	 * Return 2D array of default value
 	 * @param rowSize
@@ -27,10 +27,10 @@ public class Utility {
 				result[i][j] = defaultValue;
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @param date
@@ -40,7 +40,7 @@ public class Utility {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
 		return Integer.parseInt(dateFormat.format(date));
 	}
-	
+
 	/**
 	 * 
 	 * @param date
@@ -50,7 +50,7 @@ public class Utility {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
 		return Integer.parseInt(dateFormat.format(date));		
 	}
-	
+
 	/**
 	 * 
 	 * @param year
@@ -59,15 +59,15 @@ public class Utility {
 	public static boolean isLeapYear(int year) {
 		return (year % 4 == 0 && year % 100 !=0) || (year % 400 == 0);
 	}
-	
+
 	public static boolean isValidMonth(int month) {
 		return month >= 0 && month <= 12;
 	}
-	
+
 	public static boolean isValidYear(int year) {
 		return year >= 0;
 	}
-	
+
 	/**
 	 * 
 	 * @param month
@@ -90,7 +90,7 @@ public class Utility {
 			return -1; // invalid
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param day
@@ -105,17 +105,17 @@ public class Utility {
 			dateString += "0";
 		}
 		dateString += (month + "/");
-		
+
 		if (day < 10) {
 			dateString += "0";
 		}
 		dateString += (day + " 00:00:00");
-		
+
 		try {
 			Date dateObject = dateFormat.parse(dateString);
 			dateFormat.applyPattern("EE");
 			String dayText = dateFormat.format(dateObject);
-			
+
 			switch (dayText) {
 			case "Sun":
 				return 0;
@@ -138,7 +138,7 @@ public class Utility {
 			return -1;
 		}
 	}
-	
+
 	public static String arrayToString(String[] array) {
 		StringBuilder output = new StringBuilder();
 		for (int i = 0; i < array.length; i++) {
@@ -147,10 +147,10 @@ public class Utility {
 				output.append(ONE_SPACE);
 			}
 		}
-		
+
 		return output.toString();
 	}
-	
+
 	public static String[] stringToArray(String string) {
 		return string.split(SPACE_SEPARATOR);
 	}
@@ -165,38 +165,40 @@ public class Utility {
 		if (command.indexOf(";") != -1) {
 			return new SeqCommand(command);
 		}
-		
+
 		return new CallCommand(command);
 	}
-	
+
 	//Implement merge sort
 	public static <T extends Comparable<T>> void sort (T[] values) {
-		mergeSort(values, 0, values.length/2);
+		mergeSort(values, 0, values.length-1);
 	}
-	
-	public static <T extends Comparable<T>> void mergeSort (T[] values, int left, int right) {
+
+	private static <T extends Comparable<T>> void mergeSort (T[] values, int left, int right) {
+		if (left==right) {
+			return;
+		}
 		int middle = (left+right)/2;
-		
+
 		//Recursively dividing
 		mergeSort(values, left, middle);
 		mergeSort(values, middle+1, right);
-		
 		//Merge partitions
 		merge(values, left, middle, right);
 	}
-	
-	public static <T extends Comparable<T>> void merge (T[] values, int left, int middle, int right) {
+
+	private static <T extends Comparable<T>> void merge (T[] values, int left, int middle, int right) {
 		int stepCount = right-left+1;
-		
+
 		int leftStep = left;
 		T leftVal = null;
-		
+
 		int rightStep = middle+1;
 		T rightVal = null;
-		
+
 		//Initialize tempArr with T objects of values' size
-		ArrayList<T> tempList = new ArrayList<T>(Collections.nCopies(stepCount, values[0]));
-		
+		//ArrayList<T> tempList = new ArrayList<T>(Collections.nCopies(stepCount, values[0]));
+		ArrayList<T> tempList = new ArrayList<T>();
 		//Merge the 2 lists' items iteratively
 		for (int i = 0; i<stepCount; i++){
 			if (leftStep <= middle &&rightStep <= right) {
@@ -205,28 +207,28 @@ public class Utility {
 			}
 			//If 1 of the 2 lists is already exhausted, add the remaining sorted items to list
 			else {
-				if (leftStep == middle) {
+				if (leftStep == middle+1) {
 					for (int j = rightStep; j<stepCount; j++) {
 						rightVal = values[j];
-						tempList.set(j, rightVal);
+						tempList.add(rightVal);
 					}
 				}
 				else {
 					for (int j = leftStep; j<=middle; j++) {
 						leftVal = values[j];
-						tempList.set(j, leftVal);
+						tempList.add(leftVal);
 					}
 				}
 				break;
 			}
-			
+
 			//Add the smaller value to tempList
 			if(compare(leftVal, rightVal)<=0) {
-				tempList.set(i, leftVal);
+				tempList.add(leftVal);
 				leftStep++;
 			}
 			else {
-				tempList.set(i, rightVal);
+				tempList.add(rightVal);
 				rightStep++;
 			}
 		}
@@ -234,10 +236,10 @@ public class Utility {
 			values[left + i] = tempList.get(i);
 		}
 	}
-	
+
 	//Compare 2 T objects as define in object comparator
 	public static <T extends Comparable<T>> int compare(T first, T second) {
 		return first.compareTo(second);
 	}
-	
+
 }

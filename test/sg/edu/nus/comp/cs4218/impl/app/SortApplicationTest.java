@@ -1,0 +1,207 @@
+package sg.edu.nus.comp.cs4218.impl.app;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class SortApplicationTest {
+
+	@Test
+	public void testSortStringsSimple() {
+		String expectedOutput = "apple"+System.lineSeparator()
+		+"beetroot"+System.lineSeparator()
+		+"carrot";
+		String toSort = "carrot"+System.lineSeparator()
+		+"apple"+System.lineSeparator()
+		+"beetroot";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortStringsSimple(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortStringsCapital() {
+		String expectedOutput = "Apple"+System.lineSeparator()
+		+"Beetroot"+System.lineSeparator()
+		+"Carrot";
+		String toSort = "Carrot"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"Beetroot";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortStringsCapital(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortNumbers() {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"2"+System.lineSeparator()
+		+"12";
+		String toSort = "2"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"12";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortNumbers(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortSpecialChars() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"-"+System.lineSeparator()
+		+"/";
+		String toSort = "-"+System.lineSeparator()
+		+"/"+System.lineSeparator()
+		+"+";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortSpecialChars(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortSimpleCapital() {
+		String expectedOutput = "Beetroot"+System.lineSeparator()
+		+"apple"+System.lineSeparator()
+		+"carrot";
+		String toSort = "apple"+System.lineSeparator()
+		+"Beetroot"+System.lineSeparator()
+		+"carrot";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortSimpleCapital(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortSimpleNumbers() {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"apple"+System.lineSeparator()
+		+"beetroot";
+		String toSort = "beetroot"+System.lineSeparator()
+		+"apple"+System.lineSeparator()
+		+"1";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortSimpleNumbers(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortSimpleSpecialChars() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"apple"+System.lineSeparator()
+		+"beetroot";
+		String toSort = "beetroot"+System.lineSeparator()
+		+"apple"+System.lineSeparator()
+		+"+";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortSimpleSpecialChars(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortCapitalNumbers() {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"Beetroot";
+		String toSort = "Beetroot"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"Apple";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortCapitalNumbers(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortCapitalSpecialChars() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"Beetroot";
+		String toSort = "Apple"+System.lineSeparator()
+		+"Beetroot"+System.lineSeparator()
+		+"+";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortCapitalSpecialChars(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortNumbersSpecialChars() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"2";
+		String toSort = "2"+System.lineSeparator()
+		+"+"+System.lineSeparator()
+		+"1";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortNumbersSpecialChars(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortSimpleCapitalNumbers() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"Apple";
+		String toSort = "Apple"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"+";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortSimpleCapitalNumber(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortSimpleCapitalSpecialChars() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"beetroot";
+		String toSort = "beetroot"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"+";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortSimpleCapitalSpecialChars(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortSimpleNumbersSpecialChars() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"apple";
+		String toSort = "apple"+System.lineSeparator()
+		+"+"+System.lineSeparator()
+		+"1";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortSimpleNumbersSpecialChars(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortCapitalNumbersSpecialChars() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"Apple";
+		String toSort = "Apple"+System.lineSeparator()
+		+"+"+System.lineSeparator()
+		+"1";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortCapitalNumbersSpecialChars(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test
+	public void testSortAll() {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"beetroot";
+		String toSort = "beetroot"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"+";
+		SortApplication sortApp = new SortApplication();
+		String output = sortApp.sortAll(toSort);
+		assertEquals(expectedOutput, output);
+	}
+	
+
+}
