@@ -3,10 +3,12 @@ package sg.edu.nus.comp.cs4218;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
+import sg.edu.nus.comp.cs4218.impl.token.*;
+import sg.edu.nus.comp.cs4218.Constants.Common;
+
 
 public class Utility {	
 	public static final String SPACE_SEPARATOR = "\\s+";
@@ -240,6 +242,48 @@ public class Utility {
 	//Compare 2 T objects as define in object comparator
 	public static <T extends Comparable<T>> int compare(T first, T second) {
 		return first.compareTo(second);
+	}
+	
+	public static AbstractToken generateToken(String parent, int begin) {
+		Character firstChar = parent.charAt(begin);
+		AbstractToken.TokenType type = AbstractToken.getType(firstChar);
+		
+		switch (type) {
+		case SPACES:
+			return new SpaceToken(parent, begin);
+		case SEMICOLON:
+			return new SemicolonToken(parent, begin);
+		case INPUT:
+			return new InputStreamToken(parent, begin);
+		case OUTPUT:
+			return new OutputStreamToken(parent, begin);
+		case SINGLE_QUOTES:
+			return new SingleQuoteToken(parent, begin);
+		case DOUBLE_QUOTES:
+			return new DoubleQuoteToken(parent, begin);
+		case BACK_QUOTES:
+			return new BackQuoteToken(parent, begin);
+		case NORMAL:
+			return new NormalToken(parent, begin);
+		default:
+			return null;
+		}		
+	}
+	
+	public static boolean isInStream(Character character) {
+		return character == Common.IN_STREAM;
+	}
+	
+	public static boolean isOutStream(Character character) {
+		return character == Common.OUT_STREAM;
+	}
+	
+	public static boolean isQuote(Character character) {
+		return character.equals(Common.SINGLE_QUOTE) || character.equals(Common.DOUBLE_QUOTE) || character.equals(Common.BACK_QUOTE);
+ 	}
+	
+	public static boolean isNormalCharacter(Character character) {
+		return !isQuote(character) && !Common.SPECIALS.contains(character) && !character.equals(Common.WHITE_SPACE);
 	}
 
 }

@@ -18,6 +18,7 @@ public class CalApplication implements Cal {
 		if (stdout == null) {
 			throw new CalException(Constants.CalMessage.STDOUT_IS_NULL);
 		}
+		
 		if (args == null) {
 			throw new CalException(Constants.CalMessage.INVALID_ARGS);
 		}

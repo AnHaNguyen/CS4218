@@ -2,6 +2,7 @@ package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +22,7 @@ import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
 import sg.edu.nus.comp.cs4218.impl.app.PwdApplication;
 import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
 import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
+import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -33,7 +35,7 @@ import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
  * </p>
  */
 
-public class ShellImplemtation implements Shell {
+public class ShellImplementation implements Shell {
 
 	public static final String EXP_INVALID_APP = "Invalid app.";
 	public static final String EXP_SYNTAX = "Invalid syntax encountered.";
@@ -81,7 +83,7 @@ public class ShellImplemtation implements Shell {
 				// process back quote
 				// System.out.println("backquote" + bqStr);
 				OutputStream bqOutputStream = new ByteArrayOutputStream();
-				ShellImplemtation shell = new ShellImplemtation();
+				ShellImplementation shell = new ShellImplementation();
 				//shell.parseAndEvaluate(bqStr, bqOutputStream);
 
 				ByteArrayOutputStream outByte = (ByteArrayOutputStream) bqOutputStream;
@@ -277,6 +279,13 @@ public class ShellImplemtation implements Shell {
 		return new ByteArrayInputStream(
 				((ByteArrayOutputStream) outputStream).toByteArray());
 	}
+	
+	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException {
+		String trimmed = cmdLine.trim();
+		List<AbstractToken> tokens = Parser.tokenize(trimmed);
+		
+		return null;
+	}
 
 	/**
 	 * Main method for the Shell Interpreter program.
@@ -288,7 +297,7 @@ public class ShellImplemtation implements Shell {
 	 */
 
 	public static void main(String... args) throws AbstractApplicationException, ShellException {
-		ShellImplemtation shell = new ShellImplemtation();
+		ShellImplementation shell = new ShellImplementation();
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(
 				System.in));
 		String readLine = null;
@@ -309,6 +318,10 @@ public class ShellImplemtation implements Shell {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			
+			List<AbstractToken> tokens = Parser.tokenize(readLine);
+			//System.out.println(Arrays.toString(tokens.toArray()));
+			System.out.println(Arrays.toString(tokens.toArray()));
 			
 			//handle simple case of 1 command
 			Command cmd = Utility.getCommandFromString(readLine);
