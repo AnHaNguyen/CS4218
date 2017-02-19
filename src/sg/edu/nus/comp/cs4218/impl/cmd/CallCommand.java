@@ -18,7 +18,7 @@ import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.ShellImplemtation;
+import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
 
 /**
  * A Call Command is a sub-command consisting of at least one non-keyword and
@@ -94,23 +94,23 @@ public class CallCommand implements Command {
 		InputStream inputStream;
 		OutputStream outputStream;
 
-		argsArray = ShellImplemtation.processBQ(argsArray);
+		argsArray = ShellImplementation.processBQ(argsArray);
 		argsArray = expandGlob();		//handle globbing
 		
 		if (("").equals(inputStreamS)) {// empty
 			inputStream = stdin;
 		} else { // not empty
-			inputStream = ShellImplemtation.openInputRedir(inputStreamS);
+			inputStream = ShellImplementation.openInputRedir(inputStreamS);
 		}
 		if (("").equals(outputStreamS)) { // empty
 			outputStream = stdout;
 		} else {
-			outputStream = ShellImplemtation.openOutputRedir(outputStreamS);
+			outputStream = ShellImplementation.openOutputRedir(outputStreamS);
 		}
 
-		ShellImplemtation.runApp(app, argsArray, inputStream, outputStream);
-		ShellImplemtation.closeInputStream(inputStream);
-		ShellImplemtation.closeOutputStream(outputStream);
+		ShellImplementation.runApp(app, argsArray, inputStream, outputStream);
+		ShellImplementation.closeInputStream(inputStream);
+		ShellImplementation.closeOutputStream(outputStream);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class CallCommand implements Command {
 			this.app = cmdVector.get(0);
 			error = true;
 			if (("").equals(errorMsg)) {
-				errorMsg = ShellImplemtation.EXP_SYNTAX;
+				errorMsg = ShellImplementation.EXP_SYNTAX;
 			}
 			throw new ShellException(errorMsg);
 		}
@@ -165,7 +165,7 @@ public class CallCommand implements Command {
 			if (!("").equals(inputStreamS)
 					&& inputStreamS.equals(outputStreamS)) {
 				error = true;
-				errorMsg = ShellImplemtation.EXP_SAME_REDIR;
+				errorMsg = ShellImplementation.EXP_SAME_REDIR;
 				throw new ShellException(errorMsg);
 			}
 			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1,
@@ -232,7 +232,7 @@ public class CallCommand implements Command {
 					newStartIdx = newEndIdx + matcher.start();
 					if (newStartIdx != newEndIdx) {
 						error = true;
-						errorMsg = ShellImplemtation.EXP_SYNTAX;
+						errorMsg = ShellImplementation.EXP_SYNTAX;
 						throw new ShellException(errorMsg);
 					} // check if there's any invalid token not detected
 					cmdVector.add(matchedStr);
