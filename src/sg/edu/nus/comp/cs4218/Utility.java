@@ -8,6 +8,7 @@ import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
 import sg.edu.nus.comp.cs4218.impl.token.*;
 import sg.edu.nus.comp.cs4218.Constants.Common;
+import sg.edu.nus.comp.cs4218.exception.ShellException;
 
 
 public class Utility {	
@@ -161,14 +162,19 @@ public class Utility {
 	 * function to create Command from the respective String
 	 * @param command
 	 * @return command as type Command
+	 * @throws ShellException 
 	 */
-	public static Command getCommandFromString(String command) {
+	public static Command getCommandFromString(String command) throws ShellException {
 		command = command.trim();
 		if (command.indexOf(";") != -1) {
 			return new SeqCommand(command);
 		}
 
-		return new CallCommand(command);
+		try {
+			return new CallCommand(command);
+		} catch (Exception e) {
+			throw new ShellException(e.toString());
+		} 
 	}
 
 	//Implement merge sort
@@ -269,7 +275,7 @@ public class Utility {
 			return null;
 		}		
 	}
-	
+
 	public static boolean isInStream(Character character) {
 		return character == Common.IN_STREAM;
 	}

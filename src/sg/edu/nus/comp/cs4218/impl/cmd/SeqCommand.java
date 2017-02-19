@@ -10,6 +10,9 @@ import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
+import sg.edu.nus.comp.cs4218.impl.Parser;
+import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
+import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
 
 public class SeqCommand implements Command {
 	private List<String> commandList;
@@ -26,22 +29,33 @@ public class SeqCommand implements Command {
 	
 	public SeqCommand(String command) {
 		this.inputCommand = command;
-		this.commandList = new ArrayList<String>();
-		String[] splits = splitCommand();
-		for (int i = 0; i < splits.length; i++) {
-			commandList.add(splits[i].trim());
-		}
+		this.commandList = splitCommand();
 	}
 	
-	private String[] splitCommand() {
-		return inputCommand.split(";");
+	private List<String> splitCommand() {
+		String curCmd = "";
+		List<String> cmds = new ArrayList<String>();
+		List<AbstractToken> tokens = Parser.tokenize(inputCommand);
+		for (AbstractToken token : tokens) {
+			if (token.getType() == TokenType.SEMICOLON) {	//semicolon will split commands
+				if (!curCmd.trim().equals("")) {
+					cmds.add(curCmd.trim());
+					curCmd = "";
+				}
+			} else {
+				curCmd += " " + token.toString();
+			}
+		}
+		if (!curCmd.trim().equals("")) {
+			cmds.add(curCmd.trim());
+		}
+		return cmds;
 	}
 	
 	@Override
 	public void evaluate(InputStream stdin, OutputStream stdout) throws AbstractApplicationException, ShellException {
 		for (int i = 0; i < commandList.size(); i++) {
 			Command command = Utility.getCommandFromString(commandList.get(i));
-			System.out.println(command.toString());
 			command.evaluate(stdin ,stdout);
 		}
 	}

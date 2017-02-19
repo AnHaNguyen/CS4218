@@ -1,7 +1,9 @@
 package sg.edu.nus.comp.cs4218.impl.cmd;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,16 +11,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
-import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
+import sg.edu.nus.comp.cs4218.impl.Parser;
 import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
+import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
+import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
 
 /**
  * A Call Command is a sub-command consisting of at least one non-keyword and
@@ -41,30 +43,24 @@ public class CallCommand implements Command {
 
 	String app;
 	String cmdline, inputStreamS, outputStreamS;
-	String[] argsArray;
-	Boolean error;
-	String errorMsg;
+	String processedCommand;
+	List<String> cmdTokens;
 	
-	public static void main(String[] args) throws AbstractApplicationException, ShellException {
+	public static void main(String[] args) throws AbstractApplicationException, ShellException, IOException {
 		Scanner sc = new Scanner(System.in);
-		while (true) {
-			String cmd = sc.nextLine();
-			CallCommand cc = new CallCommand(cmd);
-			cc.evaluate(System.in, System.out);
-		//	System.out.println(cc.toString());
-		}
+		String cmd = sc.nextLine();
+		CallCommand cc = new CallCommand(cmd);
+		cc.evaluate(System.in, System.out);
+		sc.close();
 	}
 	
-	public CallCommand(String cmdline) {
-		this.cmdline = cmdline.trim();
-		app = inputStreamS = outputStreamS = "";
-		error = false;
-		errorMsg = "";
-		argsArray = new String[0];
-	}
-
-	public CallCommand() {
-		this("");
+	public CallCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
+		this.app = "";
+		this.cmdline = cmdLine.trim();
+		this.processedCommand = processBackquotes(cmdline);
+		this.cmdTokens = splitArguments(processedCommand);
+		this.inputStreamS = extractInputRedir(cmdTokens);
+		this.outputStreamS = extractOutputRedir(cmdTokens);
 	}
 
 	/**
@@ -84,165 +80,28 @@ public class CallCommand implements Command {
 	@Override
 	public void evaluate(InputStream stdin, OutputStream stdout)
 			throws AbstractApplicationException, ShellException {
-		this.parse();
-		//process parse (argument split) before glob
-		
-		if (error) {
-			throw new ShellException(errorMsg);
+		if (cmdTokens.isEmpty()) {
+			return;
 		}
-
-		InputStream inputStream;
-		OutputStream outputStream;
-
-		argsArray = ShellImplementation.processBQ(argsArray);
-		argsArray = expandGlob();		//handle globbing
-		
-		if (("").equals(inputStreamS)) {// empty
+		//expand Glob after processing quote and input/output streams
+		cmdTokens = expandGlob();
+		InputStream inputStream = getInputStream();
+		if (inputStream == null) {
 			inputStream = stdin;
-		} else { // not empty
-			inputStream = ShellImplementation.openInputRedir(inputStreamS);
 		}
-		if (("").equals(outputStreamS)) { // empty
+		OutputStream outputStream = getOutputStream();
+		if (outputStream == null) {
 			outputStream = stdout;
-		} else {
-			outputStream = ShellImplementation.openOutputRedir(outputStreamS);
 		}
+		
+		List<String> argsList = findArguments();
+		app = argsList.remove(0);
+		
+		String[] args = argsList.toArray(new String[argsList.size()]);
 
-		ShellImplementation.runApp(app, argsArray, inputStream, outputStream);
-		ShellImplementation.closeInputStream(inputStream);
-		ShellImplementation.closeOutputStream(outputStream);
+		ShellImplementation.runApp(app,args, inputStream, outputStream);
 	}
-
-	/**
-	 * Parses and splits the sub-command to the call command into its different
-	 * components, namely the application name, the arguments (if any), the
-	 * input redirection file path (if any) and output redirection file path (if
-	 * any).
-	 * 
-	 * @throws ShellException
-	 *             If an exception happens while parsing the sub-command, or if
-	 *             the input redirection file path is same as that of the output
-	 *             redirection file path.
-	 */
-	public void parse() throws ShellException {
-		Vector<String> cmdVector = new Vector<String>();
-		Boolean result = true;
-		int endIdx = 0;
-		String str = " " + cmdline + " ";
-		try {
-			endIdx = extractArgs(str, cmdVector);
-			cmdVector.add(""); // reserved for input redir
-			cmdVector.add(""); // reserved for output redir
-			endIdx = extractInputRedir(str, cmdVector, endIdx);
-			endIdx = extractOutputRedir(str, cmdVector, endIdx);
-			// System.out.println(cmdVector.toString());
-		} catch (ShellException e) {
-			result = false;
-		}
-		if (str.substring(endIdx).trim().isEmpty()) {
-			result = true;
-		} else {
-			result = false;
-		}
-		if (!result) {
-			this.app = cmdVector.get(0);
-			error = true;
-			if (("").equals(errorMsg)) {
-				errorMsg = ShellImplementation.EXP_SYNTAX;
-			}
-			throw new ShellException(errorMsg);
-		}
-
-		String[] cmdTokensArray = cmdVector
-				.toArray(new String[cmdVector.size()]);
-		this.app = cmdTokensArray[0];
-		int nTokens = cmdTokensArray.length;
-
-		// process inputRedir and/or outputRedir
-		if (nTokens >= 3) { // last 2 for inputRedir & >outputRedir
-			this.inputStreamS = cmdTokensArray[nTokens - 2].trim();
-			this.outputStreamS = cmdTokensArray[nTokens - 1].trim();
-			if (!("").equals(inputStreamS)
-					&& inputStreamS.equals(outputStreamS)) {
-				error = true;
-				errorMsg = ShellImplementation.EXP_SAME_REDIR;
-				throw new ShellException(errorMsg);
-			}
-			this.argsArray = Arrays.copyOfRange(cmdTokensArray, 1,
-					cmdTokensArray.length - 2);
-		} else {
-			this.argsArray = new String[0];
-		}
-	}
-
-	/**
-	 * Parses the sub-command's arguments to the call command and splits it into
-	 * its different components, namely the application name and the arguments
-	 * (if any), based on rules: Unquoted: any char except for whitespace
-	 * characters, quotes, newlines, semicolons �;�, �|�, �<� and �>�. Double
-	 * quoted: any char except \n, ", ` Single quoted: any char except \n, '
-	 * Back quotes in Double Quote for command substitution: DQ rules for
-	 * outside BQ + `anything but \n` in BQ.
-	 * 
-	 * @param str
-	 *            String of command to split.
-	 * @param cmdVector
-	 *            Vector of String to store the split arguments into.
-	 * 
-	 * @return endIdx Index of string where the parsing of arguments stopped
-	 *         (due to no more matches).
-	 * 
-	 * @throws ShellException
-	 *             If an error in the syntax of the command is detected while
-	 *             parsing.
-	 */
-	int extractArgs(String str, Vector<String> cmdVector) throws ShellException {
-		String patternDash = "[\\s]+(-[A-Za-z]*)[\\s]";
-		String patternUQ = "[\\s]+([^\\s\"'`\\n;|<>]*)[\\s]";
-		String patternDQ = "[\\s]+\"([^\\n\"`]*)\"[\\s]";
-		String patternSQ = "[\\s]+\'([^\\n']*)\'[\\s]";
-		String patternBQ = "[\\s]+(`[^\\n`]*`)[\\s]";
-		String patternBQinDQ = "[\\s]+\"([^\\n\"`]*`[^\\n]*`[^\\n\"`]*)\"[\\s]";
-		String[] patterns = { patternDash, patternUQ, patternDQ, patternSQ,
-				patternBQ, patternBQinDQ };
-		String substring;
-		int newStartIdx = 0, smallestStartIdx, smallestPattIdx, newEndIdx = 0;
-		do {
-			substring = str.substring(newEndIdx);
-			smallestStartIdx = -1;
-			smallestPattIdx = -1;
-			if (substring.trim().startsWith("<")
-					|| substring.trim().startsWith(">")) {
-				break;
-			}
-			for (int i = 0; i < patterns.length; i++) {
-				Pattern pattern = Pattern.compile(patterns[i]);
-				Matcher matcher = pattern.matcher(substring);
-				if (matcher.find()
-						&& (matcher.start() < smallestStartIdx || smallestStartIdx == -1)) {
-					smallestPattIdx = i;
-					smallestStartIdx = matcher.start();
-				}
-			}
-			if (smallestPattIdx != -1) { // if a pattern is found
-				Pattern pattern = Pattern.compile(patterns[smallestPattIdx]);
-				Matcher matcher = pattern.matcher(str.substring(newEndIdx));
-				if (matcher.find()) {
-					String matchedStr = matcher.group(1);
-					newStartIdx = newEndIdx + matcher.start();
-					if (newStartIdx != newEndIdx) {
-						error = true;
-						errorMsg = ShellImplementation.EXP_SYNTAX;
-						throw new ShellException(errorMsg);
-					} // check if there's any invalid token not detected
-					cmdVector.add(matchedStr);
-					newEndIdx = newEndIdx + matcher.end() - 1;
-				}
-			}
-		} while (smallestPattIdx != -1);
-		return newEndIdx;
-	}
-
+	
 	/**
 	 * Extraction of input redirection from cmdLine with two slots at end of
 	 * cmdVector reserved for <inputredir and >outredir. For valid inputs,
@@ -263,40 +122,32 @@ public class CallCommand implements Command {
 	 *             When more than one input redirection string is found, or when
 	 *             invalid syntax is encountered..
 	 */
-	int extractInputRedir(String str, Vector<String> cmdVector, int endIdx)
+	private String extractInputRedir(List<String> tokens)
 			throws ShellException {
-		String substring = str.substring(endIdx);
-		String strTrm = substring.trim();
-		if (strTrm.startsWith(">") || strTrm.isEmpty()) {
-			return endIdx;
-		}
-		if (!strTrm.startsWith("<")) {
-			throw new ShellException(EXP_SYNTAX);
-		}
-
-		int newEndIdx = endIdx;
-		Pattern inputRedirP = Pattern
-				.compile("[\\s]+<[\\s]+(([^\\n\"`'<>]*))[\\s]");
-		Matcher inputRedirM;
-		String inputRedirS = "";
-		int cmdVectorIndex = cmdVector.size() - 2;
-
-		while (!substring.trim().isEmpty()) {
-			inputRedirM = inputRedirP.matcher(substring);
-			inputRedirS = "";
-			if (inputRedirM.find()) {
-				if (!cmdVector.get(cmdVectorIndex).isEmpty()) {
-					throw new ShellException(EXP_SYNTAX);
+		String result = null;
+		for (int i = 0; i < tokens.size(); i++) {
+			String token = tokens.get(i);
+			if (token.equals("<")) {
+				if (result != null) {
+					throw new ShellException("Too many input tokens");
+				} 
+				
+				if (i == tokens.size() - 1){
+						//|| Parser.isSpecialCharacter(tokens.get(currentIndex))) {
+					throw new ShellException("Invalid input");
 				}
-				inputRedirS = inputRedirM.group(1);
-				cmdVector.set(cmdVectorIndex, inputRedirS);
-				newEndIdx = newEndIdx + inputRedirM.end() - 1;
-			} else {
-				break;
+				result = tokens.get(i+1);
+				i=i+2;
+				if (i < tokens.size()) {
+					String next = tokens.get(i);
+					List<AbstractToken> subToken = Parser.tokenize(next);
+					if (subToken.get(0).getType() == TokenType.NORMAL) {
+						throw new ShellException("Too many inputs for IO redirection");
+					}
+				}
 			}
-			substring = str.substring(newEndIdx);
 		}
-		return newEndIdx;
+		return result;
 	}
 
 	/**
@@ -319,46 +170,62 @@ public class CallCommand implements Command {
 	 *             When more than one input redirection string is found, or when
 	 *             invalid syntax is encountered..
 	 */
-	int extractOutputRedir(String str, Vector<String> cmdVector, int endIdx)
+	private String extractOutputRedir(List<String> tokens)
 			throws ShellException {
-		String substring = str.substring(endIdx);
-		String strTrm = substring.trim();
-		if (strTrm.isEmpty()) {
-			return endIdx;
-		}
-		if (!strTrm.startsWith(">")) {
-			throw new ShellException(EXP_SYNTAX);
-		}
-
-		int newEndIdx = endIdx;
-		Pattern inputRedirP = Pattern
-				.compile("[\\s]+>[\\s]+(([^\\n\"`'<>]*))[\\s]");
-		Matcher inputRedirM;
-		String inputRedirS = "";
-		int cmdVectorIdx = cmdVector.size() - 1;
-		while (!substring.trim().isEmpty()) {
-
-			inputRedirM = inputRedirP.matcher(substring);
-			inputRedirS = "";
-			if (inputRedirM.find()) {
-				if (!cmdVector.get(cmdVectorIdx).isEmpty()) {
-					throw new ShellException(EXP_SYNTAX);
+		String result = null;
+		for (int i = 0; i < tokens.size(); i++) {
+			String token = tokens.get(i);
+			if (token.equals(">")) {
+				if (result != null) {
+					throw new ShellException("Too many outputs");
 				}
-				inputRedirS = inputRedirM.group(1);
-				cmdVector.set(cmdVectorIdx, inputRedirS);
-				newEndIdx = newEndIdx + inputRedirM.end() - 1;
-			} else {
-				break;
+				if (i == tokens.size() -1){
+						//|| Parser.isSpecialCharacter(tokens.get(currentIndex))) {
+					throw new ShellException("Invalid output");
+				}
+				result = tokens.get(i+1);
+				i = i+2;
+				if (i < tokens.size()) {
+					String next = tokens.get(i);
+					List<AbstractToken> subToken = Parser.tokenize(next);
+					if (subToken.get(0).getType() == TokenType.NORMAL) {
+						throw new ShellException("Too many inputs for IO redirection");
+					}
+				}
 			}
-			substring = str.substring(newEndIdx);
 		}
-		return newEndIdx;
+		return result;
 	}
 	
-	private String[] expandGlob() {		//assume * is not in any quotation
+	public InputStream getInputStream() throws ShellException {
+		if (inputStreamS == null) {
+			return null;
+		} else {
+			try {
+				return new FileInputStream(new File(inputStreamS));
+			} catch (FileNotFoundException e) {
+				throw new ShellException(e.toString());
+			} 
+		}
+	}
+
+	public OutputStream getOutputStream() throws ShellException {
+		if (outputStreamS == null) {
+			return null;
+		} else {
+			try {
+				return new FileOutputStream(new File(outputStreamS));
+			} catch (FileNotFoundException e) {
+				throw new ShellException(e.toString());
+			}	
+		}
+	}
+	
+
+	private List<String> expandGlob() {		//assume * is not in any quotation
 		List<String> expandedArgs = new ArrayList<String>();
-		for (int i = 0; i < argsArray.length; i++) {
-			String arg = argsArray[i].trim();
+		for (int i = 0; i < cmdTokens.size(); i++) {
+			String arg = cmdTokens.get(i).trim();
 			if (arg.indexOf("*") != -1) {
 				try {
 					expandedArgs.addAll(expandPath(arg));
@@ -369,7 +236,7 @@ public class CallCommand implements Command {
 				expandedArgs.add(arg);
 			}
 		}
-		return expandedArgs.toArray(new String[expandedArgs.size()]);
+		return expandedArgs;
 	}
 	
 	/**
@@ -388,9 +255,7 @@ public class CallCommand implements Command {
 	private List<String> expandPath(String curPath) throws IOException {
 		List<String> expanded = new ArrayList<String>();
 		expanded.add(curPath);
-		//TODO : check whether / or File.separator
 		int lastFileSepIndex = curPath.lastIndexOf("/");
-//		System.out.println(lastFileSepIndex);
 		int firstAsteriskIndex = curPath.indexOf("*");
 		
 		if (firstAsteriskIndex < lastFileSepIndex && lastFileSepIndex != -1) {
@@ -441,6 +306,126 @@ public class CallCommand implements Command {
 
 	}
 	
+	/**
+	 * Substitute each back quote token with the corresponding result from
+	 * command substitution if necessary.
+	 * 
+	 * @param cmdLine
+	 *            original command line
+	 * @return command line after command substitution.
+	 */
+	public static String processBackquotes(String cmdLine)
+			throws ShellException, AbstractApplicationException {
+		List<AbstractToken> tokens = Parser.tokenize(cmdLine);
+		for (AbstractToken token : tokens) {
+			token.checkValid();
+		}
+		String result = "";
+		for (AbstractToken token : tokens) {
+			TokenType type = token.getType();
+			String val = token.value();
+			if (type == TokenType.BACK_QUOTES) {
+				// Split the strings inside into multiple args
+				List<String> strList = splitBySpaces(val);
+				if (!strList.isEmpty()) {
+					result += strList.get(0);
+					for (int i = 1; i < strList.size(); i++) {
+						result += " " + strList.get(i);
+					}
+				}
+			} else {
+				result += val;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Split the command line into arguments/tokens. Also remove quotes from
+	 * quote tokens.
+	 * 
+	 * @param input
+	 *            the command line after command substitution
+	 * @return A list of substituted tokens.
+	 */
+	public static List<String> splitArguments(String input)
+			throws AbstractApplicationException, ShellException, IOException {
+		List<AbstractToken> tokens = Parser.tokenize(input);
+		for (AbstractToken token : tokens) {
+			token.checkValid();
+		}
+		String current = null;
+		List<String> list = new ArrayList<String>();
+		for (AbstractToken token : tokens) {
+			TokenType type = token.getType();
+			String val = token.value();
+			if (type == TokenType.SPACES) {
+				addNonNull(list, current);
+				current = null;
+			} else if (type == TokenType.INPUT || type == TokenType.OUTPUT) {
+				addNonNull(list, current);
+				current = null;
+				list.add(val);
+			} else {
+				if (type == TokenType.SINGLE_QUOTES
+						|| type == TokenType.DOUBLE_QUOTES) {
+					val = val.substring(1, val.length() - 1);
+				}
+				current = current == null ? val : current + val;
+			}
+		}
+		addNonNull(list, current);
+		return list;
+	}
+	
+	/**
+	 * Takes a string input and trims the string
+	 * 
+	 * @param String
+	 *            to trim
+	 * @return List of split strings
+	 */
+	private static List<String> splitBySpaces(String input) {
+		String str = input.replaceAll("\\s+", " ").trim();
+		return Arrays.asList(str.split("\\s"));
+	}
+
+	/**
+	 * Adds non null string to list
+	 * 
+	 * @param list
+	 *            of strings
+	 * @param non
+	 *            null str
+	 */
+	private static void addNonNull(List<String> list, String str) {
+		if (str != null) {
+			list.add(str);
+		}
+	}
+	
+	/**
+	 * Find the arguments from the command which does not include IO
+	 * redirections.
+	 * 
+	 * @return A list of string that represents arguments.
+	 */
+	public List<String> findArguments() {
+		ArrayList<String> result = new ArrayList<String>();
+		int currentIndex = 0;
+		while (currentIndex < cmdTokens.size()) {
+			String token = cmdTokens.get(currentIndex++);
+			if (token.equals("<") || token.equals(">")) {
+				// Ignore the next token (possibly file name)
+				currentIndex++;
+			} else {
+				result.add(token);
+			}
+		}
+		return result;
+	}
+	
 	@Override
 	public String toString() {
 		String s = "";
@@ -449,8 +434,8 @@ public class CallCommand implements Command {
 		s += "Input: " + inputStreamS+ System.lineSeparator();
 		s += "Output: " + outputStreamS + System.lineSeparator();
 		s += "Args: ";
-		for (int i = 0; i < argsArray.length; i++) {
-			s+= argsArray[i] + " ";
+		for (int i = 0; i < cmdTokens.size(); i++) {
+			s+= cmdTokens.get(i) + " ";
 		}
 		s += System.lineSeparator();
 		return s;
