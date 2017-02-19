@@ -16,12 +16,17 @@ public class SortApplication implements Sort {
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		String toSort = "";
 		String result = "";
-		BufferedReader br = new BufferedReader(new InputStreamReader(stdin));
+		BufferedReader br;
 		//Check case invalid args
 		if (args == null || args.length == 0) {
-			//throw new SortException(Constants.Common.NULL_ARGS);
-			toSort = readStdin(br);
-			result = sortAll(toSort);
+			if (stdin != null) {
+				br = new BufferedReader(new InputStreamReader(stdin));
+				toSort = readStdin(br);
+				result = sortAll(toSort);
+			}
+			else {
+				throw new SortException(Constants.Common.NULL_ARGS);
+			}
 		}
 		if (args.length>2) {
 			throw new SortException(Constants.Common.INVALID_NUMBER_ARGUMENTS);
@@ -36,8 +41,15 @@ public class SortApplication implements Sort {
 			}
 			//Sort from stdin with st words treated as numbers
 			else {
-				ArrayList<String> toSortList = readStdinNum(br);
-				result = sortFirstAsNum(toSort, toSortList);
+				if (stdin != null) {
+					br = new BufferedReader(new InputStreamReader(stdin));
+					ArrayList<String> toSortList = readStdinNum(br);
+					result = sortFirstAsNum(toSort, toSortList);
+				}
+				else {
+					throw new SortException(Constants.Common.NULL_ARGS);
+
+				}
 			}
 
 		}
@@ -48,6 +60,11 @@ public class SortApplication implements Sort {
 			}
 			ArrayList<String> toSortList = readFileNum(args[1]);
 			result = sortFirstAsNum(toSort, toSortList);
+		}
+		try {
+			stdout.write(result.getBytes());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		System.out.println(result);
 	}

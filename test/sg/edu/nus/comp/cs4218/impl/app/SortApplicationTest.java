@@ -2,7 +2,12 @@ package sg.edu.nus.comp.cs4218.impl.app;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 import org.junit.Test;
+
+import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 
 public class SortApplicationTest {
 
@@ -203,5 +208,74 @@ public class SortApplicationTest {
 		assertEquals(expectedOutput, output);
 	}
 	
+	@Test
+	public void testSortAllFile() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"12"+System.lineSeparator()
+		+"2";
+		String filePath = "testSort.txt";
+		String[] args = new String[] { filePath};
+		
+		ByteArrayInputStream stdin = null;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		SortApplication sortApp = new SortApplication();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
+	
+	@Test
+	public void testSortNumbersFile() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"2"+System.lineSeparator()
+		+"12";
+		String filePath = "testSort.txt";
+		String[] args = new String[] { "-n", filePath};
+		
+		ByteArrayInputStream stdin = null;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		SortApplication sortApp = new SortApplication();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
+	
+	@Test
+	public void testSortAllStdin() throws AbstractApplicationException {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"beetroot";
+		String toSort = "beetroot"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"+";
+		String[] args = new String[] { };
+
+		SortApplication sortApp = new SortApplication();
+		ByteArrayInputStream stdin = new ByteArrayInputStream(toSort.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
+	
+	@Test
+	public void testSortNumbersStdin() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"2"+System.lineSeparator()
+		+"12";
+		String toSort = "2"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"12";
+		String[] args = new String[] { "-n" };
+
+		SortApplication sortApp = new SortApplication();
+		ByteArrayInputStream stdin = new ByteArrayInputStream(toSort.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
 
 }
