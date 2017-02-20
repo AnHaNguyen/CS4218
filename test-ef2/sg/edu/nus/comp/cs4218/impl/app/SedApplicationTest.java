@@ -26,8 +26,9 @@ public class SedApplicationTest {
 		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		
-		sedApp.run(args, stdin, stdout);;
-		assertEquals(expectedOutput, stdout.toString());
+		sedApp.run(args, stdin, stdout);
+		String output = stdout.toString();
+		assertEquals(expectedOutput, output);
 	}
 	
 	@Test
@@ -41,22 +42,25 @@ public class SedApplicationTest {
 		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		
-		sedApp.run(args, stdin, stdout);;
-		assertEquals(expectedOutput, stdout.toString());
+		sedApp.run(args, stdin, stdout);
+		String output = stdout.toString();
+		assertEquals(expectedOutput, output);
 	}
 	
 	@Test
 	public void testReplaceFirstSubStringFromStdin() throws AbstractApplicationException {
 		String expectedOutput = "Microsoft beetroot carrot! Apple is love!";
 		String replacement = "s/Apple/Microsoft";
+		String input = "Apple beetroot carrot! Apple is love!";
 		String[] args = new String[] { replacement };
 		
 		SedApplication sedApp = new SedApplication();
-		ByteArrayInputStream stdin = new ByteArrayInputStream("Apple beetroot carrot! Apple is love!".getBytes());
+		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		
-		sedApp.run(args, stdin, stdout);;
-		assertEquals(expectedOutput, stdout.toString());
+		sedApp.run(args, stdin, stdout);
+		String output = stdout.toString();
+		assertEquals(expectedOutput, output);
 	}
 	
 	@Test
@@ -69,7 +73,8 @@ public class SedApplicationTest {
 		ByteArrayInputStream stdin = new ByteArrayInputStream("Apple beetroot carrot! Apple is love!".getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 		
-		sedApp.run(args, stdin, stdout);;
-		assertEquals(expectedOutput, stdout.toString());
+		sedApp.run(args, stdin, stdout);
+		String output = stdout.toString();
+		assertEquals(expectedOutput, output);
 	}
 }
