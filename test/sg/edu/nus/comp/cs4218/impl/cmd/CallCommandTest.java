@@ -58,7 +58,7 @@ public class CallCommandTest {
 			cmdLine = "cat < input.txt";
 			CallCommand cc = new CallCommand(cmdLine);
 			cc.evaluate(null, outputStream);
-			assertEquals(outputStream.toString(), content);
+			assertEquals(outputStream.toString(), content + System.lineSeparator());
 			is.close();
 		} catch (Exception e) {
 			fail();
