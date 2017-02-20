@@ -83,7 +83,11 @@ public class CallCommand implements Command {
 		if (cmdTokens.isEmpty()) {
 			return;
 		}
-		
+
+		if (inputStreamS != null && inputStreamS.equals(outputStreamS)) {
+			throw new ShellException(EXP_SAME_REDIR);
+		}
+
 		//expand Glob after processing quote and input/output streams
 		cmdTokens = expandGlob();
 		InputStream inputStream = getInputStream();
@@ -188,7 +192,7 @@ public class CallCommand implements Command {
 					String next = tokens.get(i);
 					List<AbstractToken> subToken = Parser.tokenize(next);
 					if (subToken.get(0).getType() == TokenType.NORMAL) {
-						throw new ShellException("Too many inputs for IO redirection");
+						throw new ShellException("Too many outputs for IO redirection");
 					}
 				}
 			}
