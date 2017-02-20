@@ -6,7 +6,7 @@ import java.io.IOException;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
+import sg.edu.nus.comp.cs4218.impl.cmd.CommandFactory;
 
 public class BackQuoteToken extends AbstractToken {
 	
@@ -47,7 +47,7 @@ public class BackQuoteToken extends AbstractToken {
 		// run backquote command here		
 		String cmdLine = parent.substring(begin + 1, end);
 		try {
-			Command command = ShellImplementation.getCommand(cmdLine);
+			Command command = CommandFactory.getCommand(cmdLine);
 			command.evaluate(null, byteOutStream);
 		} catch (IOException e) {
 			throw new ShellException("Error in executing backquote command");
