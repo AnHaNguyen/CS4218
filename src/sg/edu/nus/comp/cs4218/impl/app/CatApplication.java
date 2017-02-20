@@ -56,6 +56,7 @@ public class CatApplication implements Application {
 				while ((intCount = stdin.read()) != -1) {
 					stdout.write(intCount);
 				}
+				stdout.write(System.lineSeparator().getBytes());
 			} catch (Exception exIO) {
 				throw new CatException("Error reading from stdin");
 			}
