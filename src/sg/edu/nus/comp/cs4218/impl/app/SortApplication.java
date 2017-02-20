@@ -125,7 +125,7 @@ public class SortApplication implements Sort {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
 			String line = br.readLine();
-			while(line!=null){
+			while(line != null){
 				toSort.add(line);
 				line = br.readLine();
 			}

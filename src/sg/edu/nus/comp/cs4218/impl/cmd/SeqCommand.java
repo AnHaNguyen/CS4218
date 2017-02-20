@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.comp.cs4218.Command;
+import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.Parser;
 import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
@@ -26,7 +26,7 @@ public class SeqCommand implements Command {
 	private List<String> splitCommand() {
 		String curCmd = "";
 		List<String> cmds = new ArrayList<String>();
-		List<AbstractToken> tokens = Parser.tokenize(inputCommand);
+		List<AbstractToken> tokens = Utility.tokenize(inputCommand);
 		for (AbstractToken token : tokens) {
 			if (token.getType() == TokenType.SEMICOLON) {	//semicolon will split commands
 				if (!curCmd.trim().equals("")) {
@@ -52,7 +52,6 @@ public class SeqCommand implements Command {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
 
