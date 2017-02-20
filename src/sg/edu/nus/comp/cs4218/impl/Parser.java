@@ -2,6 +2,7 @@ package sg.edu.nus.comp.cs4218.impl;
 
 import java.util.List;
 import java.util.ArrayList;
+//import java.util.Arrays;
 
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
 import sg.edu.nus.comp.cs4218.Utility;
@@ -27,6 +28,7 @@ public class Parser {
 			tokens.add(currentToken);
 		}
 		
+		//System.out.println(Arrays.toString(tokens.toArray()));
 		return tokens;
 	}
 	

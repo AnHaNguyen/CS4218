@@ -22,7 +22,10 @@ import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
 import sg.edu.nus.comp.cs4218.impl.app.PwdApplication;
 import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
 import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
+import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
+import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
+import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -280,11 +283,17 @@ public class ShellImplementation implements Shell {
 				((ByteArrayOutputStream) outputStream).toByteArray());
 	}
 	
-	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException {
+	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
 		String trimmed = cmdLine.trim();
 		List<AbstractToken> tokens = Parser.tokenize(trimmed);
 		
-		return null;
+		for (AbstractToken token : tokens) {
+			if (token.getType() == TokenType.SEMICOLON) {
+				return new SeqCommand(trimmed);
+			}
+		}
+
+		return new CallCommand(trimmed);
 	}
 
 	/**

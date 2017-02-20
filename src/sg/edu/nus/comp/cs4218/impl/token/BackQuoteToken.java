@@ -1,9 +1,12 @@
 package sg.edu.nus.comp.cs4218.impl.token;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
+import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
+import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
 
 public class BackQuoteToken extends AbstractToken {
 	
@@ -39,10 +42,17 @@ public class BackQuoteToken extends AbstractToken {
 	@Override
 	public String value() throws ShellException, AbstractApplicationException {
 		checkValid();
-		
-		//String cmd = parent.substring(begin + 1, end);
-		// run backquote command here
 		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
+		
+		// run backquote command here		
+		String cmdLine = parent.substring(begin + 1, end);
+		try {
+			Command command = ShellImplementation.getCommand(cmdLine);
+			command.evaluate(null, byteOutStream);
+		} catch (IOException e) {
+			throw new ShellException("Error in executing backquote command");
+		}
+		
 		return byteOutStream.toString();
 	}
 
