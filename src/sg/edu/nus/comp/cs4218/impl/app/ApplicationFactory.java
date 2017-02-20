@@ -10,6 +10,10 @@ import sg.edu.nus.comp.cs4218.exception.ShellException;
 public class ApplicationFactory {
 	public static final String EXP_INVALID_APP = "Invalid app.";
 	
+	public ApplicationFactory() {
+		
+	}
+	
 	public static void runApp(String app, String[] argsArray,
 			InputStream inputStream, OutputStream outputStream)
 			throws AbstractApplicationException, ShellException {

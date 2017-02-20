@@ -47,7 +47,7 @@ public class SeqCommand implements Command {
 	public void evaluate(InputStream stdin, OutputStream stdout) throws AbstractApplicationException, ShellException {
 		for (int i = 0; i < commandList.size(); i++) {
 			try {
-				Command command = ShellImplementation.getCommand(commandList.get(i));
+				Command command = CommandFactory.getCommand(commandList.get(i));
 				command.evaluate(stdin ,stdout);
 			} catch (IOException e) {
 				e.printStackTrace();

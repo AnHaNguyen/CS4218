@@ -4,18 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.List;
 
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
-import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
-import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
-import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
-import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
+import sg.edu.nus.comp.cs4218.impl.cmd.CommandFactory;
 
 /**
  * A Shell is a command interpreter and forms the backbone of the entire
@@ -29,19 +24,6 @@ import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
  */
 
 public class ShellImplementation implements Shell {
-	
-	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
-		String trimmed = cmdLine.trim();
-		List<AbstractToken> tokens = Utility.tokenize(trimmed);
-		
-		for (AbstractToken token : tokens) {
-			if (token.getType() == TokenType.SEMICOLON) {
-				return new SeqCommand(trimmed);
-			}
-		}
-
-		return new CallCommand(trimmed);
-	}
 
 	/**
 	 * Main method for the Shell Interpreter program.
@@ -74,7 +56,7 @@ public class ShellImplementation implements Shell {
 					continue;
 				}
 				
-				Command command = getCommand(readLine);
+				Command command = CommandFactory.getCommand(readLine);
 				command.evaluate(System.in, System.out);
 				
 			} catch (Exception e) {
