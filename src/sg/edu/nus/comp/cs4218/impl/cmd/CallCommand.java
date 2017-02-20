@@ -83,9 +83,11 @@ public class CallCommand implements Command {
 		if (cmdTokens.isEmpty()) {
 			return;
 		}
+
 		if (inputStreamS != null && inputStreamS.equals(outputStreamS)) {
 			throw new ShellException(EXP_SAME_REDIR);
 		}
+
 		//expand Glob after processing quote and input/output streams
 		cmdTokens = expandGlob();
 		InputStream inputStream = getInputStream();
@@ -101,8 +103,7 @@ public class CallCommand implements Command {
 		app = argsList.remove(0);
 		
 		String[] args = argsList.toArray(new String[argsList.size()]);
-
-		ShellImplementation.runApp(app,args, inputStream, outputStream);
+		ShellImplementation.runApp(app, args, inputStream, outputStream);
 	}
 	
 	/**
@@ -135,8 +136,7 @@ public class CallCommand implements Command {
 					throw new ShellException("Too many input tokens");
 				} 
 				
-				if (i == tokens.size() - 1){
-						//|| Parser.isSpecialCharacter(tokens.get(currentIndex))) {
+				if (i == tokens.size() - 1) {
 					throw new ShellException("Invalid input");
 				}
 				result = tokens.get(i+1);
@@ -275,7 +275,6 @@ public class CallCommand implements Command {
 			File f = new File(directory);
 			if (!f.isAbsolute()) {
 				directory = Environment.getCurrentDirectory() + File.separator +  directory;
-			//	System.out.println(directory);
 				File newPath = new File(directory);
 				if (newPath.exists()) {
 					directory = newPath.getCanonicalPath();
@@ -358,6 +357,7 @@ public class CallCommand implements Command {
 		for (AbstractToken token : tokens) {
 			token.checkValid();
 		}
+
 		String current = null;
 		List<String> list = new ArrayList<String>();
 		for (AbstractToken token : tokens) {
