@@ -1,19 +1,19 @@
 package sg.edu.nus.comp.cs4218.impl;
 
 import java.io.*;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
 
-import sg.edu.nus.comp.cs4218.Application;
+//import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
-import sg.edu.nus.comp.cs4218.Utility;
+//import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.app.CalApplication;
+/*import sg.edu.nus.comp.cs4218.impl.app.CalApplication;
 import sg.edu.nus.comp.cs4218.impl.app.CatApplication;
 import sg.edu.nus.comp.cs4218.impl.app.CdApplication;
 import sg.edu.nus.comp.cs4218.impl.app.EchoApplication;
@@ -21,7 +21,7 @@ import sg.edu.nus.comp.cs4218.impl.app.GrepApplication;
 import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
 import sg.edu.nus.comp.cs4218.impl.app.PwdApplication;
 import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
-import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
+import sg.edu.nus.comp.cs4218.impl.app.TailApplication;*/
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
 import sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
@@ -68,7 +68,7 @@ public class ShellImplementation implements Shell {
 	 *             If an exception happens while processing the content in the
 	 *             back quotes.
 	 */
-	public static String[] processBQ(String... argsArray)
+	/*public static String[] processBQ(String... argsArray)
 			throws AbstractApplicationException, ShellException {
 		// echo "this is space `echo "nbsp"`"
 		// echo "this is space `echo "nbsp"` and `echo "2nd space"`"
@@ -101,7 +101,7 @@ public class ShellImplementation implements Shell {
 			}
 		}
 		return resultArr;
-	}
+	}*/
 
 	/**
 	 * Static method to run the application as specified by the application
@@ -125,7 +125,7 @@ public class ShellImplementation implements Shell {
 	 * @throws ShellException
 	 *             If an unsupported or invalid application command is detected.
 	 */
-	public static void runApp(String app, String[] argsArray,
+	/*public static void runApp(String app, String[] argsArray,
 			InputStream inputStream, OutputStream outputStream)
 			throws AbstractApplicationException, ShellException {
 		Application absApp = null;
@@ -151,7 +151,7 @@ public class ShellImplementation implements Shell {
 			throw new ShellException(app + ": " + EXP_INVALID_APP);
 		}
 		absApp.run(argsArray, inputStream, outputStream);
-	}
+	}*/
 
 	/**
 	 * Static method to creates an inputStream based on the file name or file
@@ -165,7 +165,7 @@ public class ShellImplementation implements Shell {
 	 * @throws ShellException
 	 *             If file is not found.
 	 */
-	public static InputStream openInputRedir(String inputStreamS)
+	/*public static InputStream openInputRedir(String inputStreamS)
 			throws ShellException {
 		File inputFile = new File(inputStreamS);
 		FileInputStream fInputStream = null;
@@ -175,7 +175,7 @@ public class ShellImplementation implements Shell {
 			throw new ShellException(e.getMessage());
 		}
 		return fInputStream;
-	}
+	}*/
 
 	/**
 	 * Static method to creates an outputStream based on the file name or file
@@ -189,7 +189,7 @@ public class ShellImplementation implements Shell {
 	 * @throws ShellException
 	 *             If file destination cannot be opened or inaccessible.
 	 */
-	public static OutputStream openOutputRedir(String outputStreamS)
+	/*public static OutputStream openOutputRedir(String outputStreamS)
 			throws ShellException {
 		File outputFile = new File(outputStreamS);
 		FileOutputStream fOutputStream = null;
@@ -199,7 +199,7 @@ public class ShellImplementation implements Shell {
 			throw new ShellException(e.getMessage());
 		}
 		return fOutputStream;
-	}
+	}*/
 
 	/**
 	 * Static method to close an inputStream.
@@ -210,7 +210,7 @@ public class ShellImplementation implements Shell {
 	 * @throws ShellException
 	 *             If inputStream cannot be closed successfully.
 	 */
-	public static void closeInputStream(InputStream inputStream)
+	/*public static void closeInputStream(InputStream inputStream)
 			throws ShellException {
 		if (inputStream != System.in) {
 			try {
@@ -219,7 +219,7 @@ public class ShellImplementation implements Shell {
 				throw new ShellException(e.getMessage());
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Static method to close an outputStream. If outputStream provided is
@@ -231,7 +231,7 @@ public class ShellImplementation implements Shell {
 	 * @throws ShellException
 	 *             If outputStream cannot be closed successfully.
 	 */
-	public static void closeOutputStream(OutputStream outputStream)
+	/*public static void closeOutputStream(OutputStream outputStream)
 			throws ShellException {
 		if (outputStream != System.out) {
 			try {
@@ -240,8 +240,8 @@ public class ShellImplementation implements Shell {
 				throw new ShellException(e.getMessage());
 			}
 		}
-	}
-
+	}*/
+	
 	/**
 	 * Static method to write output of an outputStream to another outputStream,
 	 * usually System.out.
@@ -253,7 +253,7 @@ public class ShellImplementation implements Shell {
 	 * @throws ShellException
 	 *             If exception is thrown during writing.
 	 */
-	public static void writeToStdout(OutputStream outputStream,
+	/*public static void writeToStdout(OutputStream outputStream,
 			OutputStream stdout) throws ShellException {
 		if (outputStream instanceof FileOutputStream) {
 			return;
@@ -263,7 +263,7 @@ public class ShellImplementation implements Shell {
 		} catch (IOException e) {
 			throw new ShellException(EXP_STDOUT);
 		}
-	}
+	}*/
 
 	/**
 	 * Static method to pipe data from an outputStream to an inputStream, for
@@ -277,11 +277,11 @@ public class ShellImplementation implements Shell {
 	 * @throws ShellException
 	 *             If exception is thrown during piping.
 	 */
-	public static InputStream outputStreamToInputStream(
+	/*public static InputStream outputStreamToInputStream(
 			OutputStream outputStream) throws ShellException {
 		return new ByteArrayInputStream(
 				((ByteArrayOutputStream) outputStream).toByteArray());
-	}
+	}*/
 	
 	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
 		String trimmed = cmdLine.trim();
@@ -306,7 +306,7 @@ public class ShellImplementation implements Shell {
 	 */
 
 	public static void main(String... args) throws AbstractApplicationException, ShellException {
-		ShellImplementation shell = new ShellImplementation();
+		//ShellImplementation shell = new ShellImplementation();
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(
 				System.in));
 		String readLine = null;
@@ -323,19 +323,9 @@ public class ShellImplementation implements Shell {
 				if (("").equals(readLine)) {
 					continue;
 				}
-				//shell.parseAndEvaluate(readLine, System.out);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-			
-			List<AbstractToken> tokens = Parser.tokenize(readLine);
-			//System.out.println(Arrays.toString(tokens.toArray()));
-			System.out.println(Arrays.toString(tokens.toArray()));
-			
-			//handle simple case of 1 command
-			Command cmd = Utility.getCommandFromString(readLine);
-			try {
-				cmd.evaluate(System.in, System.out);
+				
+				Command command = getCommand(readLine);
+				command.evaluate(System.in, System.out);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

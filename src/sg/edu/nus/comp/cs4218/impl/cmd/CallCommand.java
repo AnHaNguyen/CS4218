@@ -18,7 +18,8 @@ import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.Parser;
-import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
+//import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
+import sg.edu.nus.comp.cs4218.impl.app.ApplicationFactory;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
 
@@ -94,6 +95,7 @@ public class CallCommand implements Command {
 		if (inputStream == null) {
 			inputStream = stdin;
 		}
+		
 		OutputStream outputStream = getOutputStream();
 		if (outputStream == null) {
 			outputStream = stdout;
@@ -103,7 +105,7 @@ public class CallCommand implements Command {
 		app = argsList.remove(0);
 		
 		String[] args = argsList.toArray(new String[argsList.size()]);
-		ShellImplementation.runApp(app, args, inputStream, outputStream);
+		ApplicationFactory.runApp(app, args, inputStream, outputStream);
 	}
 	
 	/**
