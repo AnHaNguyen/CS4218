@@ -3,10 +3,9 @@ package sg.edu.nus.comp.cs4218.impl.token;
 import java.util.List;
 import java.util.Stack;
 
-//import sg.edu.nus.comp.cs4218.Consts;
+import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.Parser;
 
 public class DoubleQuoteToken extends AbstractToken {
 
@@ -62,7 +61,7 @@ public class DoubleQuoteToken extends AbstractToken {
 		checkValid();
 
 		String content = parent.substring(begin + 1, end);
-		List<AbstractToken> tokens = Parser.tokenize(content);
+		List<AbstractToken> tokens = Utility.tokenize(content);
 		String result = "";
 		for (AbstractToken token : tokens) {
 			if (token.getType() == TokenType.BACK_QUOTES) {

@@ -3,6 +3,7 @@ package sg.edu.nus.comp.cs4218.impl.app;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.EchoException;
@@ -32,22 +33,22 @@ public class EchoApplication implements Application {
 	 *             If an I/O exception occurs.
 	 */
 	public void run(String[] args, InputStream stdin, OutputStream stdout)
-			throws EchoException {
-		
+			throws EchoException {		
 		if (args == null) {
 			throw new EchoException("Null arguments");
 		}
 		if (stdout == null) {
 			throw new EchoException("OutputStream not provided");
 		}
+
 		try {
 			if (args.length == 0) {
 				stdout.write(System.lineSeparator().getBytes());
 			} else {
-				for (int i = 0; i < args.length; i++) {
-					stdout.write(args[i].getBytes());
+				for (int i = 0; i < args.length - 1; i++) {
+					stdout.write((args[i] + " ").getBytes());
 				}
-				stdout.write(System.lineSeparator().getBytes());
+				stdout.write((args[args.length - 1] + System.lineSeparator()).getBytes());
 			}
 		} catch (IOException e) {
 			throw new EchoException("IOException");

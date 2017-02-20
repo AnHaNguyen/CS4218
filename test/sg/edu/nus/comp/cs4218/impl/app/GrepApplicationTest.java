@@ -25,11 +25,11 @@ import java.io.OutputStreamWriter;
 
 public class GrepApplicationTest {
 	private ByteArrayOutputStream stdout;
-	private static final String originDir = Environment.getCurrentDirectory();
+	private static final String ORIGIN_DIR = Environment.getCurrentDirectory();
 	
 	private File createAndWriteFile(String fileName, String content) {
 		try{
-			File input = new File(originDir + File.separator + fileName + ".txt");
+			File input = new File(ORIGIN_DIR + File.separator + fileName + ".txt");
 		
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(input)));
 			writer.write(content);
@@ -48,13 +48,13 @@ public class GrepApplicationTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Environment.setCurrentDirectory(originDir);
+		Environment.setCurrentDirectory(ORIGIN_DIR);
 		stdout = new ByteArrayOutputStream();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		Environment.setCurrentDirectory(originDir);
+		Environment.setCurrentDirectory(ORIGIN_DIR);
 	}
 
 	@Test
