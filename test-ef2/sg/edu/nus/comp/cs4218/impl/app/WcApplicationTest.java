@@ -2,8 +2,7 @@ package sg.edu.nus.comp.cs4218.impl.app;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +19,7 @@ public class WcApplicationTest {
 	public void testPrintCharacterCountInFile() throws AbstractApplicationException {
 		String expectedOutput = "37";
 		String option = "-m";
-		String filePath = "testWc.txt";
+		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { option, filePath };
 
 		WcApplication WcApp = new WcApplication();
@@ -35,7 +34,7 @@ public class WcApplicationTest {
 	public void testPrintWordCountInFile() throws AbstractApplicationException {
 		String expectedOutput = "6";
 		String option = "-w";
-		String filePath = "testWc.txt";
+		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { filePath };
 
 		WcApplication WcApp = new WcApplication();
@@ -50,7 +49,7 @@ public class WcApplicationTest {
 	public void testPrintNewlineCountInFile() throws AbstractApplicationException {
 		String expectedOutput = "1";
 		String option = "-l";
-		String filePath = "testWc.txt";
+		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { filePath };
 
 		WcApplication WcApp = new WcApplication();
@@ -64,7 +63,7 @@ public class WcApplicationTest {
 	@Test
 	public void testPrintAllCountsInFile() throws AbstractApplicationException {
 		String expectedOutput = "44";
-		String filePath = "testWc.txt";
+		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { filePath };
 
 		WcApplication WcApp = new WcApplication();

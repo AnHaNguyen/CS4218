@@ -19,7 +19,7 @@ public class SedApplicationTest {
 	public void testReplaceFirstSubStringInFile() throws AbstractApplicationException {
 		String expectedOutput = "Microsoft beetroot carrot! Apple is love!";
 		String replacement = "s/Apple/Microsoft";
-		String filePath = "testSed.txt";
+		String filePath = "test-data"+File.separator+"testSed.txt";
 		String[] args = new String[] { replacement, filePath};
 		
 		SedApplication sedApp = new SedApplication();
@@ -34,7 +34,7 @@ public class SedApplicationTest {
 	public void testReplaceAllSubstringsInFile() throws AbstractApplicationException {
 		String expectedOutput = "Microsoft beetroot carrot! Microsoft is love!";
 		String replacement = "s/Apple/Microsoft/g";
-		String filePath = "testSed.txt";
+		String filePath = "test-data"+File.separator+"testSed.txt";
 		String[] args = new String[] { replacement, filePath};
 		
 		SedApplication sedApp = new SedApplication();
