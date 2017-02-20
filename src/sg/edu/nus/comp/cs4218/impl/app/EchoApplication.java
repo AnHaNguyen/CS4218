@@ -44,10 +44,10 @@ public class EchoApplication implements Application {
 			if (args.length == 0) {
 				stdout.write(System.lineSeparator().getBytes());
 			} else {
-				for (int i = 0; i < args.length; i++) {
-					stdout.write(args[i].getBytes());
+				for (int i = 0; i < args.length - 1; i++) {
+					stdout.write((args[i] + " ").getBytes());
 				}
-				stdout.write(System.lineSeparator().getBytes());
+				stdout.write((args[args.length - 1] + System.lineSeparator()).getBytes());
 			}
 		} catch (IOException e) {
 			throw new EchoException("IOException");
