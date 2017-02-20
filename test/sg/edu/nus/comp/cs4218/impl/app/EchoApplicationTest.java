@@ -89,7 +89,7 @@ public class EchoApplicationTest {
 			echoApplication.run(new String[]{"test hehe", "xd"}, null, stdout);
 			BufferedReader buffReader = new BufferedReader(
 					new InputStreamReader(new FileInputStream(out)));
-			assertEquals("test hehexd", buffReader.readLine());
+			assertEquals("test hehe xd", buffReader.readLine());
 			if (out != null) {
 				out.delete();
 			}
