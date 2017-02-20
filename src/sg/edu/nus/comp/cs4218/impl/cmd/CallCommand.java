@@ -12,13 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
+import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.Parser;
-//import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
 import sg.edu.nus.comp.cs4218.impl.app.ApplicationFactory;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
@@ -145,7 +143,7 @@ public class CallCommand implements Command {
 				i=i+2;
 				if (i < tokens.size()) {
 					String next = tokens.get(i);
-					List<AbstractToken> subToken = Parser.tokenize(next);
+					List<AbstractToken> subToken = Utility.tokenize(next);
 					if (subToken.get(0).getType() == TokenType.NORMAL) {
 						throw new ShellException("Too many inputs for IO redirection");
 					}
@@ -185,14 +183,13 @@ public class CallCommand implements Command {
 					throw new ShellException("Too many outputs");
 				}
 				if (i == tokens.size() -1){
-						//|| Parser.isSpecialCharacter(tokens.get(currentIndex))) {
 					throw new ShellException("Invalid output");
 				}
 				result = tokens.get(i+1);
 				i = i+2;
 				if (i < tokens.size()) {
 					String next = tokens.get(i);
-					List<AbstractToken> subToken = Parser.tokenize(next);
+					List<AbstractToken> subToken = Utility.tokenize(next);
 					if (subToken.get(0).getType() == TokenType.NORMAL) {
 						throw new ShellException("Too many outputs for IO redirection");
 					}
@@ -320,7 +317,7 @@ public class CallCommand implements Command {
 	 */
 	public static String processBackquotes(String cmdLine)
 			throws ShellException, AbstractApplicationException {
-		List<AbstractToken> tokens = Parser.tokenize(cmdLine);
+		List<AbstractToken> tokens = Utility.tokenize(cmdLine);
 		for (AbstractToken token : tokens) {
 			token.checkValid();
 		}
@@ -355,7 +352,7 @@ public class CallCommand implements Command {
 	 */
 	public static List<String> splitArguments(String input)
 			throws AbstractApplicationException, ShellException, IOException {
-		List<AbstractToken> tokens = Parser.tokenize(input);
+		List<AbstractToken> tokens = Utility.tokenize(input);
 		for (AbstractToken token : tokens) {
 			token.checkValid();
 		}

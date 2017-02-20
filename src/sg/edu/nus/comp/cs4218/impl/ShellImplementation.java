@@ -9,6 +9,7 @@ import java.util.List;
 import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.Shell;
+import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
@@ -31,7 +32,7 @@ public class ShellImplementation implements Shell {
 	
 	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
 		String trimmed = cmdLine.trim();
-		List<AbstractToken> tokens = Parser.tokenize(trimmed);
+		List<AbstractToken> tokens = Utility.tokenize(trimmed);
 		
 		for (AbstractToken token : tokens) {
 			if (token.getType() == TokenType.SEMICOLON) {

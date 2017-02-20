@@ -2,6 +2,7 @@ package sg.edu.nus.comp.cs4218;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 import sg.edu.nus.comp.cs4218.impl.cmd.CallCommand;
@@ -13,7 +14,6 @@ import sg.edu.nus.comp.cs4218.exception.ShellException;
 
 public class Utility {	
 	public static final String SPACE_SEPARATOR = "\\s+";
-	//public static final String WHITE_SPACE = " ";
 	public static final String ONE_SPACE = " ";
 
 	/**
@@ -249,6 +249,26 @@ public class Utility {
 	public static <T extends Comparable<T>> int compare(T first, T second) {
 		return first.compareTo(second);
 	}
+	
+	public static List<AbstractToken> tokenize(String input) {
+		List<AbstractToken> tokens = new ArrayList<AbstractToken>();
+		AbstractToken currentToken = null;
+		
+		for (int i = 0; i < input.length(); i++) {
+			if (currentToken == null) {
+				currentToken = generateToken(input, i);
+			} else if (!currentToken.appendNext()) {
+				tokens.add(currentToken);
+				currentToken = generateToken(input, i);
+			}
+		}
+		
+		if (currentToken != null) {
+			tokens.add(currentToken);
+		}
+		
+		return tokens;
+	}	
 	
 	public static AbstractToken generateToken(String parent, int begin) {
 		Character firstChar = parent.charAt(begin);
