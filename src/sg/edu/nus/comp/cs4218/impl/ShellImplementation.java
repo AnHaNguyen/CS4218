@@ -41,7 +41,17 @@ public class ShellImplementation implements Shell {
 
 		return new CallCommand(trimmed);
 	}
-	
+
+	/**
+	 * Main method for the Shell Interpreter program.
+	 * 
+	 * @param args
+	 *            List of strings arguments, unused.
+	 * @throws ShellException 
+	 * @throws AbstractApplicationException 
+	 * @throws IOException 
+	 */
+
 	public void run() {
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(
 				System.in));
