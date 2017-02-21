@@ -64,9 +64,8 @@ public class SortApplication implements Sort {
 		try {
 			stdout.write(result.getBytes());
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SortException(Constants.SortMessage.INVALID_OUT);
 		}
-		System.out.println(result);
 	}
 
 	private String sortFirstAsNum(String toSort, ArrayList<String> toSortList) throws AbstractApplicationException {
@@ -117,13 +116,12 @@ public class SortApplication implements Sort {
 			
 			br.close();
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new SortException(Constants.Common.INVALID_PATH);
 		}
 		return toSort;
 	}
 
-	private ArrayList<String> readFileNum(String filePath) {
+	private ArrayList<String> readFileNum(String filePath) throws SortException {
 		ArrayList<String> toSort = new ArrayList<String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -135,12 +133,12 @@ public class SortApplication implements Sort {
 			
 			br.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SortException(Constants.Common.INVALID_PATH);
 		}
 		return toSort;
 	}
 
-	private String readStdin(BufferedReader br) {
+	private String readStdin(BufferedReader br) throws SortException {
 		String toSort = "";
 		try {
 			String line = br.readLine();
@@ -152,12 +150,12 @@ public class SortApplication implements Sort {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SortException(Constants.SortMessage.INVALID_IN);
 		}
 		return toSort;
 	}
 
-	private ArrayList<String> readStdinNum(BufferedReader br) {
+	private ArrayList<String> readStdinNum(BufferedReader br) throws SortException {
 		ArrayList<String> toSort = new ArrayList<String>();
 		try {
 			String line = br.readLine();
@@ -166,7 +164,7 @@ public class SortApplication implements Sort {
 				line = br.readLine();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SortException(Constants.SortMessage.INVALID_IN);
 		}
 		return toSort;
 	}

@@ -29,8 +29,10 @@ public class Constants {
     }
     
     public class SortMessage {
-    	public static final String INVALID_ARGS = "Invalid argument!";
-    	public static final String INVALID_NUM = "Invalid number type!";
+    	public static final String INVALID_ARGS = "Invalid argument";
+    	public static final String INVALID_NUM = "Invalid number type";
+    	public static final String INVALID_OUT = "Invalid output";
+    	public static final String INVALID_IN = "Invalid input";
     }
     
 }
