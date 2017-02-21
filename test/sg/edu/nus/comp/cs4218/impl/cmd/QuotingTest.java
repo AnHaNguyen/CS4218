@@ -85,6 +85,18 @@ public class QuotingTest {
 		assertEquals(expectedOutput, output );
 	}
 	
+	@Test
+	public void testCallCommandWithAllQuoting4() throws Exception {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		String expectedOutput = "This is space: ."+System.lineSeparator();
+		String cmdLine = "echo \"This is space:`echo \" \"`.\"";
+		CallCommand cc = new CallCommand(cmdLine);
+		
+		cc.evaluate(null, outputStream);
+		String output = outputStream.toString();
+		assertEquals(expectedOutput, output );
+	}	
+	
 	@Test(expected = Exception.class)
 	public void testExceptionQuoteNotMatch1() throws Exception {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

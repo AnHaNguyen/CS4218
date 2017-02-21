@@ -10,7 +10,6 @@ import sg.edu.nus.comp.cs4218.Command;
 import sg.edu.nus.comp.cs4218.Utility;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
-import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken;
 import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
 
