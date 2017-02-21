@@ -78,5 +78,29 @@ public class QuotingTest {
 		String output = outputStream.toString();
 		assertEquals(expectedOutput, output );
 	}
+	
+	@Test(expected = Exception.class)
+	public void testExceptionQuoteNotMatch1() throws Exception {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		String expectedOutput = "echo Apple beetroot carrot!"+System.lineSeparator();
+		String cmdLine = "echo Apple beetroot carrot!'";
+		CallCommand cc = new CallCommand(cmdLine);
+		
+		cc.evaluate(null, outputStream);
+		String output = outputStream.toString();
+		assertEquals(expectedOutput, output );
+	}
+	
+	@Test(expected = Exception.class)
+	public void testExceptionuoteNotMatch2() throws Exception {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		String expectedOutput = "echo Apple beetroot carrot!"+System.lineSeparator();
+		String cmdLine = "echo `echo Apple beetroot carrot!";
+		CallCommand cc = new CallCommand(cmdLine);
+		
+		cc.evaluate(null, outputStream);
+		String output = outputStream.toString();
+		assertEquals(expectedOutput, output );
+	}
 
 }
