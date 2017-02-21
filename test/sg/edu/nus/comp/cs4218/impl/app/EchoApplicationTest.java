@@ -47,7 +47,7 @@ public class EchoApplicationTest {
 			echoApplication.run(new String[]{}, null, stdout);
 			BufferedReader buffReader = new BufferedReader(
 					new InputStreamReader(new FileInputStream(out)));
-			assertEquals("", buffReader.readLine());
+			assertEquals(" ", buffReader.readLine());
 			if (out != null) {
 				out.delete();
 			}

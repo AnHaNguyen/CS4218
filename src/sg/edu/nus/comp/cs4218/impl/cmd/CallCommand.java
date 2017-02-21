@@ -391,6 +391,7 @@ public class CallCommand implements Command {
 	private static List<String> splitBySpaces(String input) {
 		String str = input.replaceAll("\\s+", " ").trim();
 		return Arrays.asList(str.split("\\s"));
+		//return Arrays.asList(input.split(" "));
 	}
 
 	/**
