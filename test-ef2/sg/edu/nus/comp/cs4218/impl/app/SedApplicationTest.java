@@ -77,4 +77,36 @@ public class SedApplicationTest {
 		String output = stdout.toString();
 		assertEquals(expectedOutput, output);
 	}
+	
+	@Test(expected = Exception.class)
+	public void testReplaceFirstSubStringWithInvalidReplacement() throws AbstractApplicationException {
+		String expectedOutput = "Microsoft beetroot carrot! Apple is love!";
+		String replacement = "s/Apple/Mic/rosoft";
+		String input = "Apple beetroot carrot! Apple is love!";
+		String[] args = new String[] { replacement };
+		
+		SedApplication sedApp = new SedApplication();
+		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		
+		sedApp.run(args, stdin, stdout);
+		String output = stdout.toString();
+		assertEquals(expectedOutput, output);
+	}
+	
+	@Test(expected = Exception.class)
+	public void testReplaceFirstSubStringWithInvalidRegex() throws AbstractApplicationException {
+		String expectedOutput = "Microsoft beetroot carrot! Apple is love!";
+		String replacement = "s/App/le/Microsoft";
+		String input = "Apple beetroot carrot! Apple is love!";
+		String[] args = new String[] { replacement };
+		
+		SedApplication sedApp = new SedApplication();
+		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		
+		sedApp.run(args, stdin, stdout);
+		String output = stdout.toString();
+		assertEquals(expectedOutput, output);
+	}
 }

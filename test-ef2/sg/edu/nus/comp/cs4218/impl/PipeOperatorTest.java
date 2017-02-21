@@ -15,8 +15,8 @@ public class PipeOperatorTest {
 
 	@Test
 	public void testPipeTwoCommands() throws AbstractApplicationException, ShellException {
-		String expectedOutput = "Apple beetroot carrot!" 
-				+ System.lineSeparator() + "Apple is life!";
+		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator() 
+		+ "Apple is life!" + System.lineSeparator();
 		String args = "cat test-data/testPipe.txt | grep “Apple”";
 		ShellImplementation shell = new ShellImplementation();
 		String output = shell.pipeTwoCommands(args);
@@ -26,7 +26,7 @@ public class PipeOperatorTest {
 
 	@Test
 	public void testPipeMultipleCommands() throws AbstractApplicationException, ShellException {
-		String expectedOutput = "Apple beetroot carrot!" ;
+		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator();
 		String args = "cat test-data/testPipe.txt | grep “Apple” | grep carrot";
 		ShellImplementation shell = new ShellImplementation();
 		String output = shell.pipeMultipleCommands(args);
@@ -36,8 +36,8 @@ public class PipeOperatorTest {
 
 	@Test
 	public void testEvaluateTwoCommands() throws AbstractApplicationException, ShellException {
-		String expectedOutput = "Apple beetroot carrot!" 
-				+ System.lineSeparator() + "Apple is life!";
+		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator() 
+		+ "Apple is life!" + System.lineSeparator();
 		String input = "cat test-data/testPipe.txt | grep “Apple”";
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -51,7 +51,7 @@ public class PipeOperatorTest {
 
 	@Test
 	public void testEvaluateMultipleCommands() throws AbstractApplicationException, ShellException {
-		String expectedOutput = "Apple beetroot carrot!" ;
+		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator();
 		String input = "cat test-data/testPipe.txt | grep “Apple” | grep carrot";
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -63,14 +63,14 @@ public class PipeOperatorTest {
 		assertEquals(expectedOutput, output);
 	}
 
-	//	@Test
-	//	public void testPipeWithException() throws AbstractApplicationException, ShellException {
-	//		String expectedOutput = "Exception???" ;
-	//		String args = "cat test-data/testPipe1.txt | grep “Apple” | grep carrot";
-	//		ShellImplementation shell = new ShellImplementation();
-	//		String output = shell.pipeWithException(args);
-	//
-	//		assertEquals(expectedOutput, output);
-	//	}
+	@Test(expected = Exception.class)
+	public void testPipeWithException() throws AbstractApplicationException, ShellException {
+		String expectedOutput = "Exception!!!" ;
+		String args = "cat test-data/testPipe1.txt | grep “Apple” | grep carrot";
+		ShellImplementation shell = new ShellImplementation();
+		String output = shell.pipeWithException(args);
+
+		assertEquals(expectedOutput, output);
+	}
 
 }

@@ -15,8 +15,8 @@ public class CommandSubstitutionTest {
 	
 	@Test
 	public void testPerformCommandSubstitution() throws AbstractApplicationException, ShellException {
-		String expectedOutput = "Apple beetroot carrot!" 
-				+ System.lineSeparator() + "Apple is life!";
+		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator() 
+		+ "Apple is life!" + System.lineSeparator();
 		String args = "grep “Apple” `cat test-data/testPipe.txt`";
 		ShellImplementation shell = new ShellImplementation();
 		String output = shell.performCommandSubstitution(args);
@@ -26,8 +26,8 @@ public class CommandSubstitutionTest {
 	
 	@Test
 	public void testEvaluateCommandSubstitution() throws AbstractApplicationException, ShellException {
-		String expectedOutput = "Apple beetroot carrot!" 
-				+ System.lineSeparator() + "Apple is life!";
+		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator() 
+		+ "Apple is life!" + System.lineSeparator();
 		String input = "grep “Apple” `cat test-data/testPipe.txt`";
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -39,13 +39,13 @@ public class CommandSubstitutionTest {
 		assertEquals(expectedOutput, output);
 	}
 	
-//	@Test
-//	public void testPerformCommandSubstitutionWithException() throws AbstractApplicationException, ShellException {
-//		String expectedOutput = "Exception???" ;
-//		String args = "cat test-data/testPipe1.txt | grep “Apple” | grep carrot";
-//		ShellImplementation shell = new ShellImplementation();
-//		String output = shell.performCommandSubstitutionWithException(args);
-//
-//		assertEquals(expectedOutput, output);
-//	}
+	@Test(expected = Exception.class)
+	public void testPerformCommandSubstitutionWithException() throws AbstractApplicationException, ShellException {
+		String expectedOutput = "Exception!!!" ;
+		String args = "cat test-data/testPipe1.txt | grep “Apple” | grep carrot";
+		ShellImplementation shell = new ShellImplementation();
+		String output = shell.performCommandSubstitutionWithException(args);
+
+		assertEquals(expectedOutput, output);
+	}
 }

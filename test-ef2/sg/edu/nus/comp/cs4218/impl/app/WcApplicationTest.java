@@ -35,7 +35,7 @@ public class WcApplicationTest {
 		String expectedOutput = "6";
 		String option = "-w";
 		String filePath = "test-data"+File.separator+"testWc.txt";
-		String[] args = new String[] { filePath };
+		String[] args = new String[] { option, filePath };
 
 		WcApplication WcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;
@@ -50,7 +50,7 @@ public class WcApplicationTest {
 		String expectedOutput = "1";
 		String option = "-l";
 		String filePath = "test-data"+File.separator+"testWc.txt";
-		String[] args = new String[] { filePath };
+		String[] args = new String[] { option, filePath };
 
 		WcApplication WcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;
@@ -132,6 +132,21 @@ public class WcApplicationTest {
 
 		WcApplication WcApp = new WcApplication();
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+		WcApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
+	
+	@Test (expected = Exception.class)
+	public void testFileException() throws AbstractApplicationException {
+		String expectedOutput = "1";
+		String option = "-l";
+		String filePath = "test-data"+File.separator+"testWc1.txt";
+		String[] args = new String[] { option, filePath };
+
+		WcApplication WcApp = new WcApplication();
+		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
 		WcApp.run(args, stdin, stdout);

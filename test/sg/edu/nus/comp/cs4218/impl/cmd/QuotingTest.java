@@ -3,10 +3,16 @@ package sg.edu.nus.comp.cs4218.impl.cmd;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
+
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class QuotingTest {
-
+	
+	@Rule
+	public ExpectedException expectedEx = ExpectedException.none();
+	
 	@Test
 	public void testCallCommandWithDoubleQuoting() throws Exception {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

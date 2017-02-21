@@ -9,6 +9,7 @@ public class Constants {
     	public static final String NULL_ARGS = "Agrs is null";
     	public static final String INVALID_NUMBER_ARGUMENTS = "Invalid number of arguments";
     	public static final String INVALID_INPUT = "Invalid input";
+    	public static final String INVALID_PATH = "Invalid path";
 
     	public static final Character WHITE_SPACE = ' ';
     	public static final Character DOUBLE_QUOTE = '"';
@@ -29,6 +30,7 @@ public class Constants {
     
     public class SortMessage {
     	public static final String INVALID_ARGS = "Invalid argument!";
+    	public static final String INVALID_NUM = "Invalid number type!";
     }
     
 }

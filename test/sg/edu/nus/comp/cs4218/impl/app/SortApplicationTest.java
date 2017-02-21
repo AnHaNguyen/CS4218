@@ -4,13 +4,20 @@ import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
+import sg.edu.nus.comp.cs4218.exception.SortException;
 
 public class SortApplicationTest {
 
+	@Rule
+	public ExpectedException expectedEx = ExpectedException.none();
+	
 	@Test
 	public void testSortStringsSimple() {
 		String expectedOutput = "apple"+System.lineSeparator()
@@ -38,7 +45,7 @@ public class SortApplicationTest {
 	}
 	
 	@Test
-	public void testSortNumbers() {
+	public void testSortNumbers() throws AbstractApplicationException {
 		String expectedOutput = "1"+System.lineSeparator()
 		+"2"+System.lineSeparator()
 		+"12";
@@ -213,7 +220,7 @@ public class SortApplicationTest {
 		String expectedOutput = "1"+System.lineSeparator()
 		+"12"+System.lineSeparator()
 		+"2";
-		String filePath = "testSort.txt";
+		String filePath = "test-data"+File.separator+"testSort.txt";
 		String[] args = new String[] { filePath};
 		
 		ByteArrayInputStream stdin = null;
@@ -229,7 +236,7 @@ public class SortApplicationTest {
 		String expectedOutput = "1"+System.lineSeparator()
 		+"2"+System.lineSeparator()
 		+"12";
-		String filePath = "testSort.txt";
+		String filePath = "test-data"+File.separator+"testSort.txt";
 		String[] args = new String[] { "-n", filePath};
 		
 		ByteArrayInputStream stdin = null;
@@ -277,5 +284,58 @@ public class SortApplicationTest {
 		sortApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
+	
+	@Test(expected = SortException.class)
+	public void testFileException() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"12"+System.lineSeparator()
+		+"2";
+		String filePath = "test-data"+File.separator+"testSort1.txt";
+		String[] args = new String[] { filePath};
+		
+		ByteArrayInputStream stdin = null;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		SortApplication sortApp = new SortApplication();
 
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
+	
+	@Test(expected = SortException.class)
+	public void testNumberException() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"12"+System.lineSeparator()
+		+"2";
+		String option = "-n";
+		String filePath = "test-data"+File.separator+"testSed.txt";
+		String[] args = new String[] { option, filePath};
+		
+		ByteArrayInputStream stdin = null;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		SortApplication sortApp = new SortApplication();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
+	
+	@Test(expected = SortException.class)
+	public void testNumberException2() throws AbstractApplicationException {
+		String expectedOutput = "+"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"beetroot";
+		String toSort = "beetroot"+System.lineSeparator()
+		+"Apple"+System.lineSeparator()
+		+"1"+System.lineSeparator()
+		+"+";
+		String option = "-n";
+		String[] args = new String[] { option };
+
+		SortApplication sortApp = new SortApplication();
+		ByteArrayInputStream stdin = new ByteArrayInputStream(toSort.getBytes());
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput, stdout.toString());
+	}
 }

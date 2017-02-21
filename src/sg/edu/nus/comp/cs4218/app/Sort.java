@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs4218.app;
 
 import sg.edu.nus.comp.cs4218.Application;
+import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 
 public interface Sort extends Application {
 
@@ -19,8 +20,9 @@ public interface Sort extends Application {
 	/**
 	 * Returns a sorted string containing only numbers
 	 * @param args String containing command and arguments
+	 * @throws AbstractApplicationException 
 	 */
-	public String sortNumbers(String toSort);
+	public String sortNumbers(String toSort) throws AbstractApplicationException;
 
 	/**
 	 * Returns a sorted string containing only special characters

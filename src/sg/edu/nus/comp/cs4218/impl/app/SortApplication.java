@@ -69,7 +69,7 @@ public class SortApplication implements Sort {
 		System.out.println(result);
 	}
 
-	private String sortFirstAsNum(String toSort, ArrayList<String> toSortList) {
+	private String sortFirstAsNum(String toSort, ArrayList<String> toSortList) throws AbstractApplicationException {
 		String result = "";
 		Hashtable<String, String> numTable = new Hashtable<String, String>();
 		for (int i =0; i<toSortList.size(); i++) {
@@ -102,7 +102,7 @@ public class SortApplication implements Sort {
 		return result;
 	}
 
-	private String readFile(String filePath) {
+	private String readFile(String filePath) throws SortException {
 		String toSort = "";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -116,6 +116,7 @@ public class SortApplication implements Sort {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new SortException(Constants.Common.INVALID_PATH);
 		}
 		return toSort;
 	}
@@ -178,7 +179,7 @@ public class SortApplication implements Sort {
 	}
 
 	@Override
-	public String sortNumbers(String toSort) {
+	public String sortNumbers(String toSort) throws AbstractApplicationException {
 		String result = "";
 		String[] stringList = toSort.split(System.lineSeparator());
 		Double[] numList = new Double[stringList.length];
@@ -194,7 +195,7 @@ public class SortApplication implements Sort {
 			}
 			catch (Exception e) {
 				allNumber = false;
-				break;
+				throw new SortException(Constants.SortMessage.INVALID_NUM);
 			}
 		}
 		if (allNumber) {
