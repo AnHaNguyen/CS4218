@@ -18,7 +18,7 @@ public class DateApplicationTest {
 		//[week day] [month] [day] [hh:mm:ss] [time zone][year].
 		DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy");
 				
-		DateApplication dateApp = new DateApplication();
+		DateApplicationMock dateApp = new DateApplicationMock();
 		String[] args = new String[0];
 		OutputStream stdout = new ByteArrayOutputStream();
 		InputStream stdin = new ByteArrayInputStream("".getBytes());
@@ -39,7 +39,7 @@ public class DateApplicationTest {
 		//[week day] [month] [day] [hh:mm:ss] [time zone][year].
 		DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy");
 				
-		DateApplication dateApp = new DateApplication();
+		DateApplicationMock dateApp = new DateApplicationMock();
 		String output = dateApp.printCurrentDate("date");
 		Calendar cal = Calendar.getInstance();
 		String expectedOutput = dateFormat.format(cal);

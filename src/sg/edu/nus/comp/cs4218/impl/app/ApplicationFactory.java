@@ -36,6 +36,8 @@ public class ApplicationFactory {
 			absApp = new CalApplication();
 		} else if (("sort").equals(app)) {
 			absApp = new SortApplication();
+		} else if (("date").equals(app)) {
+			absApp = new DateApplication();
 		} else{ // invalid command
 			throw new ShellException(app + ": " + EXP_INVALID_APP);
 		}

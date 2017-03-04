@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import sg.edu.nus.comp.cs4218.app.Date;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 
-public class DateApplication implements Date {
+public class DateApplicationMock implements Date {
 
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
