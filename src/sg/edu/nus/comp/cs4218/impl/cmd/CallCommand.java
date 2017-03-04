@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -230,7 +231,9 @@ public class CallCommand implements Command {
 			String arg = cmdTokens.get(i).trim();
 			if (arg.indexOf("*") != -1) {
 				try {
-					expandedArgs.addAll(expandPath(arg));
+					List<String> expandedPath = expandPath(arg);
+					Collections.sort(expandedPath);
+					expandedArgs.addAll(expandedPath);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
