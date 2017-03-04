@@ -22,11 +22,11 @@ public class WcApplicationTest {
 		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { option, filePath };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 
@@ -37,11 +37,11 @@ public class WcApplicationTest {
 		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { option, filePath };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 
@@ -52,11 +52,11 @@ public class WcApplicationTest {
 		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { option, filePath };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 	
@@ -66,11 +66,11 @@ public class WcApplicationTest {
 		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { filePath };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 
@@ -82,11 +82,11 @@ public class WcApplicationTest {
 		String option = "-m";
 		String[] args = new String[] { option };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 
@@ -98,11 +98,11 @@ public class WcApplicationTest {
 		String option = "-w";
 		String[] args = new String[] { option };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 	
@@ -114,11 +114,11 @@ public class WcApplicationTest {
 		String option = "-l";
 		String[] args = new String[] { option };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 	
@@ -130,11 +130,11 @@ public class WcApplicationTest {
 		String option = null;
 		String[] args = new String[] { option };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = new ByteArrayInputStream(input.getBytes());
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 	
@@ -145,11 +145,11 @@ public class WcApplicationTest {
 		String filePath = "test-data"+File.separator+"testWc1.txt";
 		String[] args = new String[] { option, filePath };
 
-		WcApplication WcApp = new WcApplication();
+		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
-		WcApp.run(args, stdin, stdout);
+		wcApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
 }

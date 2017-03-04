@@ -3,49 +3,61 @@ package sg.edu.nus.comp.cs4218.impl.app;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import sg.edu.nus.comp.cs4218.app.Sed;
+import sg.edu.nus.comp.cs4218.app.Wc;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 
-public class SedApplication implements Sed {
+public class WcApplication implements Wc {
 
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public String replaceFirstSubStringInFile(String args) {
+	public String printCharacterCountInFile(String args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String replaceAllSubstringsInFile(String args) {
+	public String printWordCountInFile(String args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String replaceFirstSubStringFromStdin(String args) {
+	public String printNewlineCountInFile(String args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String replaceAllSubstringsInStdin(String args) {
+	public String printAllCountsInFile(String args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String replaceSubstringWithInvalidReplacement(String args) {
+	public String printCharacterCountInStdin(String args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String replaceSubstringWithInvalidRegex(String args) {
+	public String printWordCountInStdin(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String printNewlineCountInStdin(String args) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String printAllCountsInStdin(String args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
