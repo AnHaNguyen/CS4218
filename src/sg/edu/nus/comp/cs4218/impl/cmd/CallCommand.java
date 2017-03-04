@@ -231,7 +231,9 @@ public class CallCommand implements Command {
 			String arg = cmdTokens.get(i).trim();
 			if (arg.indexOf("*") != -1) {
 				try {
-					expandedArgs.addAll(expandPath(arg));
+					List<String> expandedPath = expandPath(arg);
+					Collections.sort(expandedPath);
+					expandedArgs.addAll(expandedPath);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -239,7 +241,6 @@ public class CallCommand implements Command {
 				expandedArgs.add(arg);
 			}
 		}
-		Collections.sort(expandedArgs);
 		return expandedArgs;
 	}
 	
