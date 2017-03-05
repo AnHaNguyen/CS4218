@@ -38,6 +38,8 @@ public class ApplicationFactory {
 			absApp = new SortApplication();
 		} else if (("date").equals(app)) {
 			absApp = new DateApplication();
+		} else if (("wc").equals(app)) {
+			absApp = new WcApplication();
 		} else{ // invalid command
 			throw new ShellException(app + ": " + EXP_INVALID_APP);
 		}
