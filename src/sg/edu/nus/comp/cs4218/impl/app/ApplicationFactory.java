@@ -40,6 +40,8 @@ public class ApplicationFactory {
 			absApp = new DateApplication();
 		} else if (("wc").equals(app)) {
 			absApp = new WcApplication();
+		} else if (("sed").equals(app)) {
+			absApp = new SedApplication();
 		} else{ // invalid command
 			throw new ShellException(app + ": " + EXP_INVALID_APP);
 		}
