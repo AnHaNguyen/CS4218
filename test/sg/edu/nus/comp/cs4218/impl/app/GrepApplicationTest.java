@@ -121,8 +121,9 @@ public class GrepApplicationTest {
 		File file = createAndWriteFile("input",content);
 		GrepApplication grepApplication = new GrepApplication();
 		grepApplication.run(new String[]{"a", "input.txt"}, null, stdout);
-		String expected = "1" + System.lineSeparator() +"2" + System.lineSeparator() + "4" + System.lineSeparator();
-		assertEquals(stdout.toString(),expected);
+		String expected = "123aa123" + System.lineSeparator() 
+			+"abcxyz" + System.lineSeparator() + " ii a" + System.lineSeparator();
+		assertEquals(expected,stdout.toString());
 		file.delete();
 	}
 	
@@ -136,8 +137,9 @@ public class GrepApplicationTest {
 		File file = createAndWriteFile("input",content);
 		GrepApplication grepApplication = new GrepApplication();
 		grepApplication.run(new String[]{"test grep", "input.txt"}, null, stdout);
-		String expected = "1" + System.lineSeparator() +"3" + System.lineSeparator();
-		assertEquals(stdout.toString(),expected);
+		String expected = "123aa123 this is a test grep" + System.lineSeparator() 
+			+"ggg i need to test grep" + System.lineSeparator();
+		assertEquals(expected,stdout.toString());
 		file.delete();
 	}
 	
@@ -158,11 +160,11 @@ public class GrepApplicationTest {
 		
 		GrepApplication grepApplication = new GrepApplication();
 		grepApplication.run(new String[]{"rep", "input.txt", "input2.txt"}, null, stdout);
-		String expected = "input.txt"+ System.lineSeparator() 
-			+ "1" + System.lineSeparator() +"3" + System.lineSeparator() 
-			+ "input2.txt" + System.lineSeparator() + "1" + System.lineSeparator() + "2" 
-			+ System.lineSeparator() + "3" + System.lineSeparator();
-		assertEquals(stdout.toString(),expected);
+		String expected = "123aa123 this is a test grep" + System.lineSeparator() 
+			+"ggg i need to test grep" + System.lineSeparator() 
+			+ "123aa123 thisgrep" + System.lineSeparator() + "abcxyrepz" 
+			+ System.lineSeparator() + "ggg i need to test grep" + System.lineSeparator();
+		assertEquals(expected,stdout.toString());
 		file.delete();
 		file2.delete();
 	}
@@ -179,8 +181,8 @@ public class GrepApplicationTest {
 			InputStream stdin = new FileInputStream(file);
 			GrepApplication grepApplication = new GrepApplication();
 			grepApplication.run(new String[]{"a"}, stdin, stdout);
-			String expected = "1" + System.lineSeparator() +"2" + System.lineSeparator() + "4" + System.lineSeparator();
-			assertEquals(stdout.toString(),expected);
+			String expected = "123aa123" + System.lineSeparator() +"abcxyz" + System.lineSeparator() + " ii a" + System.lineSeparator();
+			assertEquals(expected,stdout.toString());
 			file.delete();
 		} catch (FileNotFoundException e) {
 			fail();

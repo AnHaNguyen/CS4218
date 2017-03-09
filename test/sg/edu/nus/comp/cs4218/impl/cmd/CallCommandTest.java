@@ -163,5 +163,93 @@ public class CallCommandTest {
 			input2.delete();
 		}
 	}
-
+	
+	@Test
+	public void testCallCommandWithGlobbing2() {
+		File input2 = new File("testFolder/input2.txt");
+		File input = new File("testFolder/input.txt");
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(input));
+			String content = "ABC SSS" + System.lineSeparator() + "CS4218";
+			bw.write(content);
+			bw.close();
+			BufferedWriter bw2 = new BufferedWriter(new FileWriter(input2));
+			String content2 = "8124SC" + System.lineSeparator();
+			bw2.write(content2);
+			bw2.close();
+			
+			
+			cmdLine = "cat testFolder/*";
+			CallCommand cc = new CallCommand(cmdLine);
+			cc.evaluate(null, outputStream);
+			assertEquals(outputStream.toString(), content + System.lineSeparator() 
+				+ content2 + System.lineSeparator());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		} finally {
+			input.delete();
+			input2.delete();
+		}
+	}
+	
+	@Test
+	public void testCallCommandWithGlobbing3() {
+		File input = new File("testFolder/input.txt");
+		File input2 = new File("testFolder/input2.txt");
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(input));
+			String content = "ABC SSS" + System.lineSeparator() + "CS4218";
+			bw.write(content);
+			bw.close();
+			BufferedWriter bw2 = new BufferedWriter(new FileWriter(input2));
+			String content2 = "8124SC" + System.lineSeparator();
+			bw2.write(content2);
+			bw2.close();
+			
+			
+			cmdLine = "cat testFolder/*.txt";
+			CallCommand cc = new CallCommand(cmdLine);
+			cc.evaluate(null, outputStream);
+			assertEquals(outputStream.toString(), content + System.lineSeparator() 
+				+ content2 + System.lineSeparator());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		} finally {
+			input.delete();
+			input2.delete();
+		}
+	}
+	
+	@Test
+	public void testCallCommandWithGlobbing4() {
+		File input = new File("testFolder/input.txt");
+		File input2 = new File("testFolder/input2.txt");
+		File input3 = new File("testFolder/output.txt");
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(input));
+			String content = "ABC SSS" + System.lineSeparator() + "CS4218";
+			bw.write(content);
+			bw.close();
+			BufferedWriter bw2 = new BufferedWriter(new FileWriter(input2));
+			String content2 = "8124SC" + System.lineSeparator();
+			bw2.write(content2);
+			bw2.close();
+			
+			
+			cmdLine = "cat testFolder/i*.txt";
+			CallCommand cc = new CallCommand(cmdLine);
+			cc.evaluate(null, outputStream);
+			assertEquals(outputStream.toString(), content + System.lineSeparator() 
+				+ content2 + System.lineSeparator());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		} finally {
+			input.delete();
+			input2.delete();
+			input3.delete();
+		}
+	}
 }

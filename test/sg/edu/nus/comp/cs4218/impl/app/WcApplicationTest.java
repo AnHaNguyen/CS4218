@@ -119,7 +119,7 @@ public class WcApplicationTest {
 
 	@Test
 	public void testPrintCharacterCountInStdin() throws AbstractApplicationException {
-		String expectedOutput = "37";
+		String expectedOutput = "37" + System.lineSeparator();
 		String input = "Apple beetroot carrot!"
 				+'\n' +"Apple is love!";
 		String option = "-m";
@@ -135,7 +135,7 @@ public class WcApplicationTest {
 
 	@Test
 	public void testPrintWordCountInStdin() throws AbstractApplicationException {
-		String expectedOutput = "6";
+		String expectedOutput = "6" + System.lineSeparator();
 		String input = "Apple beetroot carrot!"
 				+System.lineSeparator()+"Apple is love!";
 		String option = "-w";
@@ -151,7 +151,7 @@ public class WcApplicationTest {
 	
 	@Test
 	public void testPrintNewlineCountInStdin() throws AbstractApplicationException {
-		String expectedOutput = "2";
+		String expectedOutput = "2" + System.lineSeparator();
 		String input = "Apple beetroot carrot!"
 				+System.lineSeparator()+"Apple is love!";
 		String option = "-l";

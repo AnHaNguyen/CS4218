@@ -76,6 +76,7 @@ public class WcApplication implements Wc {
 						output += " ";
 					}
 				}
+				output += System.lineSeparator();
 			}
 		} else {		//use files
 			if (options.size() == 0) {
@@ -143,46 +144,43 @@ public class WcApplication implements Wc {
 	}
 
 	@Override
-	public String printCharacterCountInFile(String args) {
+	public String printCharacterCountInFile(String args) throws WcException {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(args));
 			String fileContents = readAndConvertToString(br);
 			Integer bytesLength = getByteCount(fileContents);
 			return bytesLength.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new WcException(e.toString());
 		}
-		return null;
 	}
 
 	@Override
-	public String printWordCountInFile(String args) {
+	public String printWordCountInFile(String args) throws WcException {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(args));
 			String fileContents = readAndConvertToString(br);
 			Integer wordsLength = getWordsLength(fileContents);
 			return wordsLength.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new WcException(e.toString());
 		}
-		return null;
 	}
 
 	@Override
-	public String printNewlineCountInFile(String args) {
+	public String printNewlineCountInFile(String args) throws WcException {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(args));
 			String fileContents = readAndConvertToString(br);
 			Integer lineLength = getLineLength(fileContents);
 			return lineLength.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new WcException(e.toString());
 		}
-		return null;
 	}
 
 	@Override
-	public String printAllCountsInFile(String args) {
+	public String printAllCountsInFile(String args) throws WcException {
 		String output = "";
 		for (int i = 0; i < files.size(); i++) {
 			String filePath = files.get(i);
@@ -195,41 +193,38 @@ public class WcApplication implements Wc {
 	}
 
 	@Override
-	public String printCharacterCountInStdin(String args) {
+	public String printCharacterCountInStdin(String args) throws WcException {
 		try{
 			Integer bytesLength = getByteCount(args);
 			return bytesLength.toString();
 		} catch (Exception e) {
-				e.printStackTrace();
+			throw new WcException(e.toString());
 		}
-		return null;
 	}
 
 	@Override
-	public String printWordCountInStdin(String args) {
+	public String printWordCountInStdin(String args) throws WcException {
 		try{
 			Integer bytesLength = getWordsLength(args);
 			return bytesLength.toString();
 		} catch (Exception e) {
-				e.printStackTrace();
+			throw new WcException(e.toString());
 		}
-		return null;
 	}
 	
 
 	@Override
-	public String printNewlineCountInStdin(String args) {
+	public String printNewlineCountInStdin(String args) throws WcException {
 		try{
 			Integer bytesLength = getLineLength(args);
 			return bytesLength.toString();
 		} catch (Exception e) {
-				e.printStackTrace();
+			throw new WcException(e.toString());
 		}
-		return null;
 	}
 
 	@Override
-	public String printAllCountsInStdin(String args) {
+	public String printAllCountsInStdin(String args) throws WcException {
 		String output = "";
 		BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 		try {
@@ -238,7 +233,7 @@ public class WcApplication implements Wc {
 			output += printWordCountInStdin(streamContents) + " ";
 			output += printNewlineCountInStdin(streamContents) + System.lineSeparator();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new WcException(e.toString());
 		}
 		return output;
 	}
