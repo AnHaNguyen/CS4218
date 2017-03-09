@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -14,7 +16,7 @@ import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.GrepException;
 
 public class GrepApplication implements Grep{
-	private final String NEW_LINE = System.lineSeparator();
+	private static final String NEW_LINE = System.lineSeparator();
 	private InputStream is;
 	private String file;
 	private String[] files;
@@ -91,47 +93,38 @@ public class GrepApplication implements Grep{
 	}
 	
 	@Override
-	public String grepFromStdin(String args) {
-		int lineNo = 1;
+	public String grepFromStdin(String args) throws GrepException {
 		String outString = "";
-		String curLine = "";
-		int intCount = -1;
-		boolean isRead = false;
-		do {
-			try {
-				intCount = is.read();
-			} catch (IOException e) {
-				e.printStackTrace();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		try {
+			String line = "";
+			Pattern pattern = Pattern.compile(args);
+			while((line = br.readLine()) != null) {
+				Matcher m = pattern.matcher(line);
+				if (line.contains(args) || m.find()) {
+					outString += line + NEW_LINE;
+				}
 			}
-			if (intCount == (byte)'\n') {
-				lineNo++;
-				curLine = "";
-				isRead = false;
-			} else {
-				curLine += (char) intCount;
-			}
-			if (curLine.contains(args) && !isRead) {
-				outString += lineNo + NEW_LINE;
-				isRead = true;
-			}
-		} while(intCount != -1);
+			br.close();
+		} catch (IOException e) {
+			throw new GrepException("Unable to read stdin");
+		}
 		return outString;
 	}
 
 	@Override
 	public String grepFromOneFile(String args) throws GrepException {
-		int lineNo = 1;
 		String outString = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 		    String line;
+		    Pattern pattern = Pattern.compile(args);
 		    while ((line = br.readLine()) != null) {
-		    	if (line.contains(args)) {
-		    		outString += lineNo + NEW_LINE;
+		    	Matcher m = pattern.matcher(line);
+		    	if (line.contains(args) || m.find()) {
+		    		outString += line + NEW_LINE;
 		    	}
-		    	lineNo++;
 		    }
 		} catch (IOException e) {
-		//	e.printStackTrace();
 			throw new GrepException("Unable to read file");
 		}
 		return outString;
@@ -141,18 +134,16 @@ public class GrepApplication implements Grep{
 	public String grepFromMultipleFiles(String args) throws GrepException {
 		String outString = "";
 		for (int i = 0; i < files.length; i++) {
-			outString += files[i] + NEW_LINE;
-			int lineNo = 1;
 			try (BufferedReader br = new BufferedReader(new FileReader(files[i]))) {
 			    String line;
+			    Pattern pattern = Pattern.compile(args);
 			    while ((line = br.readLine()) != null) {
-			    	if (line.contains(args)) {
-			    		outString += lineNo + NEW_LINE;
+			    	Matcher m = pattern.matcher(line);
+			    	if (line.contains(args) || m.find()) {
+			    		outString += line + NEW_LINE;
 			    	}
-			    	lineNo++;
 			    }
 			} catch (IOException e) {
-			//	e.printStackTrace();
 				throw new GrepException("Unable to read file");
 			}
 		}

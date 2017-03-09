@@ -34,7 +34,7 @@ public class SedApplication implements Sed {
 		}
 		String replacementArg = args[0];
 		parseReplacementString(replacementArg);
-		if (!isValidRegex(regexp)) {
+		if (!isValidRegex(regexp) || regexp.length() == 0) {
 			replaceSubstringWithInvalidRegex(regexp);
 		}
 		if (!isValidRegex(replacement)) {
@@ -182,13 +182,8 @@ public class SedApplication implements Sed {
 			throw new SedException("Replacement must start with \"s\"");
 		}
 		String division = input.substring(1,2);
-		String validDivision = "([^a-zA-Z0-9` 	])";		//does not allow `
-		boolean isValidRegex = division.matches(validDivision);
-		if (!isValidRegex) {
-			throw new SedException("Invalid division");
-		}
 		List<Integer> indicesOfDivision = new ArrayList<Integer>();
-		for (int i = 0; i < input.length(); i++) {
+		for (int i = 1; i < input.length(); i++) {
 			if (input.charAt(i) == division.charAt(0)) {
 				indicesOfDivision.add(i);
 			}
@@ -198,6 +193,9 @@ public class SedApplication implements Sed {
 		}
 		regexp = input.substring(indicesOfDivision.get(0) + 1, indicesOfDivision.get(1));
 		replacement = input.substring(indicesOfDivision.get(1) + 1, indicesOfDivision.get(2));
+		if (regexp.contains(division) || replacement.contains(division)) {
+			throw new SedException("Invalid division");
+		}
 		if (indicesOfDivision.get(2) != input.length() - 1) {
 			if (input.substring(indicesOfDivision.get(2) + 1, input.length()).equals("g")) {
 				doReplaceAll = true;
@@ -227,6 +225,9 @@ public class SedApplication implements Sed {
 	}
 	
 	private boolean isValidRegex(String pattern) {
+		if (pattern == null) {
+			return false;
+		}
 		try {
 			Pattern.compile(pattern);
 		} catch (PatternSyntaxException e) {

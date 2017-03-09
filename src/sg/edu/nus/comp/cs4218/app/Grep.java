@@ -10,7 +10,7 @@ public interface Grep extends Application {
 	 * Stdin
 	 * @param args String containing command and arguments
 	 */
-	public String grepFromStdin(String args);
+	public String grepFromStdin(String args) throws GrepException;;
 
 	/**
 	 * Returns string containing lines which match the specified pattern in the
