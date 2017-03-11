@@ -60,7 +60,7 @@ public class Utility {
 	}
 
 	public static boolean isValidMonth(int month) {
-		return month >= 0 && month <= 12;
+		return month >= 1 && month <= 12;
 	}
 
 	public static boolean isValidYear(int year) {

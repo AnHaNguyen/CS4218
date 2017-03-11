@@ -9,7 +9,7 @@ public class CalApplicationTest {
 	public void testPrintCal() {
 		// current is March 2017
 		String expectedOuput = 
-				   "    March, 2017    \n" +
+				   "     March 2017     \n" +
 				   "Su Mo Tu We Th Fr Sa \n" +
 				   "         1  2  3  4  \n" +
 				   "5  6  7  8  9  10 11 \n" +
@@ -26,7 +26,7 @@ public class CalApplicationTest {
 	public void testPrintCalMondayFirst() {
 		// current is March 2017
 		String expectedOuput = 
-				   "    March, 2017    \n" +
+				   "     March 2017     \n" +
 	   			   "Mo Tu We Th Fr Sa Su \n" +
 	   			   "      1  2  3  4  5  \n" +
 	   			   "6  7  8  9  10 11 12 \n" +
@@ -42,7 +42,7 @@ public class CalApplicationTest {
 	
 	@Test
 	public void testPrintCalForMonthYear() {
-		String expectedOuput = "   February, 2017   \n" +
+		String expectedOuput = "   February 2017   \n" +
 							   "Su Mo Tu We Th Fr Sa \n" +
 							   "         1  2  3  4  \n" +
 							   "5  6  7  8  9  10 11 \n" +
@@ -58,7 +58,7 @@ public class CalApplicationTest {
 	
 	@Test
 	public void testPrintCalForMonthYearMondayFirst() {
-		String expectedOuput = "   February, 2017   \n" +
+		String expectedOuput = "   February 2017   \n" +
 				   			   "Mo Tu We Th Fr Sa Su \n" +
 				   			   "      1  2  3  4  5  \n" +
 				   			   "6  7  8  9  10 11 12 \n" +
@@ -75,7 +75,8 @@ public class CalApplicationTest {
 	@Test
 	public void testPrintCalForYear() {
 		String expectedOutput =
-		"   January, 2017                February, 2017                 March, 2017    \n" +
+		"                              2017\n" +
+		"      January                      February                       March       \n" +
 		"Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa \n" +
 		"1  2  3  4  5  6  7                   1  2  3  4                   1  2  3  4  \n" +
 		"8  9  10 11 12 13 14         5  6  7  8  9  10 11         5  6  7  8  9  10 11 \n" +
@@ -83,7 +84,7 @@ public class CalApplicationTest {
 		"22 23 24 25 26 27 28         19 20 21 22 23 24 25         19 20 21 22 23 24 25 \n" +
 		"29 30 31                     26 27 28                     26 27 28 29 30 31    \n" +
  		"                                                                               \n\n" +
-        "    April, 2017                   May, 2017                    June, 2017     \n" +
+        "       April                         May                          June        \n" +
         "Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa \n" +
         "                  1             1  2  3  4  5  6                      1  2  3  \n" +
         "2  3  4  5  6  7  8          7  8  9  10 11 12 13         4  5  6  7  8  9  10 \n" +
@@ -91,7 +92,7 @@ public class CalApplicationTest {
         "16 17 18 19 20 21 22         21 22 23 24 25 26 27         18 19 20 21 22 23 24 \n" +
         "23 24 25 26 27 28 29         28 29 30 31                  25 26 27 28 29 30    \n" +
         "30                                                                             \n\n" +
-        "     July, 2017                   August, 2017                September, 2017  \n" +
+        "        July                         August                      September     \n" +
         "Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa \n" +
         "                  1                1  2  3  4  5                         1  2  \n" +
         "2  3  4  5  6  7  8          6  7  8  9  10 11 12         3  4  5  6  7  8  9  \n" +
@@ -99,7 +100,7 @@ public class CalApplicationTest {
         "16 17 18 19 20 21 22         20 21 22 23 24 25 26         17 18 19 20 21 22 23 \n" +
         "23 24 25 26 27 28 29         27 28 29 30 31               24 25 26 27 28 29 30 \n" +
         "30 31                                                                          \n\n" +
-        "   October, 2017                November, 2017                December, 2017   \n" +
+        "      October                      November                      December      \n" +
         "Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa         Su Mo Tu We Th Fr Sa \n" +
         "1  2  3  4  5  6  7                   1  2  3  4                         1  2  \n" +
         "8  9  10 11 12 13 14         5  6  7  8  9  10 11         3  4  5  6  7  8  9  \n" +
@@ -116,7 +117,8 @@ public class CalApplicationTest {
 	@Test
 	public void testPrintCalForYearMondayFirst() {
 		String expectedOutput =
-		"   January, 2017                February, 2017                 March, 2017    \n" +
+		"                              2017\n" +
+		"      January                      February                       March       \n" +
 		"Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su \n" +
 		"                  1                1  2  3  4  5                1  2  3  4  5  \n" +
 		"2  3  4  5  6  7  8          6  7  8  9  10 11 12         6  7  8  9  10 11 12 \n" +
@@ -124,7 +126,7 @@ public class CalApplicationTest {
 		"16 17 18 19 20 21 22         20 21 22 23 24 25 26         20 21 22 23 24 25 26 \n" +
 		"23 24 25 26 27 28 29         27 28                        27 28 29 30 31       \n" +
  		"30 31                                                                          \n\n" +
-        "    April, 2017                   May, 2017                    June, 2017     \n" +
+        "       April                         May                          June        \n" +
         "Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su \n" +
         "               1  2          1  2  3  4  5  6  7                   1  2  3  4  \n" +
         "3  4  5  6  7  8  9          8  9  10 11 12 13 14         5  6  7  8  9  10 11 \n" +
@@ -132,7 +134,7 @@ public class CalApplicationTest {
         "17 18 19 20 21 22 23         22 23 24 25 26 27 28         19 20 21 22 23 24 25 \n" +
         "24 25 26 27 28 29 30         29 30 31                     26 27 28 29 30       \n" +
         "                                                                               \n\n" +
-        "     July, 2017                   August, 2017                September, 2017  \n" +
+        "        July                         August                      September     \n" +
         "Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su \n" +
         "               1  2             1  2  3  4  5  6                      1  2  3  \n" +
         "3  4  5  6  7  8  9          7  8  9  10 11 12 13         4  5  6  7  8  9  10 \n" +
@@ -140,7 +142,7 @@ public class CalApplicationTest {
         "17 18 19 20 21 22 23         21 22 23 24 25 26 27         18 19 20 21 22 23 24 \n" +
         "24 25 26 27 28 29 30         28 29 30 31                  25 26 27 28 29 30    \n" +
         "31                                                                             \n\n" +
-        "   October, 2017                November, 2017                December, 2017   \n" +
+        "      October                      November                      December      \n" +
         "Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su         Mo Tu We Th Fr Sa Su \n" +
         "                  1                1  2  3  4  5                      1  2  3  \n" +
         "2  3  4  5  6  7  8          6  7  8  9  10 11 12         4  5  6  7  8  9  10 \n" +

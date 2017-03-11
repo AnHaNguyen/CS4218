@@ -19,6 +19,7 @@ public class CalendarHelper {
 	public static final String ONE_SPACE = " ";
 	public static final String TWO_SPACE = "  ";
 	public static final String THREE_SPACE = "   ";
+	public static final String YEAR_SPACE = "                              ";
     public static final String[] MONTH_TO_TEXT = {
         	"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     };
@@ -53,11 +54,15 @@ public class CalendarHelper {
 	 * @param month
 	 * @param year
 	 */
-	public static String generateCalTitle(int month, int year) {
+	public static String generateCalTitle(int month, int year, boolean withYear) {
 		int calendarWidth = 20;
 		StringBuilder output = new StringBuilder();
 		
-		String calendarTitle = MONTH_TO_TEXT[month - 1] + ", " + year;
+		String calendarTitle = MONTH_TO_TEXT[month - 1];
+		if (withYear) {
+			calendarTitle += (" " + year);
+		}
+		
 		int space = (calendarWidth - calendarTitle.length()) / 2;
 		for (int i = 0; i < space; i++) {
 			output.append(ONE_SPACE);
@@ -86,7 +91,7 @@ public class CalendarHelper {
 	public static String generateCalendarForMonthYear(int month, int year, boolean mondayFirst) {
 		int[][] monthArr = getCalendarArrayForMonth(month, year, mondayFirst);
 		StringBuilder output = new StringBuilder();
-		output.append(generateCalTitle(month, year));
+		output.append(generateCalTitle(month, year, true));
 		output.append(NEW_LINE);
 		
 		output.append(generateCalHeaders(mondayFirst));
@@ -111,6 +116,11 @@ public class CalendarHelper {
 	
 	public static String generateCalendarForYear(int year, boolean isMondayFirst) {
 		StringBuilder output = new StringBuilder();
+		
+		output.append(YEAR_SPACE);
+		output.append(year);
+		output.append(NEW_LINE);
+		
 		List<int[][]> yearArray = new ArrayList<int[][]>();
 		for (int month = 1; month <= MONTHS_PER_YEAR; month++) {
 			int[][] monthArr = getCalendarArrayForMonth(month, year, isMondayFirst);
@@ -129,7 +139,7 @@ public class CalendarHelper {
 		StringBuilder output = new StringBuilder();
 		
 		for (int month = startMonth; month <= endMonth; month++) {
-			output.append(generateCalTitle(month, year));
+			output.append(generateCalTitle(month, year, false));
 			if (month != endMonth) {
 				output.append(SPACE_BETWEEN_MONTH);
 				output.append(TWO_SPACE);
