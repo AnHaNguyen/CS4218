@@ -6,7 +6,7 @@ import sg.edu.nus.comp.cs4218.exception.ShellException;
 public abstract class AbstractToken {
 	
 	public enum TokenType {
-		SPACES, NORMAL, SEMICOLON, INPUT, OUTPUT, SINGLE_QUOTES, DOUBLE_QUOTES, BACK_QUOTES
+		SPACES, NORMAL, SEMICOLON, PIPE, INPUT, OUTPUT, SINGLE_QUOTES, DOUBLE_QUOTES, BACK_QUOTES
 	}
 	
 	String parent;
@@ -49,6 +49,10 @@ public abstract class AbstractToken {
 			return TokenType.BACK_QUOTES;
 		case '\'':
 			return TokenType.SINGLE_QUOTES;
+			
+		case '|':
+			return TokenType.PIPE;
+			
 		default:
 			return TokenType.NORMAL;
 		}

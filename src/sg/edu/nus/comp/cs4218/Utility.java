@@ -266,6 +266,8 @@ public class Utility {
 			return new DoubleQuoteToken(parent, begin);
 		case BACK_QUOTES:
 			return new BackQuoteToken(parent, begin);
+		case PIPE:
+			return new PipeToken(parent, begin);
 		case NORMAL:
 			return new NormalToken(parent, begin);
 		default:
