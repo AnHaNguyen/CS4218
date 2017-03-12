@@ -114,6 +114,7 @@ public class SortApplication implements Sort {
 					toSort += System.lineSeparator();
 				}
 			}
+			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SortException(Constants.Common.INVALID_PATH);
@@ -130,6 +131,7 @@ public class SortApplication implements Sort {
 				toSort.add(line);
 				line = br.readLine();
 			}
+			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
