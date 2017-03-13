@@ -13,7 +13,7 @@ import sg.edu.nus.comp.cs4218.impl.token.AbstractToken.TokenType;
 public class CommandFactory {
   
 	public CommandFactory() {
-		
+		// constructor
 	}
 	
 	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
@@ -25,7 +25,13 @@ public class CommandFactory {
 				return new SeqCommand(trimmed);
 			}
 		}
-
+		
+		for (AbstractToken token: tokens) {
+			if (token.getType() == TokenType.PIPE) {
+				return new PipeCommand(trimmed);
+			}
+		}
+		
 		return new CallCommand(trimmed);
 	}
 	

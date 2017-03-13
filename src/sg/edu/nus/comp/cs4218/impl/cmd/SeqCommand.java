@@ -57,7 +57,6 @@ public class SeqCommand implements Command {
 	@Override
 	public void terminate() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
