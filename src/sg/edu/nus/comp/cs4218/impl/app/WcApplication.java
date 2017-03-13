@@ -148,6 +148,8 @@ public class WcApplication implements Wc {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(args));
 			String fileContents = readAndConvertToString(br);
+			//Uncomment this to convert Windows to Linux counts
+			//fileContents = fileContents.replace(System.lineSeparator(), "\n");
 			Integer bytesLength = getByteCount(fileContents);
 			return bytesLength.toString();
 		} catch (Exception e) {
