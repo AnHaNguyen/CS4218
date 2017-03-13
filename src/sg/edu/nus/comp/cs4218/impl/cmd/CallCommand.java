@@ -41,10 +41,12 @@ public class CallCommand implements Command {
 	public static final String EXP_STDOUT = "Error writing to stdout.";
 	public static final String EXP_NOT_SUPPORTED = " not supported yet";
 
-	String app;
-	String cmdline, inputStreamS, outputStreamS;
-	String processedCommand;
-	List<String> cmdTokens;
+	private String app;
+	private String cmdline;
+	private String inputStreamS;
+	private String outputStreamS;
+	private String processedCommand;
+	private List<String> cmdTokens;
 	
 	public static void main(String[] args) throws AbstractApplicationException, ShellException, IOException {
 		Scanner sc = new Scanner(System.in);
@@ -83,7 +85,7 @@ public class CallCommand implements Command {
 		if (cmdTokens.isEmpty()) {
 			return;
 		}
-
+		
 		if (inputStreamS != null && inputStreamS.equals(outputStreamS)) {
 			throw new ShellException(EXP_SAME_REDIR);
 		}
