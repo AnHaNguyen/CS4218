@@ -28,12 +28,12 @@ public class SortApplication implements Sort {
 				throw new SortException(Constants.Common.NULL_ARGS);
 			}
 		}
-		if (args.length>2) {
+		else if (args.length>2) {
 			throw new SortException(Constants.Common.INVALID_NUMBER_ARGUMENTS);
 		}
 
 		//Normal sort
-		if (args.length == 1) {
+		else if (args.length == 1) {
 			//Sort from file
 			if (!args[0].equals("-n")) {
 				toSort = readFile(args[0]);

@@ -180,7 +180,7 @@ public class Utility {
 
 		int rightStep = middle+1;
 		T rightVal = null;
-
+		
 		//Initialize tempArr with T objects of values' size
 		//ArrayList<T> tempList = new ArrayList<T>(Collections.nCopies(stepCount, values[0]));
 		ArrayList<T> tempList = new ArrayList<T>();
@@ -193,7 +193,7 @@ public class Utility {
 			//If 1 of the 2 lists is already exhausted, add the remaining sorted items to list
 			else {
 				if (leftStep == middle+1) {
-					for (int j = rightStep; j<stepCount; j++) {
+					for (int j = rightStep; j<=right; j++) {
 						rightVal = values[j];
 						tempList.add(rightVal);
 					}
