@@ -1,5 +1,6 @@
 /bin
 .idea/
 test.txt
+*.txt
 CS4218_project.iml
 randoop-test/
