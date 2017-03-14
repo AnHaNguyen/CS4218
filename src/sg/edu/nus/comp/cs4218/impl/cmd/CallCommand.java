@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,11 +46,10 @@ public class CallCommand implements Command {
 	private String cmdline;
 	private String inputStreamS;
 	private String outputStreamS;
-	private InputStream inputStream;
-	private OutputStream outputStream;
 	private String processedCommand;
 	private List<String> cmdTokens;
-	private boolean closeOutput;
+	private InputStream inputStream;
+	private OutputStream outputStream;
 	
 	public static void main(String[] args) throws AbstractApplicationException, ShellException, IOException {
 		Scanner sc = new Scanner(System.in);
@@ -62,7 +62,6 @@ public class CallCommand implements Command {
 	public CallCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
 		this.app = "";
 		this.cmdline = cmdLine.trim();
-		this.closeOutput = false;
 		this.processedCommand = processBackquotes(cmdline);
 		this.cmdTokens = splitArguments(processedCommand);
 		this.inputStreamS = extractInputRedir(cmdTokens);
@@ -111,6 +110,7 @@ public class CallCommand implements Command {
 		
 		String[] args = argsList.toArray(new String[argsList.size()]);
 		ApplicationFactory.runApp(app, args, inputStream, outputStream);
+		terminate();
 	}
 	
 	/**
@@ -313,11 +313,15 @@ public class CallCommand implements Command {
 	@Override
 	public void terminate() {
 		try {
-			if (outputStream != null && closeOutput) {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			if (outputStream != null && 
+					outputStream.getClass() == PipedOutputStream.class) {
 				outputStream.close();
 			}
 		} catch (IOException e) {
-			// do nothing
+			
 		}
 	}
 	
@@ -442,10 +446,6 @@ public class CallCommand implements Command {
 		}
 		
 		return result;
-	}
-	
-	public void setCloseOutput(boolean closeOutput) {
-		this.closeOutput = closeOutput;
 	}
 	
 	@Override

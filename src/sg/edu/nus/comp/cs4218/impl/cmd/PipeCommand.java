@@ -69,10 +69,8 @@ public class PipeCommand implements Command {
 				CallCommand command = commands.get(i);
 				if (i != commands.size() - 1) {
 					currentOutput = new PipedOutputStream();
-					command.setCloseOutput(true);
 				} else {
 					currentOutput = stdout;
-					command.setCloseOutput(false);
 				}
 				
 				ShellThread thread = new ShellThread(command, currentInput, currentOutput);

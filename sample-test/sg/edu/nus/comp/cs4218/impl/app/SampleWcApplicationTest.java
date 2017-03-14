@@ -187,7 +187,8 @@ public class SampleWcApplicationTest {
 		String emptyFileExpected = String.format("0 0 0 %s%s", TEST_FILE_EMPTY, LINE_SEPARATOR);
 		String singleWordFileExpected = String.format("5 1 1 %s%s", TEST_FILE_SINGLE_WORD,
 				LINE_SEPARATOR);
-		String titlesFileExpected = String.format("4129 717 251 %s%s", TEST_FILE_TITLES,
+		long titlesLength = (new File(TEST_FILE_TITLES)).length();
+		String titlesFileExpected = String.format(String.valueOf(titlesLength)+" 717 251 %s%s", TEST_FILE_TITLES,
 				LINE_SEPARATOR);
 		String expectedResult = String.format("%s%s%s", emptyFileExpected, singleWordFileExpected, titlesFileExpected);
 		assertEquals(expectedResult, stdout.toString());
