@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-//import java.util.Arrays;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
@@ -48,11 +47,12 @@ public class CatApplication implements Application {
 		if (stdout == null) {
 			throw new CatException("stdout is null");
 		}
-		
+
 		if (args == null || args.length == 0) {
 			if (stdin == null || stdout == null) {
 				throw new CatException("Null Pointer Exception");
 			}
+			
 			try {
 				int intCount;
 				while ((intCount = stdin.read()) != -1) {
@@ -60,6 +60,7 @@ public class CatApplication implements Application {
 				}
 				
 				stdout.write(System.lineSeparator().getBytes());
+				stdout.flush();
 			} catch (Exception exIO) {
 				throw new CatException("Error reading from stdin");
 			}
@@ -93,6 +94,12 @@ public class CatApplication implements Application {
 						}
 					}
 					
+					try {
+						stdout.close();
+					} catch (Exception e) {
+						
+					}
+					
 				}
 			}
 		}
@@ -108,14 +115,12 @@ public class CatApplication implements Application {
 	 *             If the file is not readable
 	 */
 	boolean checkIfFileIsReadable(Path filePath) throws CatException {
-		//System.out.println("File path = " + filePath.toString());
 		if (Files.isDirectory(filePath)) {
 			throw new CatException("This is a directory");
 		}
 		if (Files.exists(filePath) && Files.isReadable(filePath)) {
 			return true;
 		} else {
-			//System.out.println("Error here");
 			throw new CatException("Could not read file");
 		}
 	}

@@ -100,7 +100,6 @@ public class GrepApplication implements Grep{
 			String line = "";
 			Pattern pattern = Pattern.compile(args);
 			while((line = br.readLine()) != null) {
-				System.out.println(line);
 				Matcher m = pattern.matcher(line);
 				if (line.contains(args) || m.find()) {
 					outString += line + NEW_LINE;

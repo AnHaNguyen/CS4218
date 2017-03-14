@@ -31,6 +31,8 @@ public class ShellThread extends Thread {
 			this.shellException = e;
 		} catch (AbstractApplicationException e) {
 			this.appException = e;
+		} finally {
+			command.terminate();
 		}
 	}
 	

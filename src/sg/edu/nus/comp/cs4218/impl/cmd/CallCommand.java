@@ -45,8 +45,11 @@ public class CallCommand implements Command {
 	private String cmdline;
 	private String inputStreamS;
 	private String outputStreamS;
+	private InputStream inputStream;
+	private OutputStream outputStream;
 	private String processedCommand;
 	private List<String> cmdTokens;
+	private boolean closeOutput;
 	
 	public static void main(String[] args) throws AbstractApplicationException, ShellException, IOException {
 		Scanner sc = new Scanner(System.in);
@@ -59,6 +62,7 @@ public class CallCommand implements Command {
 	public CallCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
 		this.app = "";
 		this.cmdline = cmdLine.trim();
+		this.closeOutput = false;
 		this.processedCommand = processBackquotes(cmdline);
 		this.cmdTokens = splitArguments(processedCommand);
 		this.inputStreamS = extractInputRedir(cmdTokens);
@@ -92,12 +96,12 @@ public class CallCommand implements Command {
 
 		//expand Glob after processing quote and input/output streams
 		cmdTokens = expandGlob();
-		InputStream inputStream = getInputStream();
+		inputStream = getInputStream();
 		if (inputStream == null) {
 			inputStream = stdin;
 		}
 		
-		OutputStream outputStream = getOutputStream();
+		outputStream = getOutputStream();
 		if (outputStream == null) {
 			outputStream = stdout;
 		}
@@ -308,8 +312,13 @@ public class CallCommand implements Command {
 	 */
 	@Override
 	public void terminate() {
-		// TODO Auto-generated method stub
-
+		try {
+			if (outputStream != null && closeOutput) {
+				outputStream.close();
+			}
+		} catch (IOException e) {
+			// do nothing
+		}
 	}
 	
 	/**
@@ -431,7 +440,12 @@ public class CallCommand implements Command {
 				result.add(token);
 			}
 		}
+		
 		return result;
+	}
+	
+	public void setCloseOutput(boolean closeOutput) {
+		this.closeOutput = closeOutput;
 	}
 	
 	@Override
