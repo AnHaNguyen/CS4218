@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,6 +48,8 @@ public class CallCommand implements Command {
 	private String outputStreamS;
 	private String processedCommand;
 	private List<String> cmdTokens;
+	private InputStream inputStream;
+	private OutputStream outputStream;
 	
 	public static void main(String[] args) throws AbstractApplicationException, ShellException, IOException {
 		Scanner sc = new Scanner(System.in);
@@ -92,12 +95,12 @@ public class CallCommand implements Command {
 
 		//expand Glob after processing quote and input/output streams
 		cmdTokens = expandGlob();
-		InputStream inputStream = getInputStream();
+		inputStream = getInputStream();
 		if (inputStream == null) {
 			inputStream = stdin;
 		}
 		
-		OutputStream outputStream = getOutputStream();
+		outputStream = getOutputStream();
 		if (outputStream == null) {
 			outputStream = stdout;
 		}
@@ -107,6 +110,7 @@ public class CallCommand implements Command {
 		
 		String[] args = argsList.toArray(new String[argsList.size()]);
 		ApplicationFactory.runApp(app, args, inputStream, outputStream);
+		terminate();
 	}
 	
 	/**
@@ -308,8 +312,17 @@ public class CallCommand implements Command {
 	 */
 	@Override
 	public void terminate() {
-		// TODO Auto-generated method stub
-
+		try {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			if (outputStream != null && 
+					outputStream.getClass() == PipedOutputStream.class) {
+				outputStream.close();
+			}
+		} catch (IOException e) {
+			
+		}
 	}
 	
 	/**
