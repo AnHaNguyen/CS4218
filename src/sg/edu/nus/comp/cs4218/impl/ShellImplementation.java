@@ -58,7 +58,6 @@ public class ShellImplementation implements Shell {
 				
 				Command command = CommandFactory.getCommand(readLine);
 				command.evaluate(System.in, System.out);
-				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

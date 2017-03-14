@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+//import java.util.Arrays;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.Environment;
@@ -47,6 +48,7 @@ public class CatApplication implements Application {
 		if (stdout == null) {
 			throw new CatException("stdout is null");
 		}
+		
 		if (args == null || args.length == 0) {
 			if (stdin == null || stdout == null) {
 				throw new CatException("Null Pointer Exception");
@@ -56,14 +58,13 @@ public class CatApplication implements Application {
 				while ((intCount = stdin.read()) != -1) {
 					stdout.write(intCount);
 				}
+				
 				stdout.write(System.lineSeparator().getBytes());
 			} catch (Exception exIO) {
 				throw new CatException("Error reading from stdin");
 			}
 		} else {
-
 			int numOfFiles = args.length;
-
 			if (numOfFiles > 0) {
 				Path filePath;
 				Path[] filePathArray = new Path[numOfFiles];
@@ -107,7 +108,6 @@ public class CatApplication implements Application {
 	 *             If the file is not readable
 	 */
 	boolean checkIfFileIsReadable(Path filePath) throws CatException {
-		
 		if (Files.isDirectory(filePath)) {
 			throw new CatException("This is a directory");
 		}

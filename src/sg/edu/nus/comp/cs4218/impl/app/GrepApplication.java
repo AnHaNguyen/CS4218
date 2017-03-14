@@ -107,8 +107,9 @@ public class GrepApplication implements Grep{
 			}
 			br.close();
 		} catch (IOException e) {
-			throw new GrepException("Unable to read stdin");
+			// end of input
 		}
+		
 		return outString;
 	}
 

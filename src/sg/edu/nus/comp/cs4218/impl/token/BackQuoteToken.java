@@ -44,7 +44,8 @@ public class BackQuoteToken extends AbstractToken {
 		checkValid();
 		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
 		
-		// run backquote command here		
+		// run backquote command here
+		// command substitution 
 		String cmdLine = parent.substring(begin + 1, end);
 		try {
 			Command command = CommandFactory.getCommand(cmdLine);
