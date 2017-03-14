@@ -2,5 +2,6 @@
 .idea/
 test.txt
 *.txt
+.DS_Store
 CS4218_project.iml
 randoop-test/

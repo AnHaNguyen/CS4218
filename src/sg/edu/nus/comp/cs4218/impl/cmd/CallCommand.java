@@ -444,6 +444,7 @@ public class CallCommand implements Command {
 				result.add(token);
 			}
 		}
+		
 		return result;
 	}
 	
