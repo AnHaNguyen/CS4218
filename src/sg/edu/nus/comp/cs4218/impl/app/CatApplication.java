@@ -108,14 +108,12 @@ public class CatApplication implements Application {
 	 *             If the file is not readable
 	 */
 	boolean checkIfFileIsReadable(Path filePath) throws CatException {
-		//System.out.println("File path = " + filePath.toString());
 		if (Files.isDirectory(filePath)) {
 			throw new CatException("This is a directory");
 		}
 		if (Files.exists(filePath) && Files.isReadable(filePath)) {
 			return true;
 		} else {
-			//System.out.println("Error here");
 			throw new CatException("Could not read file");
 		}
 	}
