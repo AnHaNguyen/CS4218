@@ -10,5 +10,3 @@ sg.edu.nus.comp.cs4218.impl.app.PwdApplication
 sg.edu.nus.comp.cs4218.impl.app.SedApplication
 sg.edu.nus.comp.cs4218.impl.app.SortApplication
 sg.edu.nus.comp.cs4218.impl.app.WcApplication
-sg.edu.nus.comp.cs4218.impl.cmd.CallCommand
-sg.edu.nus.comp.cs4218.impl.cmd.SeqCommand

@@ -70,6 +70,9 @@ public class SedApplication implements Sed {
 	
 	@Override
 	public String replaceFirstSubStringInFile(String args) throws SedException {
+		if (file == null || regexp == null || replacement == null) {
+			throw new SedException("Null Pointer Exception");
+		}
 		String output = "";
 		boolean isFileEmpty = true;
 		try {
@@ -94,6 +97,9 @@ public class SedApplication implements Sed {
 
 	@Override
 	public String replaceAllSubstringsInFile(String args) throws SedException {
+		if (file == null || regexp == null || replacement == null) {
+			throw new SedException("Null Pointer Exception");
+		}
 		String output = "";
 		boolean isFileEmpty = true;
 		try {
@@ -118,6 +124,9 @@ public class SedApplication implements Sed {
 
 	@Override
 	public String replaceFirstSubStringFromStdin(String args) throws SedException {
+		if (inputStream == null || regexp == null || replacement == null) {
+			throw new SedException("Null Pointer Exception");
+		}
 		String output = "";
 		boolean isStreamEmpty = true;
 		try {
@@ -142,6 +151,9 @@ public class SedApplication implements Sed {
 
 	@Override
 	public String replaceAllSubstringsInStdin(String args) throws SedException {
+		if (inputStream == null || regexp == null || replacement == null) {
+			throw new SedException("Null Pointer Exception");
+		}
 		String output = "";
 		boolean isStreamEmpty = true;
 		try {

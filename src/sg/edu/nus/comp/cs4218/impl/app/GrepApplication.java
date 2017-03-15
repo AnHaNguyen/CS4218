@@ -94,6 +94,9 @@ public class GrepApplication implements Grep{
 	
 	@Override
 	public String grepFromStdin(String args) throws GrepException {
+		if (is == null) {
+			throw new GrepException("Null Pointer Exception");
+		}
 		String outString = "";
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		try {
@@ -115,6 +118,9 @@ public class GrepApplication implements Grep{
 
 	@Override
 	public String grepFromOneFile(String args) throws GrepException {
+		if (file == null) {
+			throw new GrepException("Null Pointer Exception");
+		}
 		String outString = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 		    String line;
@@ -133,6 +139,9 @@ public class GrepApplication implements Grep{
 
 	@Override
 	public String grepFromMultipleFiles(String args) throws GrepException {
+		if (files == null) {
+			throw new GrepException("Null Pointer Exception");
+		}
 		String outString = "";
 		for (int i = 0; i < files.length; i++) {
 			try (BufferedReader br = new BufferedReader(new FileReader(files[i]))) {
