@@ -53,7 +53,7 @@ public class WcApplication implements Wc {
 				BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 				String streamContents = null;
 				try {
-					streamContents = readAndConvertToString(br);
+					streamContents = outputString(br);
 				} catch (IOException e) {
 					throw new WcException("Cannot read input stream");
 				}
@@ -147,7 +147,7 @@ public class WcApplication implements Wc {
 	public String printCharacterCountInFile(String args) throws WcException {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(args));
-			String fileContents = readAndConvertToString(br);
+			String fileContents = outputString(br);
 			//Uncomment this to convert Windows to Linux counts
 			//fileContents = fileContents.replace(System.lineSeparator(), "\n");
 			Integer bytesLength = getByteCount(fileContents);
@@ -161,8 +161,8 @@ public class WcApplication implements Wc {
 	public String printWordCountInFile(String args) throws WcException {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(args));
-			String fileContents = readAndConvertToString(br);
-			Integer wordsLength = getWordsLength(fileContents);
+			String fileContents = outputString(br);
+			Integer wordsLength = getWordCount(fileContents);
 			return wordsLength.toString();
 		} catch (Exception e) {
 			throw new WcException(e.toString());
@@ -173,8 +173,8 @@ public class WcApplication implements Wc {
 	public String printNewlineCountInFile(String args) throws WcException {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(args));
-			String fileContents = readAndConvertToString(br);
-			Integer lineLength = getLineLength(fileContents);
+			String fileContents = outputString(br);
+			Integer lineLength = getLineCount(fileContents);
 			return lineLength.toString();
 		} catch (Exception e) {
 			throw new WcException(e.toString());
@@ -183,6 +183,9 @@ public class WcApplication implements Wc {
 
 	@Override
 	public String printAllCountsInFile(String args) throws WcException {
+		if (files == null || fileNames == null) {
+			throw new WcException("Null Pointer Exception");
+		}
 		String output = "";
 		for (int i = 0; i < files.size(); i++) {
 			String filePath = files.get(i);
@@ -207,7 +210,7 @@ public class WcApplication implements Wc {
 	@Override
 	public String printWordCountInStdin(String args) throws WcException {
 		try{
-			Integer bytesLength = getWordsLength(args);
+			Integer bytesLength = getWordCount(args);
 			return bytesLength.toString();
 		} catch (Exception e) {
 			throw new WcException(e.toString());
@@ -218,7 +221,7 @@ public class WcApplication implements Wc {
 	@Override
 	public String printNewlineCountInStdin(String args) throws WcException {
 		try{
-			Integer bytesLength = getLineLength(args);
+			Integer bytesLength = getLineCount(args);
 			return bytesLength.toString();
 		} catch (Exception e) {
 			throw new WcException(e.toString());
@@ -227,10 +230,13 @@ public class WcApplication implements Wc {
 
 	@Override
 	public String printAllCountsInStdin(String args) throws WcException {
+		if (inputStream == null) {
+			throw new WcException("Null Pointer Exception");
+		}
 		String output = "";
 		BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 		try {
-			String streamContents = readAndConvertToString(br);
+			String streamContents = outputString(br);
 			output += printCharacterCountInStdin(streamContents) + " ";
 			output += printWordCountInStdin(streamContents) + " ";
 			output += printNewlineCountInStdin(streamContents) + System.lineSeparator();
@@ -239,10 +245,8 @@ public class WcApplication implements Wc {
 		}
 		return output;
 	}
-	
 
-
-	public static String readAndConvertToString(BufferedReader reader)
+	private static String outputString(BufferedReader reader)
 			throws IOException {
 		StringBuilder builder = new StringBuilder();
 		int currentChar = reader.read();
@@ -254,7 +258,7 @@ public class WcApplication implements Wc {
 		return builder.toString();
 	}
 
-	public static int getByteCount(String fileContents) throws WcException {
+	private static int getByteCount(String fileContents) throws WcException {
 		if (fileContents == null) {
 			throw new WcException("Null Pointer Exception");
 		}
@@ -262,7 +266,7 @@ public class WcApplication implements Wc {
 		return fileContents.length();
 	}
 	
-	public static int getWordsLength(String fileContents) throws WcException {
+	private static int getWordCount(String fileContents) throws WcException {
 		int count = 0;
 		if (fileContents == null) {
 			throw new WcException("Null Pointer Exception");
@@ -277,11 +281,10 @@ public class WcApplication implements Wc {
 				count++;
 			}
 		}
-
 		return count;
 	}
 
-	public static int getLineLength(String fileContents) throws WcException {
+	private static int getLineCount(String fileContents) throws WcException {
 		if (fileContents == null) {
 			throw new WcException("Null Pointer Exception");
 		}
@@ -294,7 +297,6 @@ public class WcApplication implements Wc {
 				count++;
 			}
 		}
-
 		return count;
 	}
 
