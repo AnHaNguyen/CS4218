@@ -20,7 +20,9 @@ public class PwdWithGrepCommandTest {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
 		ShellImplementation shImpl = new ShellImplementation();
-		shImpl.parseAndEvaluate("pwd | grep 'Shell'", outStream);
+		String currentDir = System.getProperty("user.dir");
+		String testString = currentDir.substring(0);
+		shImpl.parseAndEvaluate("pwd | grep " + testString, outStream);
 		String expected = System.getProperty("user.dir") + System.lineSeparator();
 		
 		assertEquals(expected, outStream.toString());
