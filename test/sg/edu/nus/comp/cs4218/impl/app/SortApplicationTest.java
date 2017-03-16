@@ -228,7 +228,7 @@ public class SortApplicationTest {
 		SortApplication sortApp = new SortApplication();
 
 		sortApp.run(args, stdin, stdout);
-		assertEquals(expectedOutput, stdout.toString());
+		assertEquals(expectedOutput + System.lineSeparator(), stdout.toString());
 	}
 	
 	@Test
@@ -244,7 +244,7 @@ public class SortApplicationTest {
 		SortApplication sortApp = new SortApplication();
 
 		sortApp.run(args, stdin, stdout);
-		assertEquals(expectedOutput, stdout.toString());
+		assertEquals(expectedOutput + System.lineSeparator(), stdout.toString());
 	}
 	
 	@Test
@@ -264,7 +264,7 @@ public class SortApplicationTest {
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
 		sortApp.run(args, stdin, stdout);
-		assertEquals(expectedOutput, stdout.toString());
+		assertEquals(expectedOutput + System.lineSeparator(), stdout.toString());
 	}
 	
 	@Test
@@ -282,7 +282,7 @@ public class SortApplicationTest {
 		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
 
 		sortApp.run(args, stdin, stdout);
-		assertEquals(expectedOutput, stdout.toString());
+		assertEquals(expectedOutput + System.lineSeparator(), stdout.toString());
 	}
 	
 	@Test(expected = SortException.class)
