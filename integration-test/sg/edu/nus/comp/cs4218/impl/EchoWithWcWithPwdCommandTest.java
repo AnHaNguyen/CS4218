@@ -3,6 +3,7 @@ package sg.edu.nus.comp.cs4218.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import org.junit.Test;
 
@@ -21,7 +22,9 @@ public class EchoWithWcWithPwdCommandTest {
 
 		ShellImplementation shImpl = new ShellImplementation();
 		shImpl.parseAndEvaluate("echo `wc test-data/SubCommandTestFiles/SubCommand.txt` `pwd`", outStream);
-		String expected = "98 19 3 test-data/SubCommandTestFiles/SubCommand.txt "
+		String file = "test-data/SubCommandTestFiles/SubCommand.txt";
+		long byteCount = new File(file).length();
+		String expected = byteCount+" 19 3 test-data/SubCommandTestFiles/SubCommand.txt "
 				+ System.getProperty("user.dir") + System.lineSeparator();
 		assertEquals(expected, outStream.toString());
 	}
