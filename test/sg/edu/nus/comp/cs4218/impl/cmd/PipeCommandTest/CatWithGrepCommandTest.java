@@ -82,7 +82,7 @@ public class CatWithGrepCommandTest {
 	/*
 	 * Negative test: Cat application throws exception when file does not exist
 	 */
-	@Test//(expected = Exception.class)
+	@Test(expected = Exception.class)
 	public void testGrepWithCatFailing() throws AbstractApplicationException,
 			ShellException {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -94,33 +94,36 @@ public class CatWithGrepCommandTest {
 	
 	@Test
 	public void testPipeTwoCommands() throws AbstractApplicationException, ShellException {
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator() 
 		+ "Apple is life!" + System.lineSeparator();
-		String args = "cat test-data/testPipe.txt | grep “Apple”";
+		//String args = "cat test-data/testPipe.txt | grep 'Apple'";
 		ShellImplementation shell = new ShellImplementation();
-		String output = shell.pipeTwoCommands(args);
+		shell.parseAndEvaluate("cat test-data/testPipe.txt | grep 'Apple'", outStream);
 
-		assertEquals(expectedOutput, output);
+		assertEquals(expectedOutput, outStream.toString());
 	}
 
 	@Test
 	public void testPipeMultipleCommands() throws AbstractApplicationException, ShellException {
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator();
-		String args = "cat test-data/testPipe.txt | grep “Apple” | grep carrot";
+		//String args = "cat test-data/testPipe.txt | grep 'Apple' | grep carrot";
 		ShellImplementation shell = new ShellImplementation();
-		String output = shell.pipeMultipleCommands(args);
+		shell.parseAndEvaluate("cat test-data/testPipe.txt | grep 'Apple' | grep carrot", outStream);
 
-		assertEquals(expectedOutput, output);
+		assertEquals(expectedOutput, outStream.toString());
 	}
 
 	@Test(expected = Exception.class)
 	public void testPipeWithException() throws AbstractApplicationException, ShellException {
-		String expectedOutput = "Exception!!!" ;
-		String args = "cat test-data/testPipeNotExist.txt | grep “Apple” | grep carrot";
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();		
+		//String expectedOutput = "Exception!!!" ;
+		//String args = "cat test-data/testPipeNotExist.txt | grep 'Apple' | grep carrot";
 		ShellImplementation shell = new ShellImplementation();
-		String output = shell.pipeWithException(args);
+		shell.parseAndEvaluate("cat test-data/testPipeNotExist.txt | grep 'Apple' | grep carrot", outStream);
 
-		assertEquals(expectedOutput, output);
+		//assertEquals(expectedOutput, output);
 	}
 
 }
