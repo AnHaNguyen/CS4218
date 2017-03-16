@@ -32,6 +32,6 @@ public class PwdWithGrepCommandTest {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
 		ShellImplementation shImpl = new ShellImplementation();
-		shImpl.parseAndEvaluate("pwd | grep ", outStream);
+		shImpl.parseAndEvaluate("pwd | grep", outStream);
 	}
 }
