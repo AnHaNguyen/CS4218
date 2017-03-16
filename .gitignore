@@ -1,8 +1,9 @@
 /bin
 .idea/
 test.txt
-*.txt
 .DS_Store
 CS4218_project.iml
 randoop-test/
-!test-data/*
+input.txt
+output.txt
+out.txt

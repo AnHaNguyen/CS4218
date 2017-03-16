@@ -28,6 +28,9 @@ public class HeadApplication implements Application{
 		switch (args.length) {
 		case 0: 
 			totalReadLine = 10;
+			if (stdin == null) {
+				throw new HeadException("Null Stdin");
+			}
 			is = stdin;
 			break;
 		case 1:
@@ -42,6 +45,9 @@ public class HeadApplication implements Application{
 			}
 			break;
 		case 2:
+			if (stdin == null) {
+				throw new HeadException("Null Stdin");
+			}
 			is = stdin;
 			if (args[0].equals("-n")) {
 				try {
@@ -81,7 +87,6 @@ public class HeadApplication implements Application{
 		}
 		try {
 			printHeadToStdout(is, totalReadLine, stdout);
-			is.close();
 		} catch (IOException e) {
 			throw new HeadException("Error reading input stream");
 		}

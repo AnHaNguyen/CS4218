@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -87,7 +88,7 @@ public class HeadApplicationTest {
 		args = new String[2];
 		args[0] = "";
 		args[1] = "";
-		headApplication.run(args, null, testOutputStream);
+		headApplication.run(args, new ByteArrayInputStream("".getBytes()), testOutputStream);
 
 		expectedEx.expect(HeadException.class);
 		expectedEx.expectMessage("head: Invalid arguments");
@@ -95,7 +96,7 @@ public class HeadApplicationTest {
 		args[0] = "";
 		args[1] = "";
 		args[2] = "";
-		headApplication.run(args, null, testOutputStream);
+		headApplication.run(args, new ByteArrayInputStream("".getBytes()), testOutputStream);
 	}
 
 	@Test
@@ -104,7 +105,7 @@ public class HeadApplicationTest {
 		expectedEx.expectMessage("head: Invalid number of lines to be read");
 		HeadApplication headApplication = new HeadApplication();
 		ByteArrayOutputStream testOutputStream = new ByteArrayOutputStream();
-		headApplication.run(new String[]{"-n","-1"}, null, testOutputStream);
+		headApplication.run(new String[]{"-n","-1"}, new ByteArrayInputStream("".getBytes()), testOutputStream);
 	}
 
 	@Test
