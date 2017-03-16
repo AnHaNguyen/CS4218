@@ -71,7 +71,7 @@ public class EchoWithGrepCommandTest {
 	 * Negative test: Grep application throws exception because echo returns
 	 * empty string
 	 */
-	@Test //(expected = Exception.class)
+	@Test(expected = Exception.class)
 	public void testEchoWithGrepFailing() throws AbstractApplicationException,
 			ShellException {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();

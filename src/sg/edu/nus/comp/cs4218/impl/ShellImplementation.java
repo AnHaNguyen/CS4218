@@ -56,8 +56,9 @@ public class ShellImplementation implements Shell {
 					continue;
 				}
 				
-				Command command = CommandFactory.getCommand(readLine);
-				command.evaluate(null, System.out);
+				parseAndEvaluate(readLine, System.out);
+				//Command command = CommandFactory.getCommand(readLine);
+				//command.evaluate(null, System.out);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -79,9 +80,13 @@ public class ShellImplementation implements Shell {
 	}
 
 	@Override
-	public void parseAndEvaluate(String cmdline, OutputStream stdout)
-			throws AbstractApplicationException, ShellException {	
-		return;
+	public void parseAndEvaluate(String cmdline, OutputStream stdout) throws ShellException, AbstractApplicationException {	
+		try {
+			Command command = CommandFactory.getCommand(cmdline);
+			command.evaluate(null, stdout);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
