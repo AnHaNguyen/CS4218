@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -87,7 +88,7 @@ public class TailApplicationTest {
 		args = new String[2];
 		args[0] = "";
 		args[1] = "";
-		tailApplication.run(args, null, testOutputStream);
+		tailApplication.run(args, new ByteArrayInputStream("".getBytes()), testOutputStream);
 
 		expectedEx.expect(TailException.class);
 		expectedEx.expectMessage("tail: Invalid arguments");
@@ -95,7 +96,7 @@ public class TailApplicationTest {
 		args[0] = "";
 		args[1] = "";
 		args[2] = "";
-		tailApplication.run(args, null, testOutputStream);
+		tailApplication.run(args, new ByteArrayInputStream("".getBytes()), testOutputStream);
 	}
 
 	@Test
@@ -104,7 +105,7 @@ public class TailApplicationTest {
 		expectedEx.expectMessage("tail: Invalid number of lines to be read");
 		TailApplication tailApplication = new TailApplication();
 		ByteArrayOutputStream testOutputStream = new ByteArrayOutputStream();
-		tailApplication.run(new String[]{"-n","-1"}, null, testOutputStream);
+		tailApplication.run(new String[]{"-n","-1"}, new ByteArrayInputStream("".getBytes()), testOutputStream);
 	}
 
 	@Test

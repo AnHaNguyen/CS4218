@@ -12,6 +12,7 @@ import java.util.Vector;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
+import sg.edu.nus.comp.cs4218.exception.HeadException;
 import sg.edu.nus.comp.cs4218.exception.TailException;
 
 public class TailApplication implements Application {
@@ -32,6 +33,9 @@ public class TailApplication implements Application {
 		switch (args.length) {
 		case 0: 
 			totalReadLine = 10;
+			if (stdin == null) {
+				throw new TailException("Null Stdin");
+			}
 			is = stdin;
 			break;
 		case 1:
@@ -46,6 +50,9 @@ public class TailApplication implements Application {
 			}
 			break;
 		case 2:
+			if (stdin == null) {
+				throw new TailException("Null Stdin");
+			}
 			is = stdin;
 			if (args[0].equals("-n")) {
 				try {
@@ -85,7 +92,6 @@ public class TailApplication implements Application {
 		}
 		try {
 			printTailToStdout(is, totalReadLine, stdout);
-			is.close();
 		} catch (IOException e) {
 			throw new TailException("Error reading input stream");
 		}
@@ -95,7 +101,7 @@ public class TailApplication implements Application {
 		Vector<String> lineList = new Vector<String>();
 		String str;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        if (is != null) {                            
+		if (is != null) {                            
         	while ((str = reader.readLine()) != null) {    
         		lineList.add(str);
             }                
