@@ -11,7 +11,7 @@ import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
 
-public class TailWithGrepAndWcCommandTest {
+public class TailWithGrepAndSedCommandTest {
 	@Test
 	public void testTailAndGrepAndSedSuccess() throws AbstractApplicationException,
 			ShellException {

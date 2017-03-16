@@ -1,10 +1,13 @@
 package sg.edu.nus.comp.cs4218.impl.app;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -29,7 +32,25 @@ public class SampleWcApplicationTest {
 	WcApplication app;
 	OutputStream stdout;
 	InputStream stdin;
-
+	
+	private int getByteCount(String file) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+		
+			StringBuilder builder = new StringBuilder();
+			int currentChar = reader.read();
+			while (currentChar != -1) {
+				builder.append((char) currentChar);
+				currentChar = reader.read();
+			}
+			reader.close();
+			return builder.length();
+			} catch (IOException e) {
+				fail();
+			}
+		return 0;
+	}
+	
 	@Before
 	public void setUp() throws Exception {
 		app = new WcApplication();
@@ -66,9 +87,11 @@ public class SampleWcApplicationTest {
 	@Test
 	public void testWcWithNoFlag() throws AbstractApplicationException {
 		String filePath = TEST_FILE_SINGLE_WORD;
+		int byteCount = getByteCount(filePath);
+		
 		String[] args = { filePath };
 		app.run(args, stdin, stdout);
-		assertEquals(String.format("5 1 1 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
+		assertEquals(String.format(byteCount + " 1 1 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
 	}
 
 	@Test(expected = AbstractApplicationException.class)
@@ -95,9 +118,10 @@ public class SampleWcApplicationTest {
 	@Test
 	public void testWcWithOnlyCharFlag() throws AbstractApplicationException {
 		String filePath = TEST_FILE_SINGLE_WORD;
+		int byteCount = getByteCount(filePath);
 		String[] args = { "-m", filePath };
 		app.run(args, stdin, stdout);
-		assertEquals(String.format("5 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
+		assertEquals(String.format(byteCount + " %s%s", filePath, LINE_SEPARATOR), stdout.toString());
 	}
 
 	@Test
@@ -119,17 +143,19 @@ public class SampleWcApplicationTest {
 	@Test
 	public void testWcWithComplexFlags() throws AbstractApplicationException {
 		String filePath = TEST_FILE_SINGLE_WORD;
+		int byteCount = getByteCount(filePath);
 		String[] args = { "-m", "-l", "-w", filePath };
 		app.run(args, stdin, stdout);
-		assertEquals(String.format("5 1 1 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
+		assertEquals(String.format(byteCount+" 1 1 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
 	}
 
 	@Test
 	public void testWcWithMultipleSingleFlags() throws AbstractApplicationException {
 		String filePath = TEST_FILE_SINGLE_WORD;
 		String[] args = { "-w", "-m", "-l", filePath };
+		int byteCount = getByteCount(filePath);
 		app.run(args, stdin, stdout);
-		assertEquals(String.format("1 5 1 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
+		assertEquals(String.format("1 "+byteCount+" 1 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
 	}
 
 	@Test(expected = AbstractApplicationException.class)
@@ -185,7 +211,8 @@ public class SampleWcApplicationTest {
 		String[] args = { TEST_FILE_EMPTY, TEST_FILE_SINGLE_WORD, TEST_FILE_TITLES };
 		app.run(args, stdin, stdout);
 		String emptyFileExpected = String.format("0 0 0 %s%s", TEST_FILE_EMPTY, LINE_SEPARATOR);
-		String singleWordFileExpected = String.format("5 1 1 %s%s", TEST_FILE_SINGLE_WORD,
+		int byteCount = getByteCount(TEST_FILE_SINGLE_WORD);
+		String singleWordFileExpected = String.format(byteCount+" 1 1 %s%s", TEST_FILE_SINGLE_WORD,
 				LINE_SEPARATOR);
 		long titlesLength = (new File(TEST_FILE_TITLES)).length();
 		String titlesFileExpected = String.format(String.valueOf(titlesLength)+" 717 251 %s%s", TEST_FILE_TITLES,
@@ -229,7 +256,8 @@ public class SampleWcApplicationTest {
 	public void testWcWithBothStdinAndFile() throws AbstractApplicationException {
 		String[] args = { TEST_FILE_SINGLE_WORD };
 		stdin = new ByteArrayInputStream("not single word".getBytes());
-		String singleWordFileExpected = String.format("5 1 1 %s%s", TEST_FILE_SINGLE_WORD,
+		int byteCount = getByteCount(TEST_FILE_SINGLE_WORD);
+		String singleWordFileExpected = String.format(byteCount +" 1 1 %s%s", TEST_FILE_SINGLE_WORD,
 				LINE_SEPARATOR);
 		app.run(args, stdin, stdout);
 		assertEquals(singleWordFileExpected, stdout.toString());
