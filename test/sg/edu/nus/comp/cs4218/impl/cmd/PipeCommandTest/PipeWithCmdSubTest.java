@@ -59,7 +59,7 @@ public class PipeWithCmdSubTest {
 		shImpl.parseAndEvaluate(
 				"echo `cat test-data/testPipe2.txt | grep '1'`",
 				outStream);
-		String expected = "12 1\n";
+		String expected = "12 1" + System.lineSeparator();
 		assertEquals(expected, outStream.toString());
 	}
 	
@@ -72,7 +72,7 @@ public class PipeWithCmdSubTest {
 		shImpl.parseAndEvaluate(
 				"echo `cat test-data/testPipe2.txt | head -n 3`",
 				outStream);
-		String expected = "Carrot apple Beetroot\n";
+		String expected = "Carrot apple Beetroot" + System.lineSeparator();
 		assertEquals(expected, outStream.toString());
 	}
 	
@@ -85,7 +85,7 @@ public class PipeWithCmdSubTest {
 		shImpl.parseAndEvaluate(
 				"echo `cat test-data/testPipe2.txt | tail -n 4`",
 				outStream);
-		String expected = "+ 2 12 1\n";
+		String expected = "+ 2 12 1" + System.lineSeparator();
 		assertEquals(expected, outStream.toString());
 	}
 }
