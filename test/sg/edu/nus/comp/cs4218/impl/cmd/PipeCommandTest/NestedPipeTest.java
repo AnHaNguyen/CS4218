@@ -18,9 +18,9 @@ public class NestedPipeTest {
 
 		ShellImplementation shImpl = new ShellImplementation();
 		shImpl.parseAndEvaluate(
-				"cat test-data/testPipe2.txt | head -n 3 | grep 'apple'`",
+				"cat test-data/testPipe2.txt | head -n 3 | grep 'apple'",
 				outStream);
-		String expected = "apple";
+		String expected = "apple" + System.lineSeparator();
 		assertEquals(expected, outStream.toString());
 	}
 	
@@ -31,11 +31,11 @@ public class NestedPipeTest {
 
 		ShellImplementation shImpl = new ShellImplementation();
 		shImpl.parseAndEvaluate(
-				"cat test-data/testPipe2.txt | tail -n 3 | grep '1'`",
+				"cat test-data/testPipe2.txt | tail -n 3 | grep '1'",
 				outStream);
 		String expected = "12"
 				+ System.lineSeparator()
-				+ "1";
+				+ "1" + System.lineSeparator();
 		assertEquals(expected, outStream.toString());
 	}
 }

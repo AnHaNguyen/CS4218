@@ -161,7 +161,7 @@ public class SampleSortApplicationTest {
 		ssa.run(null, numericStdin, System.out);
 		System.out.flush();
 		assertEquals("1" + System.lineSeparator() + "10" + System.lineSeparator() 
-		+ "2", baos.toString());
+		+ "2" + System.lineSeparator(), baos.toString());
 	}
 	
 	@Test
@@ -175,7 +175,7 @@ public class SampleSortApplicationTest {
 		ssa.run(args, null, System.out);
 		System.out.flush();
 		assertEquals("1" + System.lineSeparator() + "2" + System.lineSeparator() 
-		+ "10", baos.toString());
+		+ "10" + System.lineSeparator(), baos.toString());
 	}
 	
 	@Test
@@ -185,7 +185,7 @@ public class SampleSortApplicationTest {
 		System.setOut(pStream);
 		ssa.run(null, stdin, System.out);
 		System.out.flush();
-		assertEquals(sortedString , baos.toString());
+		assertEquals(sortedString + System.lineSeparator() , baos.toString());
 	}
 	
 	@Test
@@ -197,7 +197,7 @@ public class SampleSortApplicationTest {
 		args[0] = fileName;
 		ssa.run(args, null, System.out);
 		System.out.flush();
-		assertEquals(sortedString, baos.toString());
+		assertEquals(sortedString + System.lineSeparator(), baos.toString());
 	}
 	
 	@Test
@@ -207,7 +207,7 @@ public class SampleSortApplicationTest {
 		System.setOut(pStream);
 		ssa.run(null, emptyStdin, System.out);
 		System.out.flush();
-		assertEquals("" , baos.toString());
+		assertEquals(""+System.lineSeparator() , baos.toString());
 	}
 	
 	@Test
@@ -219,7 +219,7 @@ public class SampleSortApplicationTest {
 		args[0] = emptyFile;
 		ssa.run(args, null, System.out);
 		System.out.flush();
-		assertEquals("", baos.toString());
+		assertEquals(""+System.lineSeparator(), baos.toString());
 	}
 	
 //	@Test

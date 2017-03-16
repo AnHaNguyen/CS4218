@@ -62,7 +62,7 @@ public class SortApplication implements Sort {
 			result = sortFirstAsNum(toSort, toSortList);
 		}
 		try {
-			stdout.write(result.getBytes());
+			stdout.write((result + System.lineSeparator()).getBytes());
 		} catch (Exception e) {
 			throw new SortException(Constants.SortMessage.INVALID_OUT);
 		}
