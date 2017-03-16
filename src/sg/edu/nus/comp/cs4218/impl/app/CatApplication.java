@@ -88,16 +88,11 @@ public class CatApplication implements Application {
 									.readAllBytes(filePathArray[j]);
 							stdout.write(byteFileArray);
 							stdout.write(System.lineSeparator().getBytes());
+							stdout.flush();
 						} catch (IOException e) {
 							throw new CatException(
 									"Could not write to output stream");
 						}
-					}
-					
-					try {
-						stdout.close();
-					} catch (Exception e) {
-						
 					}
 					
 				}
