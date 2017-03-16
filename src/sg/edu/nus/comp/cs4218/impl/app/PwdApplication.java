@@ -21,7 +21,7 @@ public class PwdApplication implements Application{
 			stdout.write(Environment.getCurrentDirectory().getBytes());
 			stdout.write(System.lineSeparator().getBytes());
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new PwdException("Cannot write to stdout");
 		}
 	}

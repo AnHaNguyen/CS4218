@@ -2,14 +2,10 @@ package sg.edu.nus.comp.cs4218.impl;
 
 import static org.junit.Assert.assertEquals;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
-
 import org.junit.Test;
-
-
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 
 import sg.edu.nus.comp.cs4218.exception.ShellException;
