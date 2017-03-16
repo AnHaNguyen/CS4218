@@ -6,3 +6,7 @@ Assumptions for shell application:
 		+ For the options given, the output will be printed in the same order as the options. Ex: options = {"-w -m"}, then the output is wordCount byteCount.
 		+ If there are repeated options, eg {"-m -m"}, they are still treated as different options, ie output is byteCount byteCount.
 		+ There are no composite options, eg -mw, each options have to be given as "-" and either "m", "w", or "l"
+	-CalApplication:
+		+ Year must be >= 0.
+		+ Order of arugments ar {-m} {month} {year} ( -m can not appear after month or year, otherwise an error will be thrown.
+		
