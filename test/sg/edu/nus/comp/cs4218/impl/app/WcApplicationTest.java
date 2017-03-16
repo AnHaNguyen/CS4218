@@ -12,7 +12,25 @@ import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.WcException;
 
 public class WcApplicationTest {
-
+	
+	private int getByteCount(String file) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+		
+			StringBuilder builder = new StringBuilder();
+			int currentChar = reader.read();
+			while (currentChar != -1) {
+				builder.append((char) currentChar);
+				currentChar = reader.read();
+			}
+			reader.close();
+			return builder.length();
+			} catch (IOException e) {
+				fail();
+			}
+		return 0;
+	}
+	
 	@Rule
 	public ExpectedException expectedEx = ExpectedException.none();
 	
@@ -61,7 +79,8 @@ public class WcApplicationTest {
 		
 		String option = "-m";
 		String filePath = "test-data"+File.separator+"testWc.txt";
-		String expectedOutput = "37 " + filePath + System.lineSeparator();
+		int byteCount = getByteCount(filePath);
+		String expectedOutput = byteCount+" " + filePath + System.lineSeparator();
 		String[] args = new String[] { option, filePath };
 
 		WcApplication wcApp = new WcApplication();
@@ -107,7 +126,8 @@ public class WcApplicationTest {
 	public void testPrintAllCountsInFile() throws AbstractApplicationException {		
 		String filePath = "test-data"+File.separator+"testWc.txt";
 		String[] args = new String[] { filePath };
-		String expectedOutput = "37 6 1 " + filePath + System.lineSeparator();
+		int byteCount = getByteCount(filePath);
+		String expectedOutput = byteCount + " 6 1 " + filePath + System.lineSeparator();
 		
 		WcApplication wcApp = new WcApplication();
 		ByteArrayInputStream stdin = null;

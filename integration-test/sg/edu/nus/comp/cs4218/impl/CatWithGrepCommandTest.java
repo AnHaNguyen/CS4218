@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
-import sg.edu.nus.comp.cs4218.exception.CatException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.ShellImplementation;
 import sg.edu.nus.comp.cs4218.impl.app.*;
@@ -90,7 +89,6 @@ public class CatWithGrepCommandTest {
 
 		ShellImplementation shImpl = new ShellImplementation();
 		shImpl.parseAndEvaluate("cat a.txt | grep 'usage'", outStream);
-		assertEquals("", outStream.toString());
 	}
 	
 	@Test
@@ -98,7 +96,6 @@ public class CatWithGrepCommandTest {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator() 
 		+ "Apple is life!" + System.lineSeparator();
-		//String args = "cat test-data/testPipe.txt | grep 'Apple'";
 		ShellImplementation shell = new ShellImplementation();
 		shell.parseAndEvaluate("cat test-data/testPipe.txt | grep 'Apple'", outStream);
 
@@ -109,7 +106,6 @@ public class CatWithGrepCommandTest {
 	public void testPipeMultipleCommands() throws AbstractApplicationException, ShellException {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		String expectedOutput = "Apple beetroot carrot!" + System.lineSeparator();
-		//String args = "cat test-data/testPipe.txt | grep 'Apple' | grep carrot";
 		ShellImplementation shell = new ShellImplementation();
 		shell.parseAndEvaluate("cat test-data/testPipe.txt | grep 'Apple' | grep carrot", outStream);
 
@@ -119,11 +115,7 @@ public class CatWithGrepCommandTest {
 	@Test(expected = Exception.class)
 	public void testPipeWithException() throws AbstractApplicationException, ShellException {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();		
-		//String expectedOutput = "Exception!!!" ;
-		//String args = "cat test-data/testPipeNotExist.txt | grep 'Apple' | grep carrot";
 		ShellImplementation shell = new ShellImplementation();
 		shell.parseAndEvaluate("cat test-data/testPipeNotExist.txt | grep 'Apple' | grep carrot", outStream);
-
-		//assertEquals(expectedOutput, output);
 	}
 }

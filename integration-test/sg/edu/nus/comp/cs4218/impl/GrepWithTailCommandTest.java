@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 
 import org.junit.Test;
 
-
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.TailException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
