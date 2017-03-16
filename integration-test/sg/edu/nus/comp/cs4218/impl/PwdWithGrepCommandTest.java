@@ -3,6 +3,7 @@ package sg.edu.nus.comp.cs4218.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class PwdWithGrepCommandTest {
 
 		ShellImplementation shImpl = new ShellImplementation();
 		String currentDir = System.getProperty("user.dir");
-		String testString = currentDir.substring(0);
+		String testString = currentDir.substring(0,1);
 		shImpl.parseAndEvaluate("pwd | grep " + testString, outStream);
 		String expected = System.getProperty("user.dir") + System.lineSeparator();
 		
