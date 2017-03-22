@@ -166,7 +166,7 @@ public class TestFailed2 {
 	 * Those commands should cause shell to throw exceptions
 	 */
 	@Test(expected = Exception.class)
-	public void testGrepWithHeadInvalidFile()
+	public void testPipeWithInvalidComponent()
 			throws AbstractApplicationException, ShellException {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
