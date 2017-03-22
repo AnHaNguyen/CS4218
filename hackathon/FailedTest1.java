@@ -59,7 +59,12 @@ public class FailedTest1 {
 	public void testCalWithInvalidMonth() throws AbstractApplicationException, ShellException {
 		ShellImpl shellImpl = new ShellImpl();
 		String input = "cal 14 2017";
-		ByteArrayOutputStream outputeck 	 * Command Substitution: Cat doest not work with echo
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		shellImpl.parseAndEvaluate(input, output);
+	}
+	
+	/**
+	 * Command Substitution: Cat doest not work with echo
 	 * Ref: Bug Report Number 4
 	 */
 	@Test
