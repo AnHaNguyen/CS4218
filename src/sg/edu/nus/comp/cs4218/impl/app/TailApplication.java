@@ -12,11 +12,12 @@ import java.util.Vector;
 
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
-import sg.edu.nus.comp.cs4218.exception.HeadException;
 import sg.edu.nus.comp.cs4218.exception.TailException;
 
 public class TailApplication implements Application {
-
+	private int totalReadLine;
+	private InputStream is;
+	
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
 		// TODO Auto-generated method stub
@@ -28,72 +29,45 @@ public class TailApplication implements Application {
 				throw new TailException("Null Pointer Exception");
 			}
 		}
-		int totalReadLine;
-		InputStream is;
-		switch (args.length) {
-		case 0: 
-			totalReadLine = 10;
-			if (stdin == null) {
-				throw new TailException("Null Stdin");
-			}
-			is = stdin;
-			break;
-		case 1:
-			if (args[0].equals("-n")){
-				throw new TailException("Missing argument");
-			}
-			totalReadLine = 10;
-			try{
-				is = new BufferedInputStream(new FileInputStream(args[0]));
-			} catch (FileNotFoundException e) {
-				throw new TailException("File Not Found");
-			}
-			break;
-		case 2:
-			if (stdin == null) {
-				throw new TailException("Null Stdin");
-			}
-			is = stdin;
-			if (args[0].equals("-n")) {
-				try {
-					totalReadLine = Integer.parseInt(args[1]);	
-				} catch (NumberFormatException nfe) {
-					throw new TailException("An integer must follow -n");
-				}
-				if (totalReadLine < 0) {
-					throw new TailException("Invalid number of lines to be read");		
-				}
-			} else {
-				throw new TailException("Invalid arguments");
-			}
-			break;
-		case 3:
-			if (args[0].equals("-n")) {
-				try {
-					totalReadLine = Integer.parseInt(args[1]);	
-				} catch (NumberFormatException nfe) {
-					throw new TailException("An integer must follow -n");
-				}
-				if (totalReadLine < 0) {
-					throw new TailException("Invalid number of lines to be read");		
-				}
-			} else {
-				throw new TailException("Invalid arguments");
-			}
-	
-			try{
-				is = new BufferedInputStream(new FileInputStream(args[2]));
-			} catch (FileNotFoundException e) {
-				throw new TailException("File Not Found");
-			}
-			break;
-		default:
-			throw new TailException("Invalid number of arguments");
-		}
+		parseArgument(args, stdin);
 		try {
 			printTailToStdout(is, totalReadLine, stdout);
 		} catch (IOException e) {
 			throw new TailException("Error reading input stream");
+		}
+	}
+	
+	private void parseArgument(String[] args, InputStream stdin) throws TailException {
+		totalReadLine = 10;
+		int i = 0;
+		while (i < args.length - 1) {	
+			if (args[i].equals("-n")) {
+				try {
+					totalReadLine = Integer.parseInt(args[i+1]);
+				} catch (NumberFormatException nfe) {
+					throw new TailException("An integer must follow -n");
+				}
+				i += 2;
+			} else {
+				break;
+			}
+		}
+		if (totalReadLine <= 0) {
+			throw new TailException("Invalid number of lines to be read");	
+		}
+		if (i == args.length - 1) {
+			try{
+				is = new BufferedInputStream(new FileInputStream(args[args.length - 1]));
+			} catch (FileNotFoundException e) {
+				throw new TailException("File Not Found");
+			}
+		} else if (i == args.length) {
+			if (stdin == null) {
+				throw new TailException("Null Stdin");
+			}
+			is = stdin;
+		} else {
+			throw new TailException("Incorrect syntax of head argument");
 		}
 	}
 	
@@ -111,7 +85,6 @@ public class TailApplication implements Application {
 			os.write(lineList.get(i).getBytes());
 			os.write(System.lineSeparator().getBytes());
 		}
-	//	os.write(lineList.get(lineList.size()-1).getBytes());
 	}
 
 }

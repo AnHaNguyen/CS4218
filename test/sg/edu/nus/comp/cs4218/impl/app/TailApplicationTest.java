@@ -81,7 +81,7 @@ public class TailApplicationTest {
 	@Test
 	public void testTailUsingInvalidArguments() throws AbstractApplicationException{
 		expectedEx.expect(TailException.class);
-		expectedEx.expectMessage("tail: Invalid arguments");
+		expectedEx.expectMessage("tail: Incorrect syntax of head argument");
 		TailApplication tailApplication = new TailApplication();
 		ByteArrayOutputStream testOutputStream = new ByteArrayOutputStream();
 		String[] args;
@@ -91,7 +91,7 @@ public class TailApplicationTest {
 		tailApplication.run(args, new ByteArrayInputStream("".getBytes()), testOutputStream);
 
 		expectedEx.expect(TailException.class);
-		expectedEx.expectMessage("tail: Invalid arguments");
+		expectedEx.expectMessage("tail: Incorrect syntax of head argument");
 		args = new String[3];
 		args[0] = "";
 		args[1] = "";
@@ -111,7 +111,7 @@ public class TailApplicationTest {
 	@Test
 	public void testTailUsingMoreThanThreeArguments() throws AbstractApplicationException {
 		expectedEx.expect(TailException.class);
-		expectedEx.expectMessage("tail: Invalid number of arguments");
+		expectedEx.expectMessage("tail: Incorrect syntax of head argument");
 		TailApplication tailApplication = new TailApplication();
 		String[] args = new String[4];
 		args[0] = "abc";
@@ -226,8 +226,8 @@ public class TailApplicationTest {
 		File inputFile = createAndWriteFile("input.txt",content);
 		try {
 			ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-			tailApplication.run(new String[]{"-n","0","input.txt"}, null, stdout);
-			assertEquals("", stdout.toString());
+			tailApplication.run(new String[]{"-n","1","input.txt"}, null, stdout);
+			assertEquals("n1"+System.lineSeparator(), stdout.toString());
 			stdout.close();
 			inputFile.delete();
 		} catch (IOException e) {

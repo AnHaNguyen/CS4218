@@ -10,13 +10,14 @@ import java.io.OutputStream;
 import sg.edu.nus.comp.cs4218.Application;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.HeadException;
+import sg.edu.nus.comp.cs4218.exception.TailException;
 
 public class HeadApplication implements Application{
-
+	private int totalReadLine;
+	private InputStream is;
+	
 	@Override
 	public void run(String[] args, InputStream stdin, OutputStream stdout) throws AbstractApplicationException {
-		int totalReadLine;
-		InputStream is;
 		if (args == null || stdout == null) {
 			throw new HeadException("Null Pointer Exception");
 		}
@@ -25,70 +26,46 @@ public class HeadApplication implements Application{
 				throw new HeadException("Null Pointer Exception");
 			}
 		}
-		switch (args.length) {
-		case 0: 
-			totalReadLine = 10;
-			if (stdin == null) {
-				throw new HeadException("Null Stdin");
-			}
-			is = stdin;
-			break;
-		case 1:
-			if (args[0].equals("-n")){
-				throw new HeadException("Missing argument");
-			}
-			totalReadLine = 10;
-			try{
-				is = new BufferedInputStream(new FileInputStream(args[0]));
-			} catch (FileNotFoundException e) {
-				throw new HeadException("File Not Found");
-			}
-			break;
-		case 2:
-			if (stdin == null) {
-				throw new HeadException("Null Stdin");
-			}
-			is = stdin;
-			if (args[0].equals("-n")) {
-				try {
-					totalReadLine = Integer.parseInt(args[1]);	
-				} catch (NumberFormatException nfe) {
-					throw new HeadException("An integer must follow -n");
-				}
-				if (totalReadLine < 0) {
-					throw new HeadException("Invalid number of lines to be read");		
-				}
-			} else {
-				throw new HeadException("Invalid arguments");
-			}
-			break;
-		case 3:
-			if (args[0].equals("-n")) {
-				try {
-					totalReadLine = Integer.parseInt(args[1]);	
-				} catch (NumberFormatException nfe) {
-					throw new HeadException("An integer must follow -n");
-				}
-				if (totalReadLine < 0) {
-					throw new HeadException("Invalid number of lines to be read");		
-				}
-			} else {
-				throw new HeadException("Invalid arguments");
-			}
-	
-			try{
-				is = new BufferedInputStream(new FileInputStream(args[2]));
-			} catch (FileNotFoundException e) {
-				throw new HeadException("File Not Found");
-			}
-			break;
-		default:
-			throw new HeadException("Invalid number of arguments");
-		}
+
+		parseArgument(args, stdin);
 		try {
 			printHeadToStdout(is, totalReadLine, stdout);
 		} catch (IOException e) {
 			throw new HeadException("Error reading input stream");
+		}
+	}
+	
+	private void parseArgument(String[] args, InputStream stdin) throws HeadException {
+		totalReadLine = 10;
+		int i = 0;
+		while (i < args.length - 1) {	
+			if (args[i].equals("-n")) {
+				try {
+					totalReadLine = Integer.parseInt(args[i+1]);
+				} catch (NumberFormatException nfe) {
+					throw new HeadException("An integer must follow -n");
+				}
+				i += 2;
+			} else {
+				break;
+			}
+		}
+		if (totalReadLine <= 0) {
+			throw new HeadException("Invalid number of lines to be read");	
+		}
+		if (i == args.length - 1) {
+			try{
+				is = new BufferedInputStream(new FileInputStream(args[args.length - 1]));
+			} catch (FileNotFoundException e) {
+				throw new HeadException("File Not Found");
+			}
+		} else if (i == args.length) {
+			if (stdin == null) {
+				throw new HeadException("Null Stdin");
+			}
+			is = stdin;
+		} else {
+			throw new HeadException("Incorrect syntax of head argument");
 		}
 	}
 	

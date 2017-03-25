@@ -81,7 +81,7 @@ public class HeadApplicationTest {
 	@Test
 	public void testHeadUsingInvalidArguments() throws AbstractApplicationException{
 		expectedEx.expect(HeadException.class);
-		expectedEx.expectMessage("head: Invalid arguments");
+		expectedEx.expectMessage("head: Incorrect syntax of head argument");
 		HeadApplication headApplication = new HeadApplication();
 		ByteArrayOutputStream testOutputStream = new ByteArrayOutputStream();
 		String[] args;
@@ -91,7 +91,7 @@ public class HeadApplicationTest {
 		headApplication.run(args, new ByteArrayInputStream("".getBytes()), testOutputStream);
 
 		expectedEx.expect(HeadException.class);
-		expectedEx.expectMessage("head: Invalid arguments");
+		expectedEx.expectMessage("head: Incorrect syntax of head argument");
 		args = new String[3];
 		args[0] = "";
 		args[1] = "";
@@ -111,7 +111,7 @@ public class HeadApplicationTest {
 	@Test
 	public void testHeadUsingMoreThanThreeArguments() throws AbstractApplicationException {
 		expectedEx.expect(HeadException.class);
-		expectedEx.expectMessage("head: Invalid number of arguments");
+		expectedEx.expectMessage("head: Incorrect syntax of head argument");
 		HeadApplication headApplication = new HeadApplication();
 		String[] args = new String[4];
 		args[0] = "abc";
@@ -226,8 +226,8 @@ public class HeadApplicationTest {
 		File inputFile = createAndWriteFile("input.txt",content);
 		try {
 			ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-			headApplication.run(new String[]{"-n","0","input.txt"}, null, stdout);
-			assertEquals("", stdout.toString());
+			headApplication.run(new String[]{"-n","1","input.txt"}, null, stdout);
+			assertEquals("n0"+System.lineSeparator(), stdout.toString());
 			stdout.close();
 			inputFile.delete();
 		} catch (IOException e) {
