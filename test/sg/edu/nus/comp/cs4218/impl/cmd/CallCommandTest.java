@@ -57,7 +57,7 @@ public class CallCommandTest {
 			cmdLine = "cat < input.txt";
 			CallCommand cc = new CallCommand(cmdLine);
 			cc.evaluate(null, outputStream);
-			assertEquals(outputStream.toString(), content + System.lineSeparator());
+			assertEquals(outputStream.toString(), content);
 			is.close();
 		} catch (Exception e) {
 			fail();
@@ -154,8 +154,7 @@ public class CallCommandTest {
 			cmdLine = "cat input*";
 			CallCommand cc = new CallCommand(cmdLine);
 			cc.evaluate(null, outputStream);
-			assertEquals(outputStream.toString(), content + System.lineSeparator() 
-				+ content2 + System.lineSeparator());
+			assertEquals(outputStream.toString(), content + content2);
 		} catch (Exception e) {
 			fail();
 		} finally {
@@ -182,8 +181,7 @@ public class CallCommandTest {
 			cmdLine = "cat testFolder/*";
 			CallCommand cc = new CallCommand(cmdLine);
 			cc.evaluate(null, outputStream);
-			assertEquals(outputStream.toString(), content + System.lineSeparator() 
-				+ content2 + System.lineSeparator());
+			assertEquals(outputStream.toString(), content + content2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -211,8 +209,7 @@ public class CallCommandTest {
 			cmdLine = "cat testFolder/*.txt";
 			CallCommand cc = new CallCommand(cmdLine);
 			cc.evaluate(null, outputStream);
-			assertEquals(outputStream.toString(), content + System.lineSeparator() 
-				+ content2 + System.lineSeparator());
+			assertEquals(outputStream.toString(), content + content2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -241,8 +238,7 @@ public class CallCommandTest {
 			cmdLine = "cat testFolder/i*.txt";
 			CallCommand cc = new CallCommand(cmdLine);
 			cc.evaluate(null, outputStream);
-			assertEquals(outputStream.toString(), content + System.lineSeparator() 
-				+ content2 + System.lineSeparator());
+			assertEquals(outputStream.toString(), content + content2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

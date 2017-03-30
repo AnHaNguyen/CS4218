@@ -158,11 +158,13 @@ public class SampleWcApplicationTest {
 		assertEquals(String.format("1 "+byteCount+" 1 %s%s", filePath, LINE_SEPARATOR), stdout.toString());
 	}
 
-	@Test(expected = AbstractApplicationException.class)
+	@Test
 	public void testWcWithMixFlags() throws AbstractApplicationException {
 		String filePath = TEST_FILE_SINGLE_WORD;
 		String[] args = { "-w", "-ml", "-mlw", filePath };
 		app.run(args, stdin, stdout);
+		int byteCount = getByteCount(filePath);
+		assertEquals(stdout.toString(), "1 " + byteCount + " 1 " + byteCount + " 1 1 " + filePath + LINE_SEPARATOR);
 	}
 
 	@Test
@@ -173,22 +175,22 @@ public class SampleWcApplicationTest {
 		assertEquals(String.format("1 1 1 " + filePath+ LINE_SEPARATOR), stdout.toString());
 	}
 
-	@Test(expected = AbstractApplicationException.class)
+	@Test
 	public void testWcWithDuplicateFlags() throws AbstractApplicationException {
 		String filePath = TEST_FILE_SINGLE_WORD;
 		String[] args = { "-wwwww", filePath };
 		app.run(args, stdin, stdout);
+		assertEquals(stdout.toString(), "1 1 1 1 1 " + filePath + LINE_SEPARATOR);
 	}
 
-	@Test(expected = AbstractApplicationException.class)
+	@Test
 	public void testWcWithDifferentFlagOrders() throws AbstractApplicationException {
 		String filePath = TEST_FILE_SINGLE_WORD;
 		OutputStream output1 = new ByteArrayOutputStream();
 		String[] args1 = { "-wlm", filePath };
 		app.run(args1, stdin, output1);
-		String[] args2 = { "-lmw", filePath };
-		OutputStream output2 = new ByteArrayOutputStream();
-		app.run(args2, stdin, output2);
+		int byteCount = getByteCount(filePath);
+		assertEquals(output1.toString(), "1 1 " + byteCount +" "+ filePath + LINE_SEPARATOR);
 	}
 
 	@Test(expected = AbstractApplicationException.class)

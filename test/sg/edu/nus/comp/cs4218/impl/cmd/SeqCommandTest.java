@@ -44,7 +44,7 @@ public class SeqCommandTest {
 			SeqCommand sc = new SeqCommand(cmdLine);
 			sc.evaluate(null, outputStream);
 			assertEquals(outputStream.toString(), "123" + System.lineSeparator() 
-			+ "345 456" + System.lineSeparator() + content + System.lineSeparator());
+			+ "345 456" + System.lineSeparator() + content );
 		} catch (Exception e) {
 			fail();
 		}

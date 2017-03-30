@@ -58,8 +58,8 @@ public class CatApplication implements Application {
 				while ((intCount = stdin.read()) != -1) {
 					stdout.write(intCount);
 				}
-				
-				stdout.write(System.lineSeparator().getBytes());
+			//fix bug hackathon	
+			//	stdout.write(System.lineSeparator().getBytes());
 				stdout.flush();
 			} catch (Exception exIO) {
 				throw new CatException("Error reading from stdin");
@@ -87,7 +87,8 @@ public class CatApplication implements Application {
 							byte[] byteFileArray = Files
 									.readAllBytes(filePathArray[j]);
 							stdout.write(byteFileArray);
-							stdout.write(System.lineSeparator().getBytes());
+							//fix bug hackathon
+							//stdout.write(System.lineSeparator().getBytes());
 							stdout.flush();
 						} catch (IOException e) {
 							throw new CatException(

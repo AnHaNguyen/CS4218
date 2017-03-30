@@ -20,8 +20,7 @@ public class PwdWithCatCommandTest {
 		shImpl.parseAndEvaluate("pwd | cat test-data/PipeCommandTestFiles/GrepWithPipeCommand.txt", outStream);
 		String expected = " This file meant for the usage of grep with sub commands."
 				+ System.lineSeparator()
-				+ "This is the second usage of the word."
-				+ System.lineSeparator();
+				+ "This is the second usage of the word.";
 
 		assertEquals(expected, outStream.toString());
 	}
