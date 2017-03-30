@@ -19,7 +19,7 @@ public class CommandFactory {
 	public static Command getCommand(String cmdLine) throws ShellException, AbstractApplicationException, IOException {
 		String trimmed = cmdLine.trim();
 		List<AbstractToken> tokens = Utility.tokenize(trimmed);
-		
+			
 		for (AbstractToken token : tokens) {
 			if (token.getType() == TokenType.SEMICOLON) {
 				return new SeqCommand(trimmed);

@@ -69,17 +69,18 @@ public class HeadApplication implements Application{
 		}
 	}
 	
-	private void printHeadToStdout(InputStream is, int totalLine, OutputStream os) throws IOException{
-		while (totalLine > 0) {
-			int nextByte = is.read();
+	private void printHeadToStdout(InputStream inputStream, int totalLine, OutputStream outputStream) throws IOException{
+		int total = totalLine;
+		while (total > 0) {
+			int nextByte = inputStream.read();
 			if (nextByte == -1) {
 				break;
 			}
 
 			if (nextByte == (byte)'\n') {
-				totalLine--;
+				total--;
 			}
-			os.write(nextByte);;
+			outputStream.write(nextByte);;
 		}
 	}
 }
