@@ -55,17 +55,11 @@ public class HackathonTest {
 	
 	@Test
 	public void testBugPipeTwoCommandsWithoutSpace() throws AbstractApplicationException, ShellException{
-		String input = "echo test|echo test1";
+		String input = "echo test| echo test1";
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		String expected = "test1"+NEW_LINE, actual;
-		try {
-			shellImpl.parseAndEvaluate(input, output);
-		} catch (AbstractApplicationException e) {
-			fail();
-		} catch (ShellException e) {
-			fail();
-		}
-		actual = output.toString();
+		String expected = "test1" + NEW_LINE;
+		shellImpl.parseAndEvaluate(input, output);
+		String actual = output.toString();
 		assertEquals(expected, actual);		
 	}
 	

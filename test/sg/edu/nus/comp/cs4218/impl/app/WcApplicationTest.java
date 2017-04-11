@@ -76,7 +76,6 @@ public class WcApplicationTest {
 	
 	@Test
 	public void testPrintCharacterCountInFile() throws AbstractApplicationException {
-		
 		String option = "-m";
 		String filePath = "test-data"+File.separator+"testWc.txt";
 		int byteCount = getByteCount(filePath);
