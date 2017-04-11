@@ -53,11 +53,6 @@ public class HackathonTest {
 		wcApp = new WcApplication();
 	}
 	
-	@After
-	public void tearDown() throws InterruptedException {
-		Thread.sleep(1000);
-	}
-	
 	@Test
 	public void testBugPipeTwoCommandsWithoutSpace() throws AbstractApplicationException, ShellException{
 		String input = "echo test|echo test1";
