@@ -20,7 +20,7 @@ public class HeadWithGrepWithSedCommandTest {
 		ByteArrayOutputStream bao = new ByteArrayOutputStream();
 		shell.parseAndEvaluate(
 				"head -n 1 test-data/sample.txt | grep \"9000\" | sed s/over/lower/", bao);
-		String expected = "The power is lower 9000 !" + System.lineSeparator();
+		String expected = "The power is lower 9000!" + System.lineSeparator();
 		assertEquals(expected, bao.toString());
 	}
 

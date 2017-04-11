@@ -1,5 +1,10 @@
 Assumptions for shell application:
 	-Pattern: each pattern is deemed as invalid if the method Pattern.compile(pattern) throw PatternSyntaxException
+	-Application's argument order:
+		+ Argument must be in the order [App name] " " [Option(s)] " " [File(s)].
+		+ Argument must start with application name.
+		+ Options can be in any order (if any).
+		+ Option(s) must come before file(s) (if any).
 	-WcApplication: 
 		+ If no options is given, the order of output is byteCount wordCount lineCount fileName.
 		+ If n files are given, there are n output lines, each of them gives the count for 1 file and ends with that file name.
