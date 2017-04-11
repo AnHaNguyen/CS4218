@@ -67,11 +67,11 @@ public class WcApplicationTest {
 	}
 	
 	@Test
-	public void testWcUsingWrongOption() throws AbstractApplicationException{
+	public void testWcUsingWrongOption() throws AbstractApplicationException {
 		expectedEx.expect(WcException.class);
 		expectedEx.expectMessage("wc: Invalid options: -z");
 		WcApplication wcApp = new WcApplication();
-		wcApp.run(new String[]{"-z", "input.txt"}, null, new ByteArrayOutputStream());
+		wcApp.run(new String[]{"-z", "test-data" + File.separator + "testWc.txt"}, null, new ByteArrayOutputStream());
 	}
 	
 	@Test
