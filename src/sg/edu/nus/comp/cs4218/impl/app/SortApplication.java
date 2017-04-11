@@ -28,9 +28,9 @@ public class SortApplication implements Sort {
 				throw new SortException(Constants.Common.NULL_ARGS);
 			}
 		}
-		else if (args.length>2) {
-			throw new SortException(Constants.Common.INVALID_NUMBER_ARGUMENTS);
-		}
+//		else if (args.length>2) {
+//			throw new SortException(Constants.Common.INVALID_NUMBER_ARGUMENTS);
+//		}
 
 		//Normal sort
 		else if (args.length == 1) {
@@ -53,12 +53,18 @@ public class SortApplication implements Sort {
 			}
 
 		}
-		//Sort from file with condition of 1st words treated as numbers
-		else if (args.length == 2) {
+		//Sort from file(s) with condition of 1st words treated as numbers
+		else if (args.length >= 2) {
 			if (!args[0].equals("-n")) {
 				throw new SortException(Constants.SortMessage.INVALID_ARGS);
 			}
-			ArrayList<String> toSortList = readFileNum(args[1]);
+			ArrayList<String> toSortList = new ArrayList<String>();
+			for (int i = 1; i<args.length; i++) {
+				 ArrayList<String> tempSortList = readFileNum(args[1]);
+				 for(int j = 0; j<tempSortList.size(); j++) {
+					 toSortList.add(tempSortList.get(j));
+				 }
+			}
 			result = sortFirstAsNum(toSort, toSortList);
 		}
 		try {
