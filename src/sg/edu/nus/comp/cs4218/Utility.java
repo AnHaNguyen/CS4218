@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 import sg.edu.nus.comp.cs4218.impl.token.*;
 import sg.edu.nus.comp.cs4218.Constants.Common;
-import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
-import sg.edu.nus.comp.cs4218.exception.ShellException;
 
 public class Utility {	
 	public static final String SPACE_SEPARATOR = "\\s+";
