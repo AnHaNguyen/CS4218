@@ -19,7 +19,7 @@ public class Constants {
     	public static final Character IN_STREAM = '<';
     	public static final Character OUT_STREAM = '>';
     	public static final Character PIPE = '|';
-    	public static final List<Character> SPECIALS = Arrays.asList(SEMICOLON, IN_STREAM, OUT_STREAM);
+    	public static final List<Character> SPECIALS = Arrays.asList(PIPE, SEMICOLON, IN_STREAM, OUT_STREAM);
     }
     
     public class CalMessage {

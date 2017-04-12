@@ -50,8 +50,9 @@ public class EchoApplication implements Application {
 				}
 				stdout.write((args[args.length - 1] + System.lineSeparator()).getBytes());
 			}
+			stdout.flush();
 		} catch (IOException e) {
-			throw new EchoException("IOException");
+			throw new EchoException(args[0]);
 		}
 	}
 

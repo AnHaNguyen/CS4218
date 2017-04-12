@@ -70,7 +70,7 @@ public class WcApplication implements Wc {
 						output += printNewlineCountInStdin(streamContents);
 						break;
 					default:
-						throw new WcException("Unexpected error occured");
+						throw new WcException("Invalid options: " + options.get(i));
 					}
 					if (i != options.size() - 1) {
 						output += " ";
@@ -96,7 +96,7 @@ public class WcApplication implements Wc {
 							output += printNewlineCountInFile(filePath) + " ";
 							break;
 						default:
-							throw new WcException("Unexpected error occured");
+							throw new WcException("Invalid options: " + options.get(j));
 						}
 					}
 					output += fileNames.get(i) + System.lineSeparator();
@@ -132,6 +132,11 @@ public class WcApplication implements Wc {
 			if (args[i].equals(CHARACTER_OPTION) || args[i].equals(WORD_OPTION)
 					|| args[i].equals(NEWLINE_OPTION)) {
 				options.add(args[i]);
+			} else if (args[i].startsWith("-")) {
+				for (int j = 1; j < args[i].length(); j++) {
+					String singleOption = "-" + args[i].charAt(j);
+					options.add(singleOption);
+				}
 			} else {
 				for (int j = i; j < args.length; j++) {
 					String filePath = getFullPath(args[j]);

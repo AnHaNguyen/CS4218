@@ -25,7 +25,7 @@ public class PipeCommand implements Command {
 		this.commands = splitCommand(commandLine);
 	}
 	
-	public List<CallCommand> splitCommand(String commandLine) throws ShellException, AbstractApplicationException {
+	private List<CallCommand> splitCommand(String commandLine) throws ShellException, AbstractApplicationException {
 		List<CallCommand> commands = new ArrayList<CallCommand>();
 		String currentCommand = "";
 		

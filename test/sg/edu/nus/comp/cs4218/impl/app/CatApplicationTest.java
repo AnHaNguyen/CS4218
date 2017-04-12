@@ -150,8 +150,7 @@ public class CatApplicationTest {
 			catApplication.run(args, null, stdout);
 			BufferedReader buffReader = new BufferedReader(
 					new InputStreamReader(new FileInputStream(outputfile)));
-			assertEquals(CONTENT1, buffReader.readLine());
-			assertEquals(CONTENT2, buffReader.readLine());
+			assertEquals(CONTENT1 +CONTENT2, buffReader.readLine());
 
 			buffReader.close();
 		} catch (IOException e) {

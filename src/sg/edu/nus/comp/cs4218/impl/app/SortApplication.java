@@ -85,7 +85,8 @@ public class SortApplication implements Sort {
 		}
 	}
 
-	private String sortFirstAsNum(String toSort, ArrayList<String> toSortList) throws AbstractApplicationException {
+	private String sortFirstAsNum(String toSortStr, ArrayList<String> toSortList) throws AbstractApplicationException {
+		String toSort = toSortStr;
 		String result = "";
 		Hashtable<String, String> numTable = new Hashtable<String, String>();
 		for (int i =0; i<toSortList.size(); i++) {

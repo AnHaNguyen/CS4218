@@ -1,3 +1,5 @@
+package hackathon;
+
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
@@ -31,7 +33,7 @@ public class FailedTest1 {
 	 * Ref: Bug Report Number 1
 	 */
 	@Test(expected = Exception.class)
-	public void testCatWithNoExistingFile() throws AbstractApplicationException, ShellException {
+	public void testCatWithNonExistingFile() throws AbstractApplicationException, ShellException {
 		String input = "cat test-data/sample.txt";
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 	    shellImpl.parseAndEvaluate(input, output);
