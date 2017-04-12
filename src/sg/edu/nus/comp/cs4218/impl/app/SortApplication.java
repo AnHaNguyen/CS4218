@@ -29,9 +29,7 @@ public class SortApplication implements Sort {
 				throw new SortException(Constants.Common.NULL_ARGS);
 			}
 		}
-//		else if (args.length>2) {
-//			throw new SortException(Constants.Common.INVALID_NUMBER_ARGUMENTS);
-//		}
+
 
 		//Normal sort
 		else if (args.length == 1) {
@@ -56,9 +54,7 @@ public class SortApplication implements Sort {
 		//Sort from file(s) with condition of 1st words treated as numbers
 		else if (args.length >= 2) {
 			int startFile;
-			boolean nOption = false;
 			if (args[0].equals("-n")) {
-				nOption = true;
 				startFile = 1;
 				ArrayList<String> toSortList = new ArrayList<String>();
 				for (int i = startFile; i<args.length; i++) {
@@ -199,6 +195,7 @@ public class SortApplication implements Sort {
 		return sortAll(toSort);
 	}
 
+	//Note: this function treats + as positive sign not a special character
 	@Override
 	public String sortNumbers(String toSort) throws AbstractApplicationException {
 		String result = "";
