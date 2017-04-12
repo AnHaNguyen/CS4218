@@ -338,4 +338,40 @@ public class SortApplicationTest {
 		sortApp.run(args, stdin, stdout);
 		assertEquals(expectedOutput, stdout.toString());
 	}
+	
+	@Test
+	public void testMultipleFiles() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"12"+System.lineSeparator()
+		+"2" +System.lineSeparator()
+		+"Apple beetroot carrot! Apple is love!";
+		String filePath1 = "test-data"+File.separator+"testSort.txt";
+		String filePath2 = "test-data"+File.separator+"testSed.txt";
+		String[] args = new String[] {filePath1, filePath2};
+		
+		ByteArrayInputStream stdin = null;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		SortApplication sortApp = new SortApplication();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput + System.lineSeparator(), stdout.toString());
+	}
+	
+	@Test(expected = SortException.class)
+	public void testMultipleFilesWithInvalid() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"12"+System.lineSeparator()
+		+"2" +System.lineSeparator()
+		+"Apple beetroot carrot! Apple is love!";
+		String filePath1 = "test-data"+File.separator+"testSort.txt";
+		String filePath2 = "test-data"+File.separator+"testInvalid.txt";
+		String[] args = new String[] {filePath1, filePath2};
+		
+		ByteArrayInputStream stdin = null;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		SortApplication sortApp = new SortApplication();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput + System.lineSeparator(), stdout.toString());
+	}
 }

@@ -17,6 +17,7 @@ public class SortApplication implements Sort {
 		String toSort = "";
 		String result = "";
 		BufferedReader br;
+	
 		//Check case invalid args
 		if (args == null || args.length == 0) {
 			if (stdin != null) {
@@ -34,7 +35,6 @@ public class SortApplication implements Sort {
 
 		//Normal sort
 		else if (args.length == 1) {
-			//Sort from file
 			if (!args[0].equals("-n")) {
 				toSort = readFile(args[0]);
 				result = sortAll(toSort);	
@@ -55,17 +55,32 @@ public class SortApplication implements Sort {
 		}
 		//Sort from file(s) with condition of 1st words treated as numbers
 		else if (args.length >= 2) {
-			if (!args[0].equals("-n")) {
-				throw new SortException(Constants.SortMessage.INVALID_ARGS);
+			int startFile;
+			boolean nOption = false;
+			if (args[0].equals("-n")) {
+				nOption = true;
+				startFile = 1;
+				ArrayList<String> toSortList = new ArrayList<String>();
+				for (int i = startFile; i<args.length; i++) {
+					 ArrayList<String> tempSortList = readFileNum(args[i]);
+					 for(int j = 0; j<tempSortList.size(); j++) {
+						 toSortList.add(tempSortList.get(j));
+					 }
+				}
+				result = sortFirstAsNum(toSort, toSortList);
 			}
-			ArrayList<String> toSortList = new ArrayList<String>();
-			for (int i = 1; i<args.length; i++) {
-				 ArrayList<String> tempSortList = readFileNum(args[1]);
-				 for(int j = 0; j<tempSortList.size(); j++) {
-					 toSortList.add(tempSortList.get(j));
-				 }
+			else {
+				startFile = 0;
+				for (int i = startFile; i<args.length; i++) {
+					if (i > startFile) {
+						toSort += System.lineSeparator();
+					}
+					toSort += readFile(args[i]);
+					
+				}
+				result = sortAll(toSort);
 			}
-			result = sortFirstAsNum(toSort, toSortList);
+			
 		}
 		try {
 			stdout.write((result + System.lineSeparator()).getBytes());
