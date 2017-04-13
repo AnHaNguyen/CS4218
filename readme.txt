@@ -14,4 +14,8 @@ Assumptions for shell application:
 	-CalApplication:
 		+ Year must be >= 0.
 		+ Order of arugments ar {-m} {month} {year} ( -m can not appear after month or year, otherwise an error will be thrown.
+	-Sort:
+		+ All lines are sorted by ASCII values
+		+ "+ and -" before numbers are treated as numerical signs
+		+ -n option is only acceptable as first argument, it can not be provided after file paths
 		
