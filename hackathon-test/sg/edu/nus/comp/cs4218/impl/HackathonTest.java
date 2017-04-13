@@ -3,6 +3,7 @@ package sg.edu.nus.comp.cs4218.impl;
 import static org.junit.Assert.*;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,6 +18,7 @@ import sg.edu.nus.comp.cs4218.Environment;
 import sg.edu.nus.comp.cs4218.exception.AbstractApplicationException;
 import sg.edu.nus.comp.cs4218.exception.ShellException;
 import sg.edu.nus.comp.cs4218.impl.app.HeadApplication;
+import sg.edu.nus.comp.cs4218.impl.app.SortApplication;
 import sg.edu.nus.comp.cs4218.impl.app.TailApplication;
 import sg.edu.nus.comp.cs4218.impl.app.WcApplication;
 
@@ -148,6 +150,24 @@ public class HackathonTest {
 		} catch (AbstractApplicationException e) {
 			fail();
 		}
+	}
+	
+	@Test
+	public void testSortMultipleFiles() throws AbstractApplicationException {
+		String expectedOutput = "1"+System.lineSeparator()
+		+"12"+System.lineSeparator()
+		+"2" +System.lineSeparator()
+		+"Apple beetroot carrot! Apple is love!";
+		String filePath1 = "test-data"+File.separator+"testSort.txt";
+		String filePath2 = "test-data"+File.separator+"testSed.txt";
+		String[] args = new String[] {filePath1, filePath2};
+		
+		ByteArrayInputStream stdin = null;
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+		SortApplication sortApp = new SortApplication();
+
+		sortApp.run(args, stdin, stdout);
+		assertEquals(expectedOutput + System.lineSeparator(), stdout.toString());
 	}
 	
 }
